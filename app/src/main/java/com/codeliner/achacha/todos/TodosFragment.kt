@@ -1,26 +1,25 @@
-package com.codeliner.achacha.titles
+package com.codeliner.achacha.todos
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.codeliner.achacha.databinding.FragmentTitleBinding
+import com.codeliner.achacha.databinding.FragmentTodosBinding
 
-class TitleFragment: Fragment() {
+class TodosFragment: Fragment() {
 
-    private lateinit var binding: FragmentTitleBinding
-    private lateinit var viewModelFactory: TitleViewModelFactory
-    private lateinit var viewModel: TitleViewModel
+    private lateinit var binding: FragmentTodosBinding
+    private lateinit var viewModelFactory: TodosViewModelFactory
+    private lateinit var viewModel: TodosViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentTitleBinding.inflate(inflater)
+        binding = FragmentTodosBinding.inflate(inflater)
 
         initViewModel()
 
@@ -29,8 +28,8 @@ class TitleFragment: Fragment() {
 
     private fun initViewModel() {
         val app = requireNotNull(activity).application
-        viewModelFactory = TitleViewModelFactory(app)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(TitleViewModel::class.java)
+        viewModelFactory = TodosViewModelFactory(app)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(TodosViewModel::class.java)
         // note. assignment view model into layout
         binding.viewModel = viewModel
     }

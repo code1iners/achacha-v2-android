@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/titleFragment">
+    app:startDestination="@id/todosFragment">
 
     <fragment
-        android:id="@+id/titleFragment"
-        android:name="com.codeliner.achacha.titles.TitleFragment"
-        android:label="TitleFragment"
-        tools:layout="@layout/fragment_title"/>
+        android:id="@+id/todosFragment"
+        android:name="com.codeliner.achacha.todos.TodosFragment"
+        android:label="Todos"
+        tools:layout="@layout/fragment_todos"/>
 </navigation>

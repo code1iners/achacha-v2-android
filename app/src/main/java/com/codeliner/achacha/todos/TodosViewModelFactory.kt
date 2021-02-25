@@ -1,15 +1,15 @@
-package com.codeliner.achacha.titles
+package com.codeliner.achacha.todos
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class TitleViewModelFactory(
+class TodosViewModelFactory(
     private val app: Application
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TitleViewModel::class.java)) {
-            return TitleViewModel(
+        if (modelClass.isAssignableFrom(TodosViewModel::class.java)) {
+            return TodosViewModel(
                 app
             ) as T
         }
