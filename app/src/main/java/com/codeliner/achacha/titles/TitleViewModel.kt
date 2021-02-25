@@ -4,8 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.codeliner.achacha.domains.Date
-import timber.log.Timber
+import com.codeliner.achacha.utils.Date
 
 class TitleViewModel(app: Application): AndroidViewModel(app) {
 

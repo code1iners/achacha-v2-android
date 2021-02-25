@@ -17,50 +17,97 @@
             android:id="@+id/fragmentTitle_calendarContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:paddingVertical="@dimen/spacing_m"
+            app:layout_constraintStart_toStartOf="@id/fragmentTitle_guideStart"
+            app:layout_constraintEnd_toEndOf="@id/fragmentTitle_guideEnd"
             app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/fragmentTitle_dayOfWeek"
-                android:text="@{viewModel.date.dayOfWeek}"
-                tools:text="목요일, "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/fragmentTitle_day"
-                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/fragmentTitle_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{viewModel.date.day}"
+                android:textSize="@dimen/text_5xl"
+                android:textStyle="bold"
+                tools:text="10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <LinearLayout
+                android:id="@+id/fragmentTitle_calendarContainerRow2"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_s"
-                tools:text="10일"
-                app:layout_constraintTop_toTopOf="@id/fragmentTitle_dayOfWeek"
-                app:layout_constraintStart_toEndOf="@+id/fragmentTitle_dayOfWeek"/>
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/fragmentTitle_day"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/fragmentTitle_calendarContainerRow3">
 
-            <TextView
-                android:id="@+id/fragmentTitle_month"
-                android:text="@{viewModel.date.month}"
+                <TextView
+                    android:id="@+id/fragmentTitle_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.date.month}"
+                    android:textSize="@dimen/text_m"
+                    android:textStyle="bold"
+                    tools:text="December"/>
+
+                <TextView
+                    android:id="@+id/fragmentTitle_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.date.year}"
+                    android:textSize="@dimen/text_m"
+                    tools:text="2021"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fragmentTitle_calendarContainerRow3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xs"
-                tools:text="December"
-                app:layout_constraintTop_toBottomOf="@id/fragmentTitle_dayOfWeek"
-                app:layout_constraintStart_toStartOf="@+id/fragmentTitle_dayOfWeek"/>
-
-            <TextView
-                android:id="@+id/fragmentTitle_taskCount"
-                tools:text="12 Tasks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/fragmentTitle_day"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"/>
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/fragmentTitle_dayOfWeek"
+                    android:text="@{viewModel.date.dayOfWeek}"
+                    android:textSize="@dimen/text_m"
+                    android:textStyle="bold"
+                    tools:text="목요일"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/fragmentTitle_taskCount"
+                    tools:text="12 Tasks"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fragmentTitle_guideStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/text_m"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/fragmentTitle_guideEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/text_m"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
