@@ -3,6 +3,7 @@ buildscript {
     ext {
         kotlin_version = "1.4.30"
         timber_version = "4.7.1"
+        room_version = "2.2.6"
     }
     repositories {
         google()
