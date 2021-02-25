@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_s">8dp</dimen>
+    <dimen name="spacing_m">16dp</dimen>
+    <dimen name="spacing_l">24dp</dimen>
+    <dimen name="spacing_xl">28dp</dimen>
+    <dimen name="spacing_2xl">48dp</dimen>
+    <dimen name="spacing_3xl">78dp</dimen>
+
+    <dimen name="text_xs">10sp</dimen>
+    <dimen name="text_s">12sp</dimen>
+    <dimen name="text_m">16sp</dimen>
+    <dimen name="text_l">20sp</dimen>
+    <dimen name="text_xl">24sp</dimen>
+    <dimen name="text_2xl">28sp</dimen>
+    <dimen name="text_3xl">32sp</dimen>
+</resources>
