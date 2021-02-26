@@ -2,4 +2,5 @@
     <string name="app_name">Achacha</string>
     <string name="bottom_nav_label_todos">Todos</string>
     <string name="bottom_nav_label_accounts">Accounts</string>
+    <string name="fab_content_todos_desc">Todos FAB</string>
 </resources>
