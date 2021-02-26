@@ -1,10 +1,12 @@
 package com.codeliner.achacha.domains.todos
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 
+@Dao
 interface TodoDatabaseDao {
 
     // note. Create
@@ -18,7 +20,8 @@ interface TodoDatabaseDao {
     @Query("SELECT * FROM todos_table WHERE id = :todoId")
     fun getTodoById(todoId: Long): Todo
 
-    fun getTodoLatest(): LiveData<Todo>
+    @Query("SELECT * FROM todos_table ORDER BY id DESC LIMIT 1")
+    fun getTodoLatest(): LiveData<Todo>?
 
     // note. Update
     @Update
