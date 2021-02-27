@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentTodosBinding
+import com.example.helpers.ui.AnimationManager
 
 class TodosFragment: Fragment() {
 
@@ -22,8 +21,6 @@ class TodosFragment: Fragment() {
     private lateinit var viewModel: TodosViewModel
     // note. fab
     private var isFavCollapsed = true
-    private lateinit var fabClock: Animation
-    private lateinit var fabAntiClock: Animation
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,20 +35,32 @@ class TodosFragment: Fragment() {
         val cs = ConstraintSet()
         cs.clone(binding.fragmentTodosFabList)
 
-        fabClock = AnimationUtils.loadAnimation(context, R.anim.fab_rotate_clock)
-        fabAntiClock = AnimationUtils.loadAnimation(context, R.anim.fab_rotate_anticlock)
+        val fabLeft = AnimationManager.getRotateLeft45(requireContext())
+        val fabRight = AnimationManager.getRotateRight45(requireContext())
+
+        val fabHide = AnimationManager.getFadeOut(requireContext())
+        fabHide.duration = 300
+        fabHide.fillAfter = true
+        val fabShow = AnimationManager.getFadeIn(requireContext())
+        fabShow.duration = 300
+        fabShow.fillAfter = true
+
 
         binding.fragmentTodosFabMain.setOnClickListener {
             if (isFavCollapsed) {
                 cs.connect(binding.fragmentTodosFabTest1.id, ConstraintSet.BOTTOM, binding.fragmentTodosFabMain.id, ConstraintSet.TOP)
                 cs.connect(binding.fragmentTodosFabTest2.id, ConstraintSet.BOTTOM, binding.fragmentTodosFabTest1.id, ConstraintSet.TOP)
 
-                binding.fragmentTodosFabMain.startAnimation(fabClock)
+                binding.fragmentTodosFabMain.startAnimation(fabRight)
+                binding.fragmentTodosFabTest1.startAnimation(fabShow)
+                binding.fragmentTodosFabTest2.startAnimation(fabShow)
             } else {
                 cs.connect(binding.fragmentTodosFabTest1.id, ConstraintSet.BOTTOM, binding.fragmentTodosFabList.id, ConstraintSet.BOTTOM)
                 cs.connect(binding.fragmentTodosFabTest2.id, ConstraintSet.BOTTOM, binding.fragmentTodosFabList.id, ConstraintSet.BOTTOM)
 
-                binding.fragmentTodosFabMain.startAnimation(fabAntiClock)
+                binding.fragmentTodosFabMain.startAnimation(fabLeft)
+                binding.fragmentTodosFabTest1.startAnimation(fabHide)
+                binding.fragmentTodosFabTest2.startAnimation(fabHide)
             }
 
             val transition = AutoTransition()
