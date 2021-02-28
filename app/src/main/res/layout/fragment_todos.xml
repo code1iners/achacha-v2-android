@@ -17,9 +17,10 @@
             android:id="@+id/fragmentTodos_calendarContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/spacing_m"
-            app:layout_constraintStart_toStartOf="@id/fragmentTodos_guideStart"
-            app:layout_constraintEnd_toEndOf="@id/fragmentTodos_guideEnd"
+            android:padding="@dimen/spacing_m"
+            android:background="@drawable/border_bottom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -132,6 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_m"
                 android:src="@drawable/icon_add"
+                android:onClick="@{() -> viewModel.switchCollapse()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
