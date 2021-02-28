@@ -1,4 +1,4 @@
-package com.codeliner.achacha.todos
+package com.codeliner.achacha.todos.list
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

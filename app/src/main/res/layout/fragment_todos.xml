@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.codeliner.achacha.todos.TodosViewModel" />
+            type="com.codeliner.achacha.todos.list.TodosViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -106,22 +106,24 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fragmentTodos_fabTest2"
+                android:id="@+id/fragmentTodos_fabClear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_m"
-                android:src="@drawable/icon_star"
+                android:src="@drawable/icon_clear"
+                android:onClick="@{() -> viewModel.onClearTodos()}"
                 app:fabSize="mini"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fragmentTodos_fabTest1"
+                android:id="@+id/fragmentTodos_fabCreate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_m"
-                android:src="@drawable/icon_star"
+                android:src="@drawable/icon_create"
+                android:onClick="@{() -> viewModel.onNavigateToCreateTodo()}"
                 app:fabSize="mini"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

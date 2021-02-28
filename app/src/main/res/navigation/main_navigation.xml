@@ -7,16 +7,24 @@
 
     <fragment
         android:id="@+id/todosFragment"
-        android:name="com.codeliner.achacha.todos.TodosFragment"
+        android:name="com.codeliner.achacha.todos.list.TodosFragment"
         android:label="Todos"
         tools:layout="@layout/fragment_todos">
         <action
             android:id="@+id/action_todosFragment_to_accountsFragment"
             app:destination="@id/accountsFragment" />
+        <action
+            android:id="@+id/action_todosFragment_to_todoCreateFragment"
+            app:destination="@id/todoCreateFragment" />
     </fragment>
     <fragment
         android:id="@+id/accountsFragment"
         android:name="com.codeliner.achacha.accounts.AccountsFragment"
         android:label="AccountsFragment"
         tools:layout="@layout/fragment_accounts"/>
+    <fragment
+        android:id="@+id/todoCreateFragment"
+        android:name="com.codeliner.achacha.todos.create.TodoCreateFragment"
+        android:label="TodoCreateFragment"
+        tools:layout="@layout/fragment_todo_create"/>
 </navigation>
