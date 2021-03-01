@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/todosFragment"
-        android:name="com.codeliner.achacha.todos.list.TodosFragment"
+        android:name="com.codeliner.achacha.todos.list.TodoListFragment"
         android:label="Todos"
-        tools:layout="@layout/fragment_todos">
+        tools:layout="@layout/fragment_todo_list">
         <action
             android:id="@+id/action_todosFragment_to_accountsFragment"
             app:destination="@id/accountsFragment" />

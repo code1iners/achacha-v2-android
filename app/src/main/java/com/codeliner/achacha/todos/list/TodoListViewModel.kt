@@ -15,7 +15,7 @@ import com.codeliner.achacha.utils.Date
 import com.example.helpers.ui.AnimationManager
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class TodosViewModel(app: Application): AndroidViewModel(app) {
+class TodoListViewModel(app: Application): AndroidViewModel(app) {
 
     private val _date = MutableLiveData<Date>()
     val date: LiveData<Date> get() = _date

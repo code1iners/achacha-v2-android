@@ -4,12 +4,12 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class TodosViewModelFactory(
+class TodoListViewModelFactory(
     private val app: Application
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TodosViewModel::class.java)) {
-            return TodosViewModel(
+        if (modelClass.isAssignableFrom(TodoListViewModel::class.java)) {
+            return TodoListViewModel(
                 app
             ) as T
         }

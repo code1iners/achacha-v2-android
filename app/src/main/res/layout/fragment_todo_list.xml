@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.codeliner.achacha.todos.list.TodosViewModel" />
+            type="com.codeliner.achacha.todos.list.TodoListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/fragmentTodos_calendarContainer"
+            android:id="@+id/fragmentTodoList_calendarContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="@dimen/spacing_m"
@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/fragmentTodos_day"
+                android:id="@+id/fragmentTodoList_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.date.day}"
@@ -36,19 +36,19 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <LinearLayout
-                android:id="@+id/fragmentTodos_calendarContainerRow2"
+                android:id="@+id/fragmentTodoList_calendarContainerRow2"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_s"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/fragmentTodos_day"
+                app:layout_constraintStart_toEndOf="@+id/fragmentTodoList_day"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/fragmentTodos_calendarContainerRow3">
+                app:layout_constraintEnd_toStartOf="@+id/fragmentTodoList_calendarContainerRow3">
 
                 <TextView
-                    android:id="@+id/fragmentTodos_month"
+                    android:id="@+id/fragmentTodoList_month"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.date.month}"
@@ -57,7 +57,7 @@
                     tools:text="December"/>
 
                 <TextView
-                    android:id="@+id/fragmentTodos_year"
+                    android:id="@+id/fragmentTodoList_year"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{viewModel.date.year}"
@@ -67,7 +67,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/fragmentTodos_calendarContainerRow3"
+                android:id="@+id/fragmentTodoList_calendarContainerRow3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -76,7 +76,7 @@
                 app:layout_constraintBottom_toBottomOf="parent">
 
                 <TextView
-                    android:id="@+id/fragmentTodos_dayOfWeek"
+                    android:id="@+id/fragmentTodoList_dayOfWeek"
                     android:text="@{viewModel.date.dayOfWeek}"
                     android:textSize="@dimen/text_m"
                     android:textStyle="bold"
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
-                    android:id="@+id/fragmentTodos_taskCount"
+                    android:id="@+id/fragmentTodoList_taskCount"
                     tools:text="12 Tasks"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
@@ -97,7 +97,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/fragmentTodos_fabList"
+            android:id="@+id/fragmentTodoList_fabList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -106,7 +106,7 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fragmentTodos_fabClear"
+                android:id="@+id/fragmentTodoList_fabClear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_m"
@@ -118,7 +118,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fragmentTodos_fabCreate"
+                android:id="@+id/fragmentTodoList_fabCreate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_m"
@@ -130,7 +130,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fragmentTodos_fabMain"
+                android:id="@+id/fragmentTodoList_fabMain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_m"
@@ -143,14 +143,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/fragmentTodos_guideStart"
+            android:id="@+id/fragmentTodoList_guideStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="@dimen/text_m"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/fragmentTodos_guideEnd"
+            android:id="@+id/fragmentTodoList_guideEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
