@@ -11,15 +11,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import com.codeliner.achacha.databinding.FragmentTodoListBinding
+import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
 import timber.log.Timber
 
-class TodoListFragment: Fragment() {
+class TodoListFragment: Fragment()
+    , TodoListener
+{
 
     private lateinit var binding: FragmentTodoListBinding
     private lateinit var viewModelFactory: TodoListViewModelFactory
     private lateinit var viewModel: TodoListViewModel
+
+    // note. adapters
+    private lateinit var todoAdapter: TodoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +36,9 @@ class TodoListFragment: Fragment() {
         binding.lifecycleOwner = this
 
         initViewModel()
+        initAdapters()
         initObservers()
+
 
         return binding.root
     }
@@ -42,6 +50,11 @@ class TodoListFragment: Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(TodoListViewModel::class.java)
         // note. assignment view model into layout
         binding.viewModel = viewModel
+    }
+
+    private fun initAdapters() {
+        todoAdapter = TodoAdapter(this)
+        binding.fragmentTodoListTodoList.adapter = todoAdapter
     }
 
     private fun initObservers() {
@@ -84,13 +97,20 @@ class TodoListFragment: Fragment() {
         // note. todos
         viewModel.todos.observe(viewLifecycleOwner, Observer { it ->
             it?.let { todos ->
-                Timber.i("size: ${todos.size}")
-                for (todo in todos) {
-                    Timber.d("id: ${todo.id}, work: ${todo.work}, help: ${todo.help} created: ${todo.created}")
-                }
+                todoAdapter.submitList(todos)
             }
         })
     }
 
+    override fun onClick(todo: Todo) {
+        Timber.w("onClick")
+    }
 
+    override fun onRemove(todo: Todo) {
+        Timber.w("onRemove")
+    }
+
+    override fun onFinished(todo: Todo) {
+        Timber.w("onFinished")
+    }
 }

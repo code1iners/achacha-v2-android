@@ -1,55 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingVertical="@dimen/spacing_xs"
-    android:paddingHorizontal="@dimen/spacing_s"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <CheckBox
-        android:id="@+id/itemTodo_isFinished"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/itemTodo_workContainer"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+    <data>
+        <variable
+            name="todo"
+            type="com.codeliner.achacha.domains.todos.Todo" />
 
-    <LinearLayout
-        android:id="@+id/itemTodo_workContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintStart_toEndOf="@+id/itemTodo_isFinished"
-        app:layout_constraintTop_toTopOf="@+id/itemTodo_isFinished"
-        app:layout_constraintBottom_toBottomOf="@+id/itemTodo_isFinished">
+        <variable
+            name="listener"
+            type="com.codeliner.achacha.todos.list.TodoListener" />
+    </data>
 
-        <TextView
-            android:id="@+id/itemTodo_work"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/spacing_xs"
+        android:paddingHorizontal="@dimen/spacing_s">
+
+        <CheckBox
+            android:id="@+id/itemTodo_isFinished"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="@string/work"/>
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/itemTodo_workContainer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/itemTodo_workContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="@string/help"/>
+            android:orientation="vertical"
+            app:layout_constraintStart_toEndOf="@+id/itemTodo_isFinished"
+            app:layout_constraintTop_toTopOf="@+id/itemTodo_isFinished"
+            app:layout_constraintBottom_toBottomOf="@+id/itemTodo_isFinished">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/itemTodo_work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/work"
+                app:todoWorkString="@{todo}"/>
 
-    <ImageButton
-        android:id="@+id/itemTodo_remove"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:src="@drawable/icon_remove_outline"
-        android:background="@null"
-        android:scaleType="fitCenter"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/itemTodo_workContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/itemTodo_isFinished"
-        app:layout_constraintBottom_toBottomOf="@+id/itemTodo_isFinished"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help"
+                app:todoHelpString="@{todo}"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/itemTodo_remove"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_remove_outline"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/itemTodo_workContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/itemTodo_isFinished"
+            app:layout_constraintBottom_toBottomOf="@+id/itemTodo_isFinished" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
