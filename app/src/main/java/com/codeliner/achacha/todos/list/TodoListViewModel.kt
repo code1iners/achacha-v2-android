@@ -113,6 +113,14 @@ class TodoListViewModel(
     }
 
     fun onRemoveTodo(todo: Todo) {
+        viewModelScope.launch {
+            remove(todo)
+        }
+    }
 
+    private suspend fun remove(todo: Todo) {
+        withContext(Dispatchers.IO) {
+            todoDatabaseDao.deleteTodoById(todo.id)
+        }
     }
 }

@@ -99,7 +99,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragmentTodoList_todoList"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:paddingTop="@dimen/spacing_m"
             android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -107,7 +107,8 @@
             tools:listitem="@layout/item_todo"
             app:layout_constraintStart_toStartOf="@id/fragmentTodoList_guideStart"
             app:layout_constraintEnd_toEndOf="@id/fragmentTodoList_guideEnd"
-            app:layout_constraintTop_toBottomOf="@+id/fragmentTodoList_calendarContainer"/>
+            app:layout_constraintTop_toBottomOf="@+id/fragmentTodoList_calendarContainer"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fragmentTodoList_fabList"

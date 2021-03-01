@@ -106,7 +106,7 @@ class TodoListFragment: Fragment()
     }
 
     override fun onRemove(todo: Todo) {
-//        viewModel.
+        viewModel.onRemoveTodo(todo)
     }
 
     override fun onFinished(todo: Todo) {
