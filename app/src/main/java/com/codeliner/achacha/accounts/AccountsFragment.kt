@@ -17,7 +17,7 @@ class AccountsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAccountsBinding.inflate(inflater)
-
+        binding.lifecycleOwner = this
 
 
         return binding.root

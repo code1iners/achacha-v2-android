@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import com.codeliner.achacha.databinding.FragmentTodosBinding
+import com.codeliner.achacha.mains.MainActivity
 
 class TodosFragment: Fragment() {
 
@@ -24,11 +25,20 @@ class TodosFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentTodosBinding.inflate(inflater)
+        binding.lifecycleOwner = this
 
         initViewModel()
         initObservers()
 
         return binding.root
+    }
+
+    private fun initViewModel() {
+        val app = requireNotNull(activity).application
+        viewModelFactory = TodosViewModelFactory(app)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(TodosViewModel::class.java)
+        // note. assignment view model into layout
+        binding.viewModel = viewModel
     }
 
     private fun initObservers() {
@@ -62,17 +72,12 @@ class TodosFragment: Fragment() {
             it?.let {
                 if (it) {
                     this.findNavController().navigate(TodosFragmentDirections.actionTodosFragmentToTodoCreateFragment())
+                    MainActivity.onBottomNavigationSwitch()
                     viewModel.navigateToCreateTodoComplete()
                 }
             }
         })
     }
 
-    private fun initViewModel() {
-        val app = requireNotNull(activity).application
-        viewModelFactory = TodosViewModelFactory(app)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(TodosViewModel::class.java)
-        // note. assignment view model into layout
-        binding.viewModel = viewModel
-    }
+
 }

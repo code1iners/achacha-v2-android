@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.databinding.FragmentTodoCreateBinding
+import com.codeliner.achacha.mains.MainActivity
 
 class TodoCreateFragment: Fragment() {
 
@@ -13,7 +16,12 @@ class TodoCreateFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTodoCreateBinding.inflate(inflater)
+        binding.lifecycleOwner = this
 
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            MainActivity.onBottomNavigationSwitch()
+            this@TodoCreateFragment.findNavController().popBackStack()
+        }
 
         return binding.root
     }
