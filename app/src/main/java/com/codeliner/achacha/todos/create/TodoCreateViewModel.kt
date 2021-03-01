@@ -24,7 +24,6 @@ class TodoCreateViewModel(
         work.value?.let { newWork ->
             uiScope.launch {
             // note. validation work
-                Timber.w("enter work $newWork")
                 insert(Todo().apply {
                     work = newWork
                     help = "Test message"
@@ -42,7 +41,6 @@ class TodoCreateViewModel(
     
     fun updateWork(text: String) {
         _work.value = text
-        Timber.d("work: ${work.value}, _work: ${_work.value}")
     }
 
     override fun onCleared() {

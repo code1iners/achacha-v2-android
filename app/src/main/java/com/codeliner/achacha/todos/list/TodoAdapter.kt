@@ -54,7 +54,6 @@ class TodoAdapter(
         override fun areContentsTheSame(oldItem: Todo, newItem: Todo): Boolean {
             return oldItem == newItem
         }
-
     }
 }
 

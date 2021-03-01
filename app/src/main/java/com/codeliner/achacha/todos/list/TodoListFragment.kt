@@ -103,14 +103,13 @@ class TodoListFragment: Fragment()
     }
 
     override fun onClick(todo: Todo) {
-        Timber.w("onClick")
     }
 
     override fun onRemove(todo: Todo) {
-        Timber.w("onRemove")
+//        viewModel.
     }
 
     override fun onFinished(todo: Todo) {
-        Timber.w("onFinished")
+        viewModel.onUpdateTodo(todo)
     }
 }

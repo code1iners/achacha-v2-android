@@ -19,6 +19,7 @@ import com.example.helpers.ui.AnimationManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class TodoListViewModel(
@@ -95,5 +96,23 @@ class TodoListViewModel(
         withContext(Dispatchers.IO) {
             todoDatabaseDao.clear()
         }
+    }
+
+    fun onUpdateTodo(todo: Todo) {
+        viewModelScope.launch {
+            val oldTodo = todo
+            oldTodo.isFinished = !todo.isFinished
+            update(oldTodo)
+        }
+    }
+
+    private suspend fun update(todo: Todo) {
+        withContext(Dispatchers.IO) {
+            todoDatabaseDao.update(todo)
+        }
+    }
+
+    fun onRemoveTodo(todo: Todo) {
+
     }
 }
