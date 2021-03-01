@@ -18,11 +18,15 @@ class TodoCreateFragment: Fragment() {
         binding = FragmentTodoCreateBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
+        initBackPressed()
+
+        return binding.root
+    }
+
+    private fun initBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             MainActivity.onBottomNavigationSwitch()
             this@TodoCreateFragment.findNavController().popBackStack()
         }
-
-        return binding.root
     }
 }

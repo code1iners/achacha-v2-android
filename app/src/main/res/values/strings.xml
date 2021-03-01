@@ -4,4 +4,6 @@
     <string name="bottom_nav_label_accounts">Accounts</string>
     <string name="fab_content_todos_desc">Todos FAB</string>
     <string name="preparing_service">Preparing the service.</string>
+    <string name="work">Work</string>
+    <string name="add">Add</string>
 </resources>

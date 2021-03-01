@@ -10,14 +10,62 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fragmentTodoCreate_headerContainer"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Todo Create Fragment"
+            android:paddingHorizontal="@dimen/spacing_s"
+            android:paddingTop="@dimen/spacing_s"
+            android:paddingBottom="@dimen/spacing_s"
+            android:background="@drawable/border_bottom"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/fragmentTodoCreate_close"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/icon_close"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/fragmentTodoCreate_inputContainer"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentTodoCreate_inputContainer"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fragmentTodoCreate_inputContainer"
+                android:layout_width="0dp"
+                android:layout_height="65dp"
+                android:hint="@string/work"
+                android:layout_marginHorizontal="@dimen/spacing_s"
+                app:endIconMode="clear_text"
+                app:layout_constraintStart_toEndOf="@+id/fragmentTodoCreate_close"
+                app:layout_constraintEnd_toStartOf="@+id/fragmentTodoCreate_submit"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/fragmentTodoCreate_input"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/fragmentTodoCreate_submit"
+                android:layout_width="70dp"
+                android:layout_height="65dp"
+                android:text="@string/add"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/fragmentTodoCreate_inputContainer"
+                app:layout_constraintBottom_toBottomOf="@+id/fragmentTodoCreate_inputContainer"
+                style="?attr/materialButtonStyle"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
