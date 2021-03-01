@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.codeliner.achacha.utils.Const
+import timber.log.Timber
 
 @Entity(tableName = "todos_table")
 data class Todo (

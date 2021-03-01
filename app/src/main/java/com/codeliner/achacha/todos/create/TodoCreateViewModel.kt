@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabaseDao
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 class TodoCreateViewModel(
     private val app: Application,
@@ -18,19 +19,18 @@ class TodoCreateViewModel(
     
     private val _work = MutableLiveData<String>()
     val work: LiveData<String> get() = _work
-
     
     fun onSaveTodo() {
-        uiScope.launch {
+        work.value?.let { newWork ->
+            uiScope.launch {
             // note. validation work
-            work.value?.let {
+                Timber.w("enter work $newWork")
                 insert(Todo().apply {
-                    work = it
+                    work = newWork
                     help = "Test message"
                 })
+                _work.value = null
             }
-
-            _work.value = ""
         }
     }
 
@@ -40,7 +40,13 @@ class TodoCreateViewModel(
         }
     }
     
-    fun updateWork(work: String) {
-        _work.value = work
+    fun updateWork(text: String) {
+        _work.value = text
+        Timber.d("work: ${work.value}, _work: ${_work.value}")
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

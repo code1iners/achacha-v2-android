@@ -1,9 +1,13 @@
 package com.codeliner.achacha.todos.create
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -14,7 +18,9 @@ import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
 import timber.log.Timber
 
-class TodoCreateFragment: Fragment() {
+class TodoCreateFragment: Fragment()
+    , TextView.OnEditorActionListener
+{
 
     private lateinit var binding: FragmentTodoCreateBinding
     private lateinit var viewModel: TodoCreateViewModel
@@ -25,15 +31,7 @@ class TodoCreateFragment: Fragment() {
 
         initBackPressed()
         initViewModel()
-        binding.fragmentTodoCreateInput.doOnTextChanged { text, _, _, _ ->
-            viewModel.updateWork(text.toString())
-        }
-
-        binding.fragmentTodoCreateSubmit.setOnClickListener {
-            viewModel.onSaveTodo()
-            binding.fragmentTodoCreateInput.text?.clear()
-            back()
-        }
+        initListeners()
 
         return binding.root
     }
@@ -44,16 +42,50 @@ class TodoCreateFragment: Fragment() {
         }
     }
 
-    private fun back() {
-        MainActivity.onBottomNavigationSwitch()
-        this@TodoCreateFragment.findNavController().popBackStack()
-    }
-
     private fun initViewModel() {
         val app = requireNotNull(activity).application
         val dataSourceDao = TodoDatabase.getInstance(requireContext()).todoDatabaseDao
         val viewModelFactory = TodoCreateViewModelFactory(app, dataSourceDao)
         viewModel = ViewModelProvider(this, viewModelFactory).get(TodoCreateViewModel::class.java)
         binding.viewModel = viewModel
+    }
+
+    private fun initListeners() {
+        // note. text input done listener
+        binding.fragmentTodoCreateInput.setOnEditorActionListener(this)
+        
+        // note. when enter the input text
+        binding.fragmentTodoCreateInput.doOnTextChanged { text, _, _, _ ->
+            viewModel.updateWork(text.toString())
+        }
+        // note. when clicked add button
+        binding.fragmentTodoCreateSubmit.setOnClickListener {
+            viewModel.onSaveTodo()
+            binding.fragmentTodoCreateInput.text?.clear()
+            back()
+        }
+    }
+
+    private fun back() {
+        MainActivity.onBottomNavigationSwitch()
+        this@TodoCreateFragment.findNavController().popBackStack()
+    }
+
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+        v?.let { view ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    when (view.id) {
+                        binding.fragmentTodoCreateInput.id -> {
+                            binding.fragmentTodoCreateSubmit.performClick()
+                        }
+                        else -> return false
+                    }
+
+                }
+                else -> return false
+            }
+        }
+        return true
     }
 }

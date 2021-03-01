@@ -8,17 +8,29 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.transition.AutoTransition
 import com.codeliner.achacha.R
+import com.codeliner.achacha.domains.todos.Todo
+import com.codeliner.achacha.domains.todos.TodoDatabaseDao
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.utils.Date
 import com.example.helpers.ui.AnimationManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-class TodoListViewModel(app: Application): AndroidViewModel(app) {
+class TodoListViewModel(
+    app: Application,
+    private val todoDatabaseDao: TodoDatabaseDao
+): AndroidViewModel(app) {
 
     private val _date = MutableLiveData<Date>()
     val date: LiveData<Date> get() = _date
+
+    private val _todos = todoDatabaseDao.getAllTodos()
+    val todos: LiveData<List<Todo>> get() = _todos
 
     // note. fab
     private val _isFavCollapsed = MutableLiveData<Boolean>()
@@ -35,12 +47,20 @@ class TodoListViewModel(app: Application): AndroidViewModel(app) {
     val transition = AutoTransition()
 
     init {
-        _date.value = Date()
+        initDate()
+        initBottomNav()
+    }
+
+    private fun initBottomNav() {
         transition.duration = 300
         transition.interpolator = AccelerateDecelerateInterpolator()
         animHide.fillAfter = true
         animShow.fillAfter = true
         _onNavigateToCreateTodo.value = false
+    }
+
+    private fun initDate() {
+        _date.value = Date()
     }
 
     fun switchCollapse() {
@@ -66,7 +86,14 @@ class TodoListViewModel(app: Application): AndroidViewModel(app) {
     }
     
     fun onClearTodos() {
-        val app: Application = getApplication()
-        Toast.makeText(app.applicationContext, app.applicationContext.getString(R.string.preparing_service), Toast.LENGTH_SHORT).show()
+        viewModelScope.launch {
+            clear()
+        }
+    }
+
+    private suspend fun clear() {
+        withContext(Dispatchers.IO) {
+            todoDatabaseDao.clear()
+        }
     }
 }

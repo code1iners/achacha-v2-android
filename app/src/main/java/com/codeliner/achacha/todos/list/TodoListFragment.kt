@@ -11,7 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionManager
 import com.codeliner.achacha.databinding.FragmentTodoListBinding
+import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
+import timber.log.Timber
 
 class TodoListFragment: Fragment() {
 
@@ -35,7 +37,8 @@ class TodoListFragment: Fragment() {
 
     private fun initViewModel() {
         val app = requireNotNull(activity).application
-        viewModelFactory = TodoListViewModelFactory(app)
+        val todoDatabaseDao = TodoDatabase.getInstance(app.applicationContext).todoDatabaseDao
+        viewModelFactory = TodoListViewModelFactory(app, todoDatabaseDao)
         viewModel = ViewModelProvider(this, viewModelFactory).get(TodoListViewModel::class.java)
         // note. assignment view model into layout
         binding.viewModel = viewModel
@@ -74,6 +77,16 @@ class TodoListFragment: Fragment() {
                     this.findNavController().navigate(TodoListFragmentDirections.actionTodosFragmentToTodoCreateFragment())
                     MainActivity.onBottomNavigationSwitch()
                     viewModel.navigateToCreateTodoComplete()
+                }
+            }
+        })
+
+        // note. todos
+        viewModel.todos.observe(viewLifecycleOwner, Observer { it ->
+            it?.let { todos ->
+                Timber.i("size: ${todos.size}")
+                for (todo in todos) {
+                    Timber.d("id: ${todo.id}, work: ${todo.work}, help: ${todo.help} created: ${todo.created}")
                 }
             }
         })
