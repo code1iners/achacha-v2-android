@@ -6,20 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.databinding.FragmentTodoCreateBinding
 import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
+import com.codeliner.achacha.utils.KeyboardManager
 import timber.log.Timber
 
 class TodoCreateFragment: Fragment()
     , TextView.OnEditorActionListener
+    , Observer<KeyboardManager.KeyboardStatus>
 {
 
     private lateinit var binding: FragmentTodoCreateBinding
@@ -34,6 +36,14 @@ class TodoCreateFragment: Fragment()
         initListeners()
 
         return binding.root
+    }
+
+    private fun keyboardOpen() {
+        Timber.w("keyboardOpen")
+    }
+
+    private fun keyboardClosed() {
+        Timber.w("keyboardClosed")
     }
 
     private fun initBackPressed() {
@@ -87,5 +97,21 @@ class TodoCreateFragment: Fragment()
             }
         }
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        KeyboardManager.init(requireActivity()).status()?.observeForever(this)
+    }
+
+    override fun onChanged(status: KeyboardManager.KeyboardStatus?) {
+        status?.let {
+            Timber.d(it.name)
+            if (it == KeyboardManager.KeyboardStatus.CLOSED) {
+                keyboardClosed()
+            } else {
+                keyboardOpen()
+            }
+        }
     }
 }
