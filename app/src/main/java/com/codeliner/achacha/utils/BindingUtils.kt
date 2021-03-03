@@ -25,3 +25,13 @@ fun CheckBox.setIsFinished(item: Todo?) {
         isChecked = item.isFinished
     }
 }
+
+@BindingAdapter("todoCreatedFormatted")
+fun TextView.setTodoCreated(item: Todo?) {
+    item?.let {
+        val date = CustomDate().apply {
+            currentTimeAsMilli = item.created
+        }
+        text = "${date.getYearWith(DateType.YearFourDigit)}-${date.getMonthWith(DateType.MonthNumTwoDigit)}-${date.getDayWith(DateType.DayTwoDigit)}"
+    }
+}

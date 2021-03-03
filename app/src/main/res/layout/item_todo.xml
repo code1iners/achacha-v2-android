@@ -48,10 +48,12 @@
                 app:todoWorkString="@{todo}"/>
 
             <TextView
+                android:id="@+id/itemTodo_created"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/help"
-                app:todoHelpString="@{todo}"/>
+                android:textSize="@dimen/text_xs"
+                android:text="@string/created"
+                app:todoCreatedFormatted="@{todo}"/>
 
         </LinearLayout>
 

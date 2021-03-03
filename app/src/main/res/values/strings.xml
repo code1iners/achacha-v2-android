@@ -8,4 +8,5 @@
     <string name="add">Add</string>
     <string name="help">Help</string>
     <string name="tasks">%d Tasks</string>
+    <string name="created">Created</string>
 </resources>
