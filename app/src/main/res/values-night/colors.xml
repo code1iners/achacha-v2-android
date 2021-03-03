@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primaryColor">#1D1F20</color>
+    <color name="primaryVariantColor">#313644</color>
+    <color name="primaryTextColor">#9D9489</color>
+    <color name="secondaryColor">#313644</color>
+    <color name="secondaryVariantColor">#1E1F20</color>
+    <color name="secondaryTextColor">#B7C8DE</color>
+
+    <color name="divider">#28ffffff</color>
+    <color name="closeButton">#c2c2c2</color>
+</resources>
