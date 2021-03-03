@@ -1,11 +1,15 @@
 package com.codeliner.achacha.todos.create
 
+import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.widget.doOnTextChanged
@@ -21,29 +25,40 @@ import timber.log.Timber
 
 class TodoCreateFragment: Fragment()
     , TextView.OnEditorActionListener
-    , Observer<KeyboardManager.KeyboardStatus>
 {
 
     private lateinit var binding: FragmentTodoCreateBinding
     private lateinit var viewModel: TodoCreateViewModel
+    private lateinit var app: Application
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentTodoCreateBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        app = requireNotNull(activity).application
 
         initBackPressed()
         initViewModel()
         initListeners()
+        initFocus()
 
         return binding.root
     }
 
-    private fun keyboardOpen() {
-        Timber.w("keyboardOpen")
+    private fun initFocus() {
+        binding.fragmentTodoCreateInput.requestFocus()
     }
 
-    private fun keyboardClosed() {
-        Timber.w("keyboardClosed")
+    override fun onResume() {
+        super.onResume()
+        KeyboardManager.keyboardOpen(app, binding.fragmentTodoCreateInput)
+        KeyboardManager.init(requireActivity()).status()?.observe(viewLifecycleOwner, Observer {
+            Timber.d("status: ${it.name}, isBackPressed: ${viewModel.isBackPressed.value}")
+            if (it == KeyboardManager.KeyboardStatus.OPEN) {
+                viewModel.onBackPressed()
+            } else if (it == KeyboardManager.KeyboardStatus.CLOSED && viewModel.isBackPressed.value == true) {
+                back()
+            }
+        })
     }
 
     private fun initBackPressed() {
@@ -53,7 +68,7 @@ class TodoCreateFragment: Fragment()
     }
 
     private fun initViewModel() {
-        val app = requireNotNull(activity).application
+
         val dataSourceDao = TodoDatabase.getInstance(requireContext()).todoDatabaseDao
         val viewModelFactory = TodoCreateViewModelFactory(app, dataSourceDao)
         viewModel = ViewModelProvider(this, viewModelFactory).get(TodoCreateViewModel::class.java)
@@ -71,14 +86,15 @@ class TodoCreateFragment: Fragment()
         // note. when clicked add button
         binding.fragmentTodoCreateSubmit.setOnClickListener {
             viewModel.onSaveTodo()
-            binding.fragmentTodoCreateInput.text?.clear()
-            back()
+            viewModel.onBackPressed()
+            KeyboardManager.keyboardClose(app, binding.fragmentTodoCreateInput)
         }
     }
 
     private fun back() {
         MainActivity.onBottomNavigationSwitch()
         this@TodoCreateFragment.findNavController().popBackStack()
+        viewModel.onBackPressedComplete()
     }
 
     override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
@@ -97,21 +113,5 @@ class TodoCreateFragment: Fragment()
             }
         }
         return true
-    }
-
-    override fun onResume() {
-        super.onResume()
-        KeyboardManager.init(requireActivity()).status()?.observeForever(this)
-    }
-
-    override fun onChanged(status: KeyboardManager.KeyboardStatus?) {
-        status?.let {
-            Timber.d(it.name)
-            if (it == KeyboardManager.KeyboardStatus.CLOSED) {
-                keyboardClosed()
-            } else {
-                keyboardOpen()
-            }
-        }
     }
 }

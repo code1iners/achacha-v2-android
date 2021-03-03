@@ -13,6 +13,17 @@ class TodoCreateViewModel(
     private val app: Application,
     private val dataSourceDao: TodoDatabaseDao
 ): AndroidViewModel(app) {
+    
+    private val _isBackPressed = MutableLiveData<Boolean>()
+    val isBackPressed: LiveData<Boolean> get() = _isBackPressed
+    
+    fun onBackPressed() {
+        _isBackPressed.value = true
+    }
+    
+    fun onBackPressedComplete() {
+        _isBackPressed.value = false
+    }
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)

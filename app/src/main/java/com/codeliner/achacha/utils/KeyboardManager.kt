@@ -2,9 +2,13 @@ package com.codeliner.achacha.utils
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Application
+import android.content.Context
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import androidx.lifecycle.LiveData
 import java.lang.ref.WeakReference
 
@@ -17,6 +21,21 @@ class KeyboardManager private constructor() : LiveData<KeyboardManager.KeyboardS
             if (instance == null)
                 instance = KeyboardManager(activity)
             return instance!!
+        }
+
+        fun keyboardOpen(app: Application, view: View) {
+            if (view.requestFocus()) {
+                val imm = app.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            }
+        }
+
+        fun keyboardClose(app: Application, view: EditText) {
+            val imm = app.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
+            // note. Edit text clear
+            view.text?.clear()
         }
     }
 
@@ -84,5 +103,4 @@ class KeyboardManager private constructor() : LiveData<KeyboardManager.KeyboardS
     enum class KeyboardStatus {
         OPEN, CLOSED
     }
-
 }

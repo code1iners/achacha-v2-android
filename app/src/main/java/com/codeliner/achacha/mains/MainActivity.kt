@@ -8,6 +8,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -17,6 +19,7 @@ import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.ActivityMainBinding
 import com.example.helpers.ui.AnimationManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity()
     , BottomNavigationView.OnNavigationItemReselectedListener
