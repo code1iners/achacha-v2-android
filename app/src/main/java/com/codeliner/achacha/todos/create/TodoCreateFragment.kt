@@ -86,9 +86,17 @@ class TodoCreateFragment: Fragment()
         // note. when clicked add button
         binding.fragmentTodoCreateSubmit.setOnClickListener {
             viewModel.onSaveTodo()
-            viewModel.onBackPressed()
-            KeyboardManager.keyboardClose(app, binding.fragmentTodoCreateInput)
+            exit()
         }
+
+        binding.fragmentTodoCreateClose.setOnClickListener {
+            exit()
+        }
+    }
+
+    private fun exit() {
+        viewModel.onBackPressed()
+        KeyboardManager.keyboardClose(app, binding.fragmentTodoCreateInput)
     }
 
     private fun back() {
