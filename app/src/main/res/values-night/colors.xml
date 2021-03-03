@@ -9,4 +9,7 @@
 
     <color name="divider">#28ffffff</color>
     <color name="closeButton">#c2c2c2</color>
+
+    <color name="bottomNavSelectedColor">#A6FD154F</color>
+    <color name="bottomNavUnselectedColor">#c2c2c2</color>
 </resources>
