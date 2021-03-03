@@ -1,11 +1,13 @@
 package com.codeliner.achacha.todos.create
 
+import android.app.Activity
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabaseDao
+import com.codeliner.achacha.utils.KeyboardManager
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -13,17 +15,6 @@ class TodoCreateViewModel(
     private val app: Application,
     private val dataSourceDao: TodoDatabaseDao
 ): AndroidViewModel(app) {
-    
-    private val _isBackPressed = MutableLiveData<Boolean>()
-    val isBackPressed: LiveData<Boolean> get() = _isBackPressed
-    
-    fun onBackPressed() {
-        _isBackPressed.value = true
-    }
-    
-    fun onBackPressedComplete() {
-        _isBackPressed.value = false
-    }
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)

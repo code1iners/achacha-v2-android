@@ -24,10 +24,8 @@ class KeyboardManager private constructor() : LiveData<KeyboardManager.KeyboardS
         }
 
         fun keyboardOpen(app: Application, view: View) {
-            if (view.requestFocus()) {
-                val imm = app.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-            }
+            val imm = app.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
         }
 
         fun keyboardClose(app: Application, view: EditText) {
