@@ -87,6 +87,7 @@
 
                 <TextView
                     android:id="@+id/fragmentTodoList_taskCount"
+                    android:text="@{@string/tasks(viewModel.tasks)}"
                     tools:text="12 Tasks"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"

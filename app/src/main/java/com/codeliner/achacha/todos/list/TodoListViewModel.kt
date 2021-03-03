@@ -5,10 +5,7 @@ import android.os.Build
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.transition.AutoTransition
 import com.codeliner.achacha.R
 import com.codeliner.achacha.domains.todos.Todo
@@ -32,6 +29,10 @@ class TodoListViewModel(
 
     private val _todos = todoDatabaseDao.getAllTodos()
     val todos: LiveData<List<Todo>> get() = _todos
+
+    val tasks = Transformations.map(todos) {
+        it.size
+    }
 
     // note. fab
     private val _isFavCollapsed = MutableLiveData<Boolean>()

@@ -7,4 +7,5 @@
     <string name="work">Work</string>
     <string name="add">Add</string>
     <string name="help">Help</string>
+    <string name="tasks">%d Tasks</string>
 </resources>
