@@ -11,6 +11,7 @@ import com.codeliner.achacha.domains.todos.TodoDatabaseDao
 import com.codeliner.achacha.utils.Date
 import com.example.helpers.ui.AnimationManager
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class TodoListViewModel(
@@ -104,37 +105,23 @@ class TodoListViewModel(
         }
     }
 
-    fun onUpdateTodoPositionSwap(todoAdapter: TodoAdapter, fromTodo: Todo, toTodo: Todo) {
-        viewModelScope.launch {
-            val tempFromTodoPosition = fromTodo.position
-
-            val newFromTodo = fromTodo
-            newFromTodo.position = toTodo.position
-
-            val newToTodo = toTodo
-            newToTodo.position = tempFromTodoPosition
-
-
-            update(newFromTodo)
-            update(newToTodo)
-        }
-    }
-
     private suspend fun update(todo: Todo) {
         withContext(Dispatchers.IO) {
             todoDatabaseDao.update(todo)
         }
     }
 
-    fun onUpdateAll(todos: List<Todo>) {
-        viewModelScope.launch {
-            updateAll(todos)
+    fun onUpdateTodos(todos: List<Todo>) {
+        uiScope.launch {
+            updateTodos(todos)
         }
     }
 
-    private suspend fun updateAll(todos: List<Todo>) {
+    private suspend fun updateTodos(todos: List<Todo>) {
         withContext(Dispatchers.IO) {
-            todoDatabaseDao.updateAll(todos)
+            todoDatabaseDao.updateTodos(todos)
+            Timber.i("Updated all success")
+
         }
     }
 
@@ -147,18 +134,6 @@ class TodoListViewModel(
     private suspend fun remove(todo: Todo) {
         withContext(Dispatchers.IO) {
             todoDatabaseDao.deleteTodoById(todo.id)
-        }
-    }
-
-    fun onCreateTodoWithPosition(todo: Todo) {
-        viewModelScope.launch {
-            create(todo)
-        }
-    }
-
-    private suspend fun create(todo: Todo) {
-        withContext(Dispatchers.IO) {
-            todoDatabaseDao.insert(todo)
         }
     }
 }

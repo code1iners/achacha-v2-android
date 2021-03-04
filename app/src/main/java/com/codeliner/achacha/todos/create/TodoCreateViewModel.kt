@@ -14,7 +14,8 @@ import timber.log.Timber
 
 class TodoCreateViewModel(
     app: Application,
-    private val dataSourceDao: TodoDatabaseDao
+    private val dataSourceDao: TodoDatabaseDao,
+    private val tasks: Int
 ): AndroidViewModel(app) {
 
     private val viewModelJob = Job()
@@ -30,6 +31,7 @@ class TodoCreateViewModel(
                 val todo = Todo().apply {
                     work = newWork
                     help = "Test message"
+                    position = tasks
                 }
                 insert(todo)
                 _work.value = null

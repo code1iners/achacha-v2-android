@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity()
     , BottomNavigationView.OnNavigationItemReselectedListener
 {
 
-
     private lateinit var nc: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -89,19 +89,18 @@ class TodoListFragment: Fragment()
 
         // note. fab menu 1
         viewModel.onNavigateToCreateTodo.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                if (it) {
-                    this.findNavController().navigate(TodoListFragmentDirections.actionTodosFragmentToTodoCreateFragment())
-                    MainActivity.onBottomNavigationSwitch()
-                    viewModel.navigateToCreateTodoComplete()
-                }
+            if (it) {
+                this.findNavController()
+                        .navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value ?: -1))
+                MainActivity.onBottomNavigationSwitch()
+                viewModel.navigateToCreateTodoComplete()
             }
         })
 
         // note. todos
         viewModel.todos.observe(viewLifecycleOwner, Observer { it ->
             it?.let { todos ->
-                Timber.d("todos updated")
+
                 todoAdapter.submitList(todos)
             }
         })
@@ -120,16 +119,13 @@ class TodoListFragment: Fragment()
     }
 
     override fun itemMove(fromPosition: Int, toPosition: Int) {
-        Timber.w("itemMove")
+        todoAdapter.log()
 
-        todoAdapter.savedList[fromPosition].position = toPosition
-        todoAdapter.savedList[toPosition].position = fromPosition
+        todoAdapter.storedList[fromPosition].position = toPosition
+        todoAdapter.storedList[toPosition].position = fromPosition
+        todoAdapter.storedList = todoAdapter.storedList.sortedBy { it.position }
 
-        Timber.d("fromTodo: ${todoAdapter.currentList[fromPosition].work}, toTodo: ${todoAdapter.currentList[toPosition].work}")
-
-        todoAdapter.savedList = todoAdapter.savedList.sortedBy{ it.position }
-
-        for (todo in todoAdapter.savedList) Timber.d("work: ${todo.work}, position: ${todo.position}")
+        todoAdapter.log()
 
         todoAdapter.notifyItemMoved(fromPosition, toPosition)
     }
@@ -141,9 +137,9 @@ class TodoListFragment: Fragment()
     }
 
     override fun onPause() {
+        Timber.w("onPause")
+        todoAdapter.log()
+        viewModel.onUpdateTodos(todoAdapter.storedList)
         super.onPause()
-//        Timber.w("onPause")
-
-        viewModel.onUpdateAll(todoAdapter.savedList)
     }
 }

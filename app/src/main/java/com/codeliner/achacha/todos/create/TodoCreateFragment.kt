@@ -63,8 +63,9 @@ class TodoCreateFragment: Fragment()
     }
 
     private fun initViewModel() {
+        val tasks = TodoCreateFragmentArgs.fromBundle(requireArguments()).tasks
         val dataSourceDao = TodoDatabase.getInstance(requireContext()).todoDatabaseDao
-        val viewModelFactory = TodoCreateViewModelFactory(app, dataSourceDao)
+        val viewModelFactory = TodoCreateViewModelFactory(app, dataSourceDao, tasks)
         viewModel = ViewModelProvider(this, viewModelFactory).get(TodoCreateViewModel::class.java)
         binding.viewModel = viewModel
     }

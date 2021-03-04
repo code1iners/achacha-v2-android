@@ -17,7 +17,7 @@ class TodoAdapter(
     , ItemTouchHelperListener
 {
     
-    lateinit var savedList: List<Todo>
+    var storedList: List<Todo> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -25,7 +25,6 @@ class TodoAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        item.position = position
         when {
             itemCount > 0 -> {
                 holder.bind(item, clickListener, moveListener)
@@ -56,22 +55,23 @@ class TodoAdapter(
 
     class TodoDiffCallback: DiffUtil.ItemCallback<Todo>() {
         override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean {
+            Timber.w("areItemsTheSame: ${oldItem.work} ${oldItem.id == newItem.id}")
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Todo, newItem: Todo): Boolean {
+            Timber.w("areContentsTheSame: ${oldItem.work} ${oldItem == newItem}")
             return oldItem == newItem
         }
     }
 
     override fun onCurrentListChanged(previousList: MutableList<Todo>, currentList: MutableList<Todo>) {
         Timber.w("onCurrentListChanged")
-        this.savedList = currentList
+        this.storedList = currentList
         super.onCurrentListChanged(previousList, currentList)
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        Timber.w("onItemMove")
         moveListener.itemMove(fromPosition, toPosition)
         return true
     }
@@ -79,6 +79,13 @@ class TodoAdapter(
     override fun onItemSwipe(position: Int) {
         val todo = getItem(position)
         moveListener.itemSwipe(todo)
+    }
+
+    fun log() {
+        if (storedList.isEmpty()) return
+        val sortedList = storedList.sortedBy { it.position }
+        for (todo in sortedList) Timber.v("work: ${todo.work}, position: ${todo.position}")
+        Timber.d("#########################################")
     }
 }
 

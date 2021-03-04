@@ -2,7 +2,6 @@ package com.codeliner.achacha.todos.list
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import timber.log.Timber
 
 
 class ItemTouchHelperCallback(private val listener: ItemTouchHelperListener) :
@@ -26,7 +25,6 @@ class ItemTouchHelperCallback(private val listener: ItemTouchHelperListener) :
         viewHolder: RecyclerView.ViewHolder,
         target: RecyclerView.ViewHolder
     ): Boolean {
-        Timber.w("onMove: fromPosition: ${viewHolder.adapterPosition}, toPosition: ${target.adapterPosition}")
         return listener.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
     }
 
