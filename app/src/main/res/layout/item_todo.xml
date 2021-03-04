@@ -9,8 +9,12 @@
             type="com.codeliner.achacha.domains.todos.Todo" />
 
         <variable
-            name="listener"
-            type="com.codeliner.achacha.todos.list.TodoListener" />
+            name="clickListener"
+            type="com.codeliner.achacha.todos.list.TodoClickListener" />
+
+        <variable
+            name="moveListener"
+            type="com.codeliner.achacha.todos.list.TodoMoveListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +27,7 @@
             android:id="@+id/itemTodo_isFinished"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> listener.onFinished(todo)}"
+            android:onClick="@{() -> clickListener.onFinished(todo)}"
             app:todoIsFinished="@{todo}"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,10 +37,13 @@
 
         <LinearLayout
             android:id="@+id/itemTodo_workContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:onClick="@{() -> clickListener.onClick(todo)}"
             app:layout_constraintStart_toEndOf="@+id/itemTodo_isFinished"
+            app:layout_constraintEnd_toStartOf="@+id/itemTodo_remove"
             app:layout_constraintTop_toTopOf="@+id/itemTodo_isFinished"
             app:layout_constraintBottom_toBottomOf="@+id/itemTodo_isFinished">
 
@@ -48,13 +55,28 @@
                 android:textSize="@dimen/text_m"
                 app:todoWorkString="@{todo}"/>
 
-            <TextView
-                android:id="@+id/itemTodo_created"
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/created"
-                android:textSize="@dimen/text_xs"
-                app:todoCreatedFormatted="@{todo}"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_s"
+                    android:text="@{String.valueOf(todo.position)}"
+                    android:textSize="@dimen/text_xs"
+                    tools:text="Position"/>
+
+                <TextView
+                    android:id="@+id/itemTodo_created"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/created"
+                    android:textSize="@dimen/text_xs"
+                    app:todoCreatedFormatted="@{todo}"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -65,7 +87,7 @@
             android:src="@drawable/icon_remove_outline"
             android:background="@null"
             android:scaleType="fitCenter"
-            android:onClick="@{() -> listener.onRemove(todo)}"
+            android:onClick="@{() -> clickListener.onRemove(todo)}"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/itemTodo_workContainer"
             app:layout_constraintEnd_toEndOf="parent"

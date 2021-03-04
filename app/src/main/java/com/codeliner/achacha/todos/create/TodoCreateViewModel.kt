@@ -5,6 +5,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabaseDao
 import com.codeliner.achacha.utils.KeyboardManager
@@ -12,7 +13,7 @@ import kotlinx.coroutines.*
 import timber.log.Timber
 
 class TodoCreateViewModel(
-    private val app: Application,
+    app: Application,
     private val dataSourceDao: TodoDatabaseDao
 ): AndroidViewModel(app) {
 
@@ -26,10 +27,11 @@ class TodoCreateViewModel(
         work.value?.let { newWork ->
             uiScope.launch {
             // note. validation work
-                insert(Todo().apply {
+                val todo = Todo().apply {
                     work = newWork
                     help = "Test message"
-                })
+                }
+                insert(todo)
                 _work.value = null
             }
         }

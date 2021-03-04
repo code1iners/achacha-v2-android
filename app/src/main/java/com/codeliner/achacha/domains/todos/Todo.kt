@@ -28,5 +28,8 @@ data class Todo (
         var isFinished: Boolean = false,
 
         @ColumnInfo(name = "is_important")
-        var isImportant: Boolean = false
+        var isImportant: Boolean = false,
+
+        @ColumnInfo(name = "position")
+        var position: Int = -1
 )

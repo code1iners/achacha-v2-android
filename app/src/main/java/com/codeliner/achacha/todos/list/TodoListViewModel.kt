@@ -3,20 +3,14 @@ package com.codeliner.achacha.todos.list
 import android.app.Application
 import android.os.Build
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import androidx.transition.AutoTransition
-import com.codeliner.achacha.R
 import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabaseDao
-import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.utils.Date
 import com.example.helpers.ui.AnimationManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import timber.log.Timber
+import kotlinx.coroutines.*
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class TodoListViewModel(
@@ -24,10 +18,13 @@ class TodoListViewModel(
     private val todoDatabaseDao: TodoDatabaseDao
 ): AndroidViewModel(app) {
 
+    private val viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
     private val _date = MutableLiveData<Date>()
     val date: LiveData<Date> get() = _date
 
-    private val _todos = todoDatabaseDao.getAllTodos()
+    private val _todos = todoDatabaseDao.getAllOrderedByPosition()
     val todos: LiveData<List<Todo>> get() = _todos
 
     val tasks = Transformations.map(todos) {
@@ -99,7 +96,7 @@ class TodoListViewModel(
         }
     }
 
-    fun onUpdateTodo(todo: Todo) {
+    fun onUpdateTodoIsFinished(todo: Todo) {
         viewModelScope.launch {
             val oldTodo = todo
             oldTodo.isFinished = !todo.isFinished
@@ -107,9 +104,37 @@ class TodoListViewModel(
         }
     }
 
+    fun onUpdateTodoPositionSwap(todoAdapter: TodoAdapter, fromTodo: Todo, toTodo: Todo) {
+        viewModelScope.launch {
+            val tempFromTodoPosition = fromTodo.position
+
+            val newFromTodo = fromTodo
+            newFromTodo.position = toTodo.position
+
+            val newToTodo = toTodo
+            newToTodo.position = tempFromTodoPosition
+
+
+            update(newFromTodo)
+            update(newToTodo)
+        }
+    }
+
     private suspend fun update(todo: Todo) {
         withContext(Dispatchers.IO) {
             todoDatabaseDao.update(todo)
+        }
+    }
+
+    fun onUpdateAll(todos: List<Todo>) {
+        viewModelScope.launch {
+            updateAll(todos)
+        }
+    }
+
+    private suspend fun updateAll(todos: List<Todo>) {
+        withContext(Dispatchers.IO) {
+            todoDatabaseDao.updateAll(todos)
         }
     }
 
@@ -122,6 +147,18 @@ class TodoListViewModel(
     private suspend fun remove(todo: Todo) {
         withContext(Dispatchers.IO) {
             todoDatabaseDao.deleteTodoById(todo.id)
+        }
+    }
+
+    fun onCreateTodoWithPosition(todo: Todo) {
+        viewModelScope.launch {
+            create(todo)
+        }
+    }
+
+    private suspend fun create(todo: Todo) {
+        withContext(Dispatchers.IO) {
+            todoDatabaseDao.insert(todo)
         }
     }
 }

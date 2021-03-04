@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.transition.TransitionManager
 import com.codeliner.achacha.databinding.FragmentTodoListBinding
 import com.codeliner.achacha.domains.todos.Todo
@@ -17,7 +18,8 @@ import com.codeliner.achacha.mains.MainActivity
 import timber.log.Timber
 
 class TodoListFragment: Fragment()
-    , TodoListener
+    , TodoClickListener
+    , TodoMoveListener
 {
 
     private lateinit var binding: FragmentTodoListBinding
@@ -53,8 +55,10 @@ class TodoListFragment: Fragment()
     }
 
     private fun initAdapters() {
-        todoAdapter = TodoAdapter(this)
+        todoAdapter = TodoAdapter(this, this)
         binding.fragmentTodoListTodoList.adapter = todoAdapter
+        val helper = ItemTouchHelper(ItemTouchHelperCallback(todoAdapter))
+        helper.attachToRecyclerView(binding.fragmentTodoListTodoList)
     }
 
     private fun initObservers() {
@@ -97,12 +101,14 @@ class TodoListFragment: Fragment()
         // note. todos
         viewModel.todos.observe(viewLifecycleOwner, Observer { it ->
             it?.let { todos ->
+                Timber.d("todos updated")
                 todoAdapter.submitList(todos)
             }
         })
     }
 
     override fun onClick(todo: Todo) {
+        Timber.v("work: ${todo.work}, position: ${todo.position}")
     }
 
     override fun onRemove(todo: Todo) {
@@ -110,6 +116,34 @@ class TodoListFragment: Fragment()
     }
 
     override fun onFinished(todo: Todo) {
-        viewModel.onUpdateTodo(todo)
+        viewModel.onUpdateTodoIsFinished(todo)
+    }
+
+    override fun itemMove(fromPosition: Int, toPosition: Int) {
+        Timber.w("itemMove")
+
+        todoAdapter.savedList[fromPosition].position = toPosition
+        todoAdapter.savedList[toPosition].position = fromPosition
+
+        Timber.d("fromTodo: ${todoAdapter.currentList[fromPosition].work}, toTodo: ${todoAdapter.currentList[toPosition].work}")
+
+        todoAdapter.savedList = todoAdapter.savedList.sortedBy{ it.position }
+
+        for (todo in todoAdapter.savedList) Timber.d("work: ${todo.work}, position: ${todo.position}")
+
+        todoAdapter.notifyItemMoved(fromPosition, toPosition)
+    }
+
+    override fun itemSwipe(todo: Todo) {
+        Timber.w("itemSwipe")
+
+        viewModel.onRemoveTodo(todo)
+    }
+
+    override fun onPause() {
+        super.onPause()
+//        Timber.w("onPause")
+
+        viewModel.onUpdateAll(todoAdapter.savedList)
     }
 }

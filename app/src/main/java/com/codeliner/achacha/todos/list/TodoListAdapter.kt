@@ -10,8 +10,14 @@ import com.codeliner.achacha.domains.todos.Todo
 import timber.log.Timber
 
 class TodoAdapter(
-    val listener: TodoListener
-): ListAdapter<Todo, TodoAdapter.ViewHolder>(TodoDiffCallback()) {
+    val clickListener: TodoClickListener,
+    val moveListener: TodoMoveListener
+):
+    ListAdapter<Todo, TodoAdapter.ViewHolder>(TodoDiffCallback())
+    , ItemTouchHelperListener
+{
+    
+    lateinit var savedList: List<Todo>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -19,9 +25,10 @@ class TodoAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
+        item.position = position
         when {
             itemCount > 0 -> {
-                holder.bind(item, listener)
+                holder.bind(item, clickListener, moveListener)
             }
 
             else -> {
@@ -31,9 +38,10 @@ class TodoAdapter(
     }
 
     class ViewHolder private constructor(val binding: ItemTodoBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Todo, listener: TodoListener) {
+        fun bind(item: Todo, clickListener: TodoClickListener, moveListener: TodoMoveListener) {
             binding.todo = item
-            binding.listener = listener
+            binding.clickListener = clickListener
+            binding.moveListener = moveListener
             binding.executePendingBindings()
         }
 
@@ -55,10 +63,32 @@ class TodoAdapter(
             return oldItem == newItem
         }
     }
+
+    override fun onCurrentListChanged(previousList: MutableList<Todo>, currentList: MutableList<Todo>) {
+        Timber.w("onCurrentListChanged")
+        this.savedList = currentList
+        super.onCurrentListChanged(previousList, currentList)
+    }
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        Timber.w("onItemMove")
+        moveListener.itemMove(fromPosition, toPosition)
+        return true
+    }
+
+    override fun onItemSwipe(position: Int) {
+        val todo = getItem(position)
+        moveListener.itemSwipe(todo)
+    }
 }
 
-interface TodoListener {
+interface TodoClickListener {
     fun onClick(todo: Todo)
     fun onRemove(todo: Todo)
     fun onFinished(todo: Todo)
+}
+
+interface TodoMoveListener {
+    fun itemMove(fromPosition: Int, toPosition: Int)
+    fun itemSwipe(todo: Todo)
 }
