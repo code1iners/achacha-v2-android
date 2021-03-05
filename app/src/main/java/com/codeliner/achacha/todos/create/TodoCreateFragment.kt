@@ -106,7 +106,7 @@ class TodoCreateFragment: Fragment()
     }
 
     private fun back() {
-        MainActivity.onBottomNavigationSwitch()
+        MainActivity.onBottomNavigationShow()
         this@TodoCreateFragment.findNavController().popBackStack()
     }
 

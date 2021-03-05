@@ -12,16 +12,17 @@ class MainViewModel(
     app: Application
 ): AndroidViewModel(app) {
 
-    private val _isBottomNavigationShowing = MutableLiveData<Boolean>()
+    private val _isBottomNavigationShowing = MutableLiveData(true)
     val isBottomNavigationShowing: LiveData<Boolean> get() = _isBottomNavigationShowing
     fun onBottomNavigationShowingSwitch() {
-        isBottomNavigationShowing.value?.let {
-            _isBottomNavigationShowing.value = !it
+        when (isBottomNavigationShowing.value) {
+            true -> _isBottomNavigationShowing.value = false
+            false -> _isBottomNavigationShowing.value = true
         }
     }
 
-    init {
-        _isBottomNavigationShowing.value = true
+    fun setBottomNavigationShowing(status: Boolean) {
+        _isBottomNavigationShowing.value = status
     }
 }
 

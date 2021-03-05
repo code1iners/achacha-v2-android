@@ -176,7 +176,7 @@ class TodoListFragment: Fragment()
         viewModel.onNavigateToCreateTodoReady.observe(viewLifecycleOwner, Observer { isReady ->
             if (isReady) {
                 // note. update ui
-                MainActivity.onBottomNavigationSwitch()
+                MainActivity.onBottomNavigationHide()
                 binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderHide)
                 binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderHide)
                 binding.fragmentTodoListTodoList.startAnimation(animHide)

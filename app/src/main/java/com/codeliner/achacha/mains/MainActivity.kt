@@ -77,10 +77,20 @@ class MainActivity : AppCompatActivity()
 
         fun onBottomNavigationSwitch() {
             when (viewModel.isBottomNavigationShowing.value) {
-                true -> binding.activityMainBottomNav.startAnimation(animHide)
-                false -> binding.activityMainBottomNav.startAnimation(animShow)
+                true -> onBottomNavigationShow()
+                false -> onBottomNavigationHide()
             }
             viewModel.onBottomNavigationShowingSwitch()
+        }
+
+        fun onBottomNavigationShow() {
+            binding.activityMainBottomNav.startAnimation(animShow)
+            viewModel.setBottomNavigationShowing(true)
+        }
+
+        fun onBottomNavigationHide() {
+            binding.activityMainBottomNav.startAnimation(animHide)
+            viewModel.setBottomNavigationShowing(false)
         }
     }
 }
