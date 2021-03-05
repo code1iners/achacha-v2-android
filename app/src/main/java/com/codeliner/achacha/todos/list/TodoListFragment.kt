@@ -45,21 +45,33 @@ class TodoListFragment: Fragment()
     lateinit var transition: AutoTransition
 
     override fun onStop() {
-        Timber.w("onStop")
         super.onStop()
 
-        binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderHide)        // note. header
-        binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderHide)    // note. header
-//        binding.fragmentTodoListTodoList.startAnimation(animHide)                       // note. body
+        // note. header
+        binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderHide)
+        // note. header
+        binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderHide)
+        // note. body
+        binding.fragmentTodoListTodoList.startAnimation(
+                AnimationManager.getFadeOut(requireContext()).apply {
+                    duration = 500
+                    fillAfter = true
+                })
     }
 
     override fun onStart() {
-        Timber.w("onStart")
         super.onStart()
 
-        binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderShow)        // note. header
-        binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderShow)    // note. header
-//        binding.fragmentTodoListTodoList.startAnimation(animShow)                       // note. body
+        // note. header
+        binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderShow)
+        // note. header
+        binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderShow)
+        // note. body
+        binding.fragmentTodoListTodoList.startAnimation(
+                AnimationManager.getFadeIn(requireContext()).apply {
+                    duration = 500
+                    fillAfter = true
+                })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -75,24 +87,29 @@ class TodoListFragment: Fragment()
     }
 
     private fun initAnimations() {
-        animHeaderShow = AnimationUtils.loadAnimation(requireContext(), R.anim.header_show)
-        animHeaderHide = AnimationUtils.loadAnimation(requireContext(), R.anim.header_hide)
+        animHeaderShow = AnimationUtils.loadAnimation(requireContext(), R.anim.header_show).apply {
+            fillAfter = true
+        }
+        animHeaderHide = AnimationUtils.loadAnimation(requireContext(), R.anim.header_hide).apply {
+            fillAfter = true
+        }
+
         animRotateLeft = AnimationManager.getRotateLeft45(requireContext())
         animRotateRight = AnimationManager.getRotateRight45(requireContext())
-        animHide = AnimationManager.getFadeOut(requireContext())
-        animShow = AnimationManager.getFadeIn(requireContext())
 
-        transition = AutoTransition()
+        animHide = AnimationManager.getFadeOut(requireContext()).apply {
+            duration = 500
+            fillAfter = true
+        }
+        animShow = AnimationManager.getFadeIn(requireContext()).apply {
+            duration = 500
+            fillAfter = true
+        }
 
-        // note. apply properties
-        animHeaderShow.fillAfter = true
-        animHeaderHide.fillAfter = true
-        animHide.duration = 500
-        animShow.duration = 500
-        transition.duration = 300
-        transition.interpolator = AccelerateDecelerateInterpolator()
-        animHide.fillAfter = true
-        animShow.fillAfter = true
+        transition = AutoTransition().apply {
+            duration = 300
+            interpolator = AccelerateDecelerateInterpolator()
+        }
     }
 
     private fun initViewModel() {
@@ -112,7 +129,17 @@ class TodoListFragment: Fragment()
     }
 
     private fun initObservers() {
-        // note. fabs
+        // note. fab main
+        observeFavMain()
+        // note. fab menu 1
+        observeFavOne()
+        // note. fab menu test
+        observeFabTest()
+        // note. todos
+        observeTodos()
+    }
+
+    private fun observeFavMain() {
         val cs = ConstraintSet()
         cs.clone(binding.fragmentTodoListFabList)
         viewModel.isFavCollapsed.observe(viewLifecycleOwner, Observer { isCollapsed ->
@@ -140,28 +167,32 @@ class TodoListFragment: Fragment()
             TransitionManager.beginDelayedTransition(binding.fragmentTodoListFabList, transition)
             cs.applyTo(binding.fragmentTodoListFabList)
         })
+    }
 
-        // note. fab menu 1
+    private fun observeFavOne() {
         viewModel.onNavigateToCreateTodoReady.observe(viewLifecycleOwner, Observer { isReady ->
             if (isReady) {
 
                 MainActivity.onBottomNavigationSwitch()
 
-                findNavController().navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value ?: -1))
+                findNavController().navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value
+                        ?: -1))
 
                 viewModel.navigateToCreateTodoComplete()
             }
         })
+    }
 
-        // note. fab menu test
+    private fun observeFabTest() {
         viewModel.onTestTrigger.observe(viewLifecycleOwner, Observer {
             if (it) {
 
                 viewModel.onTestComplete()
             }
         })
+    }
 
-        // note. todos
+    private fun observeTodos() {
         viewModel.todos.observe(viewLifecycleOwner, Observer { it ->
             it?.let { todos ->
                 todoAdapter.submitList(todos)
