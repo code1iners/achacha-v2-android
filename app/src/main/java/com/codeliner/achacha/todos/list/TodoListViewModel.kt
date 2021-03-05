@@ -5,6 +5,7 @@ import android.os.Build
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
+import androidx.navigation.NavController
 import androidx.transition.AutoTransition
 import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabaseDao
@@ -40,8 +41,8 @@ class TodoListViewModel(
     val onNavigateToCreateTodo: LiveData<Boolean> get() = _onNavigateToCreateTodo
 
     // note. animations
-    val animLeft = AnimationManager.getRotateLeft45(app.applicationContext)
-    val animRight = AnimationManager.getRotateRight45(app.applicationContext)
+    val animRotateLeft = AnimationManager.getRotateLeft45(app.applicationContext)
+    val animRotateRight = AnimationManager.getRotateRight45(app.applicationContext)
     val animHide = AnimationManager.getFadeOut(app.applicationContext)
     val animShow = AnimationManager.getFadeIn(app.applicationContext)
     val transition = AutoTransition()
@@ -120,8 +121,6 @@ class TodoListViewModel(
     private suspend fun updateTodos(todos: List<Todo>) {
         withContext(Dispatchers.IO) {
             todoDatabaseDao.updateTodos(todos)
-            Timber.i("Updated all success")
-
         }
     }
 
@@ -135,5 +134,14 @@ class TodoListViewModel(
         withContext(Dispatchers.IO) {
             todoDatabaseDao.deleteTodoById(todo.id)
         }
+    }
+
+    private val _onTestTrigger = MutableLiveData<Boolean>()
+    val onTestTrigger: LiveData<Boolean> get() = _onTestTrigger
+    fun onTestStart() {
+        _onTestTrigger.value = true
+    }
+    fun onTestComplete() {
+        _onTestTrigger.value = false
     }
 }

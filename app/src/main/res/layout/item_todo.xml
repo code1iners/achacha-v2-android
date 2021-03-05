@@ -82,12 +82,11 @@
 
         <ImageButton
             android:id="@+id/itemTodo_remove"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/icon_remove_outline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_drag_indicator"
             android:background="@null"
             android:scaleType="fitCenter"
-            android:onClick="@{() -> clickListener.onRemove(todo)}"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/itemTodo_workContainer"
             app:layout_constraintEnd_toEndOf="parent"

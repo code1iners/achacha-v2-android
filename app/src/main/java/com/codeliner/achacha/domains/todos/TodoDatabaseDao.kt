@@ -27,7 +27,7 @@ interface TodoDatabaseDao {
     @Update
     fun update(todo: Todo)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateTodos(todos: List<Todo>)
 
     // note. Delete

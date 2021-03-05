@@ -69,18 +69,22 @@ class TodoListFragment: Fragment()
             if (!isCollapsed) {
                 cs.connect(binding.fragmentTodoListFabCreate.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabMain.id, ConstraintSet.TOP)
                 cs.connect(binding.fragmentTodoListFabClear.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabCreate.id, ConstraintSet.TOP)
+                cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabClear.id, ConstraintSet.TOP)
 
-                binding.fragmentTodoListFabMain.startAnimation(viewModel.animRight)
+                binding.fragmentTodoListFabMain.startAnimation(viewModel.animRotateRight)
                 binding.fragmentTodoListFabCreate.startAnimation(viewModel.animShow)
                 binding.fragmentTodoListFabClear.startAnimation(viewModel.animShow)
+                binding.fragmentTodoListFabTest.startAnimation(viewModel.animShow)
 
             } else {
                 cs.connect(binding.fragmentTodoListFabCreate.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
                 cs.connect(binding.fragmentTodoListFabClear.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
+                cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
 
-                binding.fragmentTodoListFabMain.startAnimation(viewModel.animLeft)
+                binding.fragmentTodoListFabMain.startAnimation(viewModel.animRotateLeft)
                 binding.fragmentTodoListFabCreate.startAnimation(viewModel.animHide)
                 binding.fragmentTodoListFabClear.startAnimation(viewModel.animHide)
+                binding.fragmentTodoListFabTest.startAnimation(viewModel.animHide)
             }
 
             TransitionManager.beginDelayedTransition(binding.fragmentTodoListFabList, viewModel.transition)
@@ -90,17 +94,22 @@ class TodoListFragment: Fragment()
         // note. fab menu 1
         viewModel.onNavigateToCreateTodo.observe(viewLifecycleOwner, Observer {
             if (it) {
-                this.findNavController()
-                        .navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value ?: -1))
                 MainActivity.onBottomNavigationSwitch()
+                findNavController().navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value ?: -1))
                 viewModel.navigateToCreateTodoComplete()
+            }
+        })
+
+        // note. fab menu test
+        viewModel.onTestTrigger.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                viewModel.onTestComplete()
             }
         })
 
         // note. todos
         viewModel.todos.observe(viewLifecycleOwner, Observer { it ->
             it?.let { todos ->
-
                 todoAdapter.submitList(todos)
             }
         })
@@ -119,27 +128,10 @@ class TodoListFragment: Fragment()
     }
 
     override fun itemMove(fromPosition: Int, toPosition: Int) {
-        todoAdapter.log()
-
-        todoAdapter.storedList[fromPosition].position = toPosition
-        todoAdapter.storedList[toPosition].position = fromPosition
-        todoAdapter.storedList = todoAdapter.storedList.sortedBy { it.position }
-
-        todoAdapter.log()
-
-        todoAdapter.notifyItemMoved(fromPosition, toPosition)
+        // note. not using
     }
 
     override fun itemSwipe(todo: Todo) {
-        Timber.w("itemSwipe")
-
         viewModel.onRemoveTodo(todo)
-    }
-
-    override fun onPause() {
-        Timber.w("onPause")
-        todoAdapter.log()
-        viewModel.onUpdateTodos(todoAdapter.storedList)
-        super.onPause()
     }
 }

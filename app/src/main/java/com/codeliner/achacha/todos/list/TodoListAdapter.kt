@@ -11,13 +11,17 @@ import timber.log.Timber
 
 class TodoAdapter(
     val clickListener: TodoClickListener,
-    val moveListener: TodoMoveListener
-):
+    val moveListener: TodoMoveListener):
     ListAdapter<Todo, TodoAdapter.ViewHolder>(TodoDiffCallback())
     , ItemTouchHelperListener
 {
     
-    var storedList: List<Todo> = listOf()
+    var storedList: ArrayList<Todo> = arrayListOf()
+    fun setStoredList(todos: List<Todo>) {
+        log()
+        storedList.clear()
+        storedList.addAll(todos)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -55,19 +59,27 @@ class TodoAdapter(
 
     class TodoDiffCallback: DiffUtil.ItemCallback<Todo>() {
         override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean {
-            Timber.w("areItemsTheSame: ${oldItem.work} ${oldItem.id == newItem.id}")
+            if (oldItem.id != newItem.id) {
+                Timber.w("areItemsTheSame: ${oldItem.id == newItem.id}")
+                Timber.i("id: ${oldItem.id} work: ${oldItem.work}, position: ${oldItem.position}")
+                Timber.i("id: ${newItem.id} work: ${newItem.work}, position: ${newItem.position}")
+            }
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Todo, newItem: Todo): Boolean {
-            Timber.w("areContentsTheSame: ${oldItem.work} ${oldItem == newItem}")
+            if (oldItem != newItem) {
+                Timber.w("areContentsTheSame: ${oldItem == newItem}")
+                Timber.i("$oldItem")
+                Timber.d("$newItem")
+            }
             return oldItem == newItem
         }
     }
 
     override fun onCurrentListChanged(previousList: MutableList<Todo>, currentList: MutableList<Todo>) {
         Timber.w("onCurrentListChanged")
-        this.storedList = currentList
+        setStoredList(currentList)
         super.onCurrentListChanged(previousList, currentList)
     }
 
@@ -82,10 +94,9 @@ class TodoAdapter(
     }
 
     fun log() {
+        Timber.d("Stored list logging..")
         if (storedList.isEmpty()) return
-        val sortedList = storedList.sortedBy { it.position }
-        for (todo in sortedList) Timber.v("work: ${todo.work}, position: ${todo.position}")
-        Timber.d("#########################################")
+        for (todo in storedList.sortedBy { it.position }) Timber.v("id: ${todo.id}, work: ${todo.work}, position: ${todo.position}")
     }
 }
 
