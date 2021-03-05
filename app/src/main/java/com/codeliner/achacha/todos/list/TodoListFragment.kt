@@ -4,17 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
+import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentTodoListBinding
 import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
+import com.example.helpers.ui.AnimationManager
 import timber.log.Timber
 
 class TodoListFragment: Fragment()
@@ -29,15 +35,64 @@ class TodoListFragment: Fragment()
     // note. adapters
     private lateinit var todoAdapter: TodoAdapter
 
+    // note. animations (ui)
+    lateinit var animHeaderShow: Animation
+    lateinit var animHeaderHide: Animation
+    lateinit var animRotateLeft: Animation
+    lateinit var animRotateRight: Animation
+    lateinit var animHide: Animation
+    lateinit var animShow: Animation
+    lateinit var transition: AutoTransition
+
+    override fun onStop() {
+        Timber.w("onStop")
+        super.onStop()
+
+        binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderHide)        // note. header
+        binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderHide)    // note. header
+//        binding.fragmentTodoListTodoList.startAnimation(animHide)                       // note. body
+    }
+
+    override fun onStart() {
+        Timber.w("onStart")
+        super.onStart()
+
+        binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderShow)        // note. header
+        binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderShow)    // note. header
+//        binding.fragmentTodoListTodoList.startAnimation(animShow)                       // note. body
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTodoListBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
+        initAnimations()
         initViewModel()
         initAdapters()
         initObservers()
 
         return binding.root
+    }
+
+    private fun initAnimations() {
+        animHeaderShow = AnimationUtils.loadAnimation(requireContext(), R.anim.header_show)
+        animHeaderHide = AnimationUtils.loadAnimation(requireContext(), R.anim.header_hide)
+        animRotateLeft = AnimationManager.getRotateLeft45(requireContext())
+        animRotateRight = AnimationManager.getRotateRight45(requireContext())
+        animHide = AnimationManager.getFadeOut(requireContext())
+        animShow = AnimationManager.getFadeIn(requireContext())
+
+        transition = AutoTransition()
+
+        // note. apply properties
+        animHeaderShow.fillAfter = true
+        animHeaderHide.fillAfter = true
+        animHide.duration = 500
+        animShow.duration = 500
+        transition.duration = 300
+        transition.interpolator = AccelerateDecelerateInterpolator()
+        animHide.fillAfter = true
+        animShow.fillAfter = true
     }
 
     private fun initViewModel() {
@@ -66,31 +121,34 @@ class TodoListFragment: Fragment()
                 cs.connect(binding.fragmentTodoListFabClear.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabCreate.id, ConstraintSet.TOP)
                 cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabClear.id, ConstraintSet.TOP)
 
-                binding.fragmentTodoListFabMain.startAnimation(viewModel.animRotateRight)
-                binding.fragmentTodoListFabCreate.startAnimation(viewModel.animShow)
-                binding.fragmentTodoListFabClear.startAnimation(viewModel.animShow)
-                binding.fragmentTodoListFabTest.startAnimation(viewModel.animShow)
+                binding.fragmentTodoListFabMain.startAnimation(animRotateRight)
+                binding.fragmentTodoListFabCreate.startAnimation(animShow)
+                binding.fragmentTodoListFabClear.startAnimation(animShow)
+                binding.fragmentTodoListFabTest.startAnimation(animShow)
 
             } else {
                 cs.connect(binding.fragmentTodoListFabCreate.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
                 cs.connect(binding.fragmentTodoListFabClear.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
                 cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
 
-                binding.fragmentTodoListFabMain.startAnimation(viewModel.animRotateLeft)
-                binding.fragmentTodoListFabCreate.startAnimation(viewModel.animHide)
-                binding.fragmentTodoListFabClear.startAnimation(viewModel.animHide)
-                binding.fragmentTodoListFabTest.startAnimation(viewModel.animHide)
+                binding.fragmentTodoListFabMain.startAnimation(animRotateLeft)
+                binding.fragmentTodoListFabCreate.startAnimation(animHide)
+                binding.fragmentTodoListFabClear.startAnimation(animHide)
+                binding.fragmentTodoListFabTest.startAnimation(animHide)
             }
 
-            TransitionManager.beginDelayedTransition(binding.fragmentTodoListFabList, viewModel.transition)
+            TransitionManager.beginDelayedTransition(binding.fragmentTodoListFabList, transition)
             cs.applyTo(binding.fragmentTodoListFabList)
         })
 
         // note. fab menu 1
-        viewModel.onNavigateToCreateTodo.observe(viewLifecycleOwner, Observer {
-            if (it) {
+        viewModel.onNavigateToCreateTodoReady.observe(viewLifecycleOwner, Observer { isReady ->
+            if (isReady) {
+
                 MainActivity.onBottomNavigationSwitch()
+
                 findNavController().navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value ?: -1))
+
                 viewModel.navigateToCreateTodoComplete()
             }
         })

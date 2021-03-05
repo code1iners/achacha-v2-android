@@ -96,6 +96,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
+            android:id="@+id/fragmentTodoList_calendarDividerBottom"
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="@color/divider"
@@ -156,7 +157,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/spacing_m"
                 android:src="@drawable/icon_create"
-                android:onClick="@{() -> viewModel.onNavigateToCreateTodo()}"
+                android:onClick="@{() -> viewModel.onNavigateToCreateTodoReady()}"
                 app:fabSize="mini"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

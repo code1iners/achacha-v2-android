@@ -23,7 +23,7 @@ class TodoListViewModel(
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    private val _date = MutableLiveData<Date>()
+    private val _date = MutableLiveData(Date())
     val date: LiveData<Date> get() = _date
 
     private val _todos = todoDatabaseDao.getAllOrderedByPosition()
@@ -34,36 +34,22 @@ class TodoListViewModel(
     }
 
     // note. fab
-    private val _isFavCollapsed = MutableLiveData<Boolean>()
+    private val _isFavCollapsed = MutableLiveData(true)
     val isFavCollapsed: LiveData<Boolean> get() = _isFavCollapsed
 
-    private val _onNavigateToCreateTodo = MutableLiveData<Boolean>()
-    val onNavigateToCreateTodo: LiveData<Boolean> get() = _onNavigateToCreateTodo
+    private val _onNavigateToCreateTodoReady = MutableLiveData(false)
+    val onNavigateToCreateTodoReady: LiveData<Boolean> get() = _onNavigateToCreateTodoReady
 
-    // note. animations
-    val animRotateLeft = AnimationManager.getRotateLeft45(app.applicationContext)
-    val animRotateRight = AnimationManager.getRotateRight45(app.applicationContext)
-    val animHide = AnimationManager.getFadeOut(app.applicationContext)
-    val animShow = AnimationManager.getFadeIn(app.applicationContext)
-    val transition = AutoTransition()
-
-    private fun initBottomNav() {
-        transition.duration = 300
-        transition.interpolator = AccelerateDecelerateInterpolator()
-        animHide.fillAfter = true
-        animShow.fillAfter = true
-        _onNavigateToCreateTodo.value = false
+    fun onNavigateToCreateTodoReady() {
+        _onNavigateToCreateTodoReady.value = true
     }
 
-    private fun initDate() {
-        _date.value = Date()
+    fun navigateToCreateTodoComplete() {
+        _onNavigateToCreateTodoReady.value = false
     }
 
     fun switchCollapse() {
         when (isFavCollapsed.value) {
-            null -> {
-                _isFavCollapsed.value = false
-            }
             true -> {
                 _isFavCollapsed.value = false
             }
@@ -71,14 +57,6 @@ class TodoListViewModel(
                 _isFavCollapsed.value = true
             }
         }
-    }
-
-    fun onNavigateToCreateTodo() {
-        _onNavigateToCreateTodo.value = true
-    }
-
-    fun navigateToCreateTodoComplete() {
-        _onNavigateToCreateTodo.value = false
     }
     
     fun onClearTodos() {
@@ -138,11 +116,6 @@ class TodoListViewModel(
     }
     fun onTestComplete() {
         _onTestTrigger.value = false
-    }
-
-    init {
-        initDate()
-        initBottomNav()
     }
 
     override fun onCleared() {
