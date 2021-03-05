@@ -6,7 +6,7 @@ buildscript {
         room_version = "2.2.6"
         koin_version = "2.2.2"
         timber_version = "4.7.1"
-        helpers_version = "0.2.5"
+        helpers_version = "0.2.7"
     }
     repositories {
         google()

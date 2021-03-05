@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,6 +22,7 @@ import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.utils.Const
+import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager
 import timber.log.Timber
 
@@ -90,12 +92,8 @@ class TodoListFragment: Fragment()
     }
 
     private fun initAnimations() {
-        animHeaderShow = AnimationUtils.loadAnimation(requireContext(), R.anim.header_show).apply {
-            fillAfter = true
-        }
-        animHeaderHide = AnimationUtils.loadAnimation(requireContext(), R.anim.header_hide).apply {
-            fillAfter = true
-        }
+        animHeaderShow = AnimationManager.getHeaderShow(requireContext())
+        animHeaderHide = AnimationManager.getHeaderHide(requireContext())
 
         animRotateLeft = AnimationManager.getRotateLeft45(requireContext())
         animRotateRight = AnimationManager.getRotateRight45(requireContext())
@@ -200,7 +198,7 @@ class TodoListFragment: Fragment()
     private fun observeFabTest() {
         viewModel.onTestTrigger.observe(viewLifecycleOwner, Observer {
             if (it) {
-
+                context?.toastForShort("Test button clicked!")
                 viewModel.onTestComplete()
             }
         })

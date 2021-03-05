@@ -94,18 +94,123 @@
                     android:id="@+id/fragmentTodoCreate_chipGroup"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:singleSelection="false"
                     app:layout_constraintStart_toStartOf="@+id/fragmentTodoCreate_guideBodyStart"
                     app:layout_constraintEnd_toStartOf="@+id/fragmentTodoCreate_guideBodyEnd"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:singleLine="true">
+                    app:layout_constraintBottom_toBottomOf="parent">
 
                     <com.google.android.material.chip.Chip
-                        android:id="@+id/chip_1"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:id="@+id/fragmentTodoCreate_chipCall"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="Chip1" />
+                        android:checkable="true"
+                        android:text="@string/call" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipCheck"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/check" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipTake"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/take" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipEmail"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/email" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipBuy"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/buy" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipMeet"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/meet" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipClean"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/clean" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipSend"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/send" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipPayment"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/payment" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipCreate"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/create" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipSelect"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/select" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipDo"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/doing" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipRead"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/read" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/fragmentTodoCreate_chipStudy"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/study" />
 
                 </com.google.android.material.chip.ChipGroup>
 
