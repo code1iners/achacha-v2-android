@@ -29,18 +29,13 @@ class TodoListFragment: Fragment()
     // note. adapters
     private lateinit var todoAdapter: TodoAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTodoListBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         initViewModel()
         initAdapters()
         initObservers()
-
 
         return binding.root
     }
@@ -103,6 +98,7 @@ class TodoListFragment: Fragment()
         // note. fab menu test
         viewModel.onTestTrigger.observe(viewLifecycleOwner, Observer {
             if (it) {
+
                 viewModel.onTestComplete()
             }
         })

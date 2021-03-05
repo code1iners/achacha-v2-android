@@ -47,11 +47,6 @@ class TodoListViewModel(
     val animShow = AnimationManager.getFadeIn(app.applicationContext)
     val transition = AutoTransition()
 
-    init {
-        initDate()
-        initBottomNav()
-    }
-
     private fun initBottomNav() {
         transition.duration = 300
         transition.interpolator = AccelerateDecelerateInterpolator()
@@ -143,5 +138,15 @@ class TodoListViewModel(
     }
     fun onTestComplete() {
         _onTestTrigger.value = false
+    }
+
+    init {
+        initDate()
+        initBottomNav()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        uiScope.cancel()
     }
 }

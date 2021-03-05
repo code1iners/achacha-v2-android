@@ -15,13 +15,6 @@ class TodoAdapter(
     ListAdapter<Todo, TodoAdapter.ViewHolder>(TodoDiffCallback())
     , ItemTouchHelperListener
 {
-    
-    var storedList: ArrayList<Todo> = arrayListOf()
-    fun setStoredList(todos: List<Todo>) {
-        log()
-        storedList.clear()
-        storedList.addAll(todos)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -61,8 +54,8 @@ class TodoAdapter(
         override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean {
             if (oldItem.id != newItem.id) {
                 Timber.w("areItemsTheSame: ${oldItem.id == newItem.id}")
-                Timber.i("id: ${oldItem.id} work: ${oldItem.work}, position: ${oldItem.position}")
-                Timber.i("id: ${newItem.id} work: ${newItem.work}, position: ${newItem.position}")
+                Timber.i("old - id: ${oldItem.id} work: ${oldItem.work}, position: ${oldItem.position}")
+                Timber.i("new - id: ${newItem.id} work: ${newItem.work}, position: ${newItem.position}")
             }
             return oldItem.id == newItem.id
         }
@@ -77,12 +70,6 @@ class TodoAdapter(
         }
     }
 
-    override fun onCurrentListChanged(previousList: MutableList<Todo>, currentList: MutableList<Todo>) {
-        Timber.w("onCurrentListChanged")
-        setStoredList(currentList)
-        super.onCurrentListChanged(previousList, currentList)
-    }
-
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
         moveListener.itemMove(fromPosition, toPosition)
         return true
@@ -91,12 +78,6 @@ class TodoAdapter(
     override fun onItemSwipe(position: Int) {
         val todo = getItem(position)
         moveListener.itemSwipe(todo)
-    }
-
-    fun log() {
-        Timber.d("Stored list logging..")
-        if (storedList.isEmpty()) return
-        for (todo in storedList.sortedBy { it.position }) Timber.v("id: ${todo.id}, work: ${todo.work}, position: ${todo.position}")
     }
 }
 
