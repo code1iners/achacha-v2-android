@@ -20,6 +20,7 @@ import com.codeliner.achacha.databinding.FragmentTodoListBinding
 import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
+import com.codeliner.achacha.utils.Const
 import com.example.helpers.ui.AnimationManager
 import timber.log.Timber
 
@@ -44,6 +45,8 @@ class TodoListFragment: Fragment()
     lateinit var animShow: Animation
     lateinit var transition: AutoTransition
 
+    // note. actions
+
     override fun onStop() {
         super.onStop()
 
@@ -54,7 +57,7 @@ class TodoListFragment: Fragment()
         // note. body
         binding.fragmentTodoListTodoList.startAnimation(
                 AnimationManager.getFadeOut(requireContext()).apply {
-                    duration = 500
+                    duration = Const.animDefaultDuration
                     fillAfter = true
                 })
     }
@@ -69,7 +72,7 @@ class TodoListFragment: Fragment()
         // note. body
         binding.fragmentTodoListTodoList.startAnimation(
                 AnimationManager.getFadeIn(requireContext()).apply {
-                    duration = 500
+                    duration = Const.animDefaultDuration
                     fillAfter = true
                 })
     }
@@ -98,16 +101,16 @@ class TodoListFragment: Fragment()
         animRotateRight = AnimationManager.getRotateRight45(requireContext())
 
         animHide = AnimationManager.getFadeOut(requireContext()).apply {
-            duration = 500
+            duration = Const.animDefaultDuration
             fillAfter = true
         }
         animShow = AnimationManager.getFadeIn(requireContext()).apply {
-            duration = 500
+            duration = Const.animDefaultDuration
             fillAfter = true
         }
 
         transition = AutoTransition().apply {
-            duration = 300
+            duration = Const.animDefaultDuration
             interpolator = AccelerateDecelerateInterpolator()
         }
     }
@@ -172,13 +175,24 @@ class TodoListFragment: Fragment()
     private fun observeFavOne() {
         viewModel.onNavigateToCreateTodoReady.observe(viewLifecycleOwner, Observer { isReady ->
             if (isReady) {
-
+                // note. update ui
                 MainActivity.onBottomNavigationSwitch()
+                binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderHide)
+                binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderHide)
+                binding.fragmentTodoListTodoList.startAnimation(animHide)
+                binding.fragmentTodoListFabList.startAnimation(animHide)
 
-                findNavController().navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value
-                        ?: -1))
-
+                viewModel.navigateToCreateTodoReady()
                 viewModel.navigateToCreateTodoComplete()
+            }
+        })
+
+        viewModel.onNavigateToCreateTodoProcess.observe(viewLifecycleOwner, Observer { start ->
+            if (start) {
+
+                findNavController().navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value ?: -1))
+
+                viewModel.navigateToCreateTodoProcessComplete()
             }
         })
     }

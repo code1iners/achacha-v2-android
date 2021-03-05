@@ -2,17 +2,14 @@ package com.codeliner.achacha.todos.list
 
 import android.app.Application
 import android.os.Build
-import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import androidx.navigation.NavController
-import androidx.transition.AutoTransition
 import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabaseDao
+import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.Date
-import com.example.helpers.ui.AnimationManager
 import kotlinx.coroutines.*
-import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class TodoListViewModel(
@@ -42,6 +39,25 @@ class TodoListViewModel(
 
     fun onNavigateToCreateTodoReady() {
         _onNavigateToCreateTodoReady.value = true
+    }
+
+    fun navigateToCreateTodoReady() {
+        uiScope.launch {
+            // note. delay for animations in ui
+            delay(Const.animDefaultDuration + 100L)
+            navigateToCreateTodoProcess()
+        }
+    }
+
+    private val _onNavigateToCreateTodoProcess = MutableLiveData(false)
+    val onNavigateToCreateTodoProcess: LiveData<Boolean> get() = _onNavigateToCreateTodoProcess
+
+    private fun navigateToCreateTodoProcess() {
+        _onNavigateToCreateTodoProcess.value = true
+    }
+
+    fun navigateToCreateTodoProcessComplete() {
+        _onNavigateToCreateTodoProcess.value = false
     }
 
     fun navigateToCreateTodoComplete() {
