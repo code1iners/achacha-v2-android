@@ -171,19 +171,31 @@ class TodoCreateFragment: Fragment() {
 
     private fun listenerSubmit() {
         binding.fragmentTodoCreateSubmit.setOnClickListener {
-            viewModel.onSaveTodo()
-            KeyboardManager.keyboardClose(app, binding.fragmentTodoCreateInput)
+            when (viewModel.work.value.isNullOrEmpty()) {
+                true -> {
+                    context?.toastForShort("작업을 입력해주세요.")
+                }
+
+                false -> {
+                    // note. stop error discover observer
+                    viewModel.setSubmit(true)
+                    // note. save todo data
+                    viewModel.onSaveTodo()
+                    // note. leave fragment
+                    KeyboardManager.keyboardClose(app, binding.fragmentTodoCreateInput)
+                }
+            }
         }
     }
 
     private fun listenerInput() {
         binding.fragmentTodoCreateInput.doOnTextChanged { text, _, _, _ ->
-            if (text.toString().isEmpty()) {
-                viewModel.discoveredError(getString(R.string.error_message_text_input_empty))
-            } else {
-                viewModel.undiscoveredError()
-            }
+            Timber.d("text: ${text.toString()}")
             viewModel.updateWork(text.toString())
+            when (text.toString().isEmpty()) {
+                true -> viewModel.discoveredError(getString(R.string.error_message_text_input_empty))
+                false -> viewModel.undiscoveredError()
+            }
         }
     }
 

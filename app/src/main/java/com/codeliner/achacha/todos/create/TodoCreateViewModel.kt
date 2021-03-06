@@ -23,12 +23,19 @@ class TodoCreateViewModel(
     private val _work = MutableLiveData<String>()
     val work: LiveData<String> get() = _work
 
+    private var onSubmit = false
+
+    fun setSubmit(status: Boolean) {
+        onSubmit = status
+    }
+
     private val _hasError = MutableLiveData<String>()
     val hasError: LiveData<String> get() = _hasError
 
     fun discoveredError(error: String) {
-        Timber.w("discoveredError: $error")
-        _hasError.value = error
+        if (!onSubmit) {
+            _hasError.value = error
+        }
     }
 
     fun undiscoveredError() {
@@ -36,24 +43,15 @@ class TodoCreateViewModel(
     }
     
     fun onSaveTodo() {
-        when (work.value.isNullOrEmpty()) {
-            true -> {
-
-            }
-
-            false -> {
-                work.value?.let { newWork ->
-                    uiScope.launch {
-                        // note. validation work
-                        val todo = Todo().apply {
-                            work = newWork
-                            help = helps.value
-                            position = tasks
-                        }
-                        insert(todo)
-                        _work.value = null
-                    }
+        work.value?.let { newWork ->
+            uiScope.launch {
+                // note. validation work
+                val todo = Todo().apply {
+                    work = newWork
+                    help = helps.value
+                    position = tasks
                 }
+                insert(todo)
             }
         }
     }
