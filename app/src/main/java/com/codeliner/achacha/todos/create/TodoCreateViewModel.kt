@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabaseDao
+import com.codeliner.achacha.utils.Const
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -51,6 +53,32 @@ class TodoCreateViewModel(
 
     fun setHelps(helps: String) {
         _helps.value = helps
+    }
+
+    private val _onBackReady = MutableLiveData(false)
+    val onBackReady: LiveData<Boolean> get() = _onBackReady
+    fun backReady() {
+        uiScope.launch {
+            _onBackReady.value = true
+            delay(Const.animDefaultDuration + 100L)
+            backReadyComplete()
+        }
+    }
+
+    fun backReadyComplete() {
+        _onBackReady.value = false
+        backStart()
+    }
+
+    private val _onBackStart = MutableLiveData(false)
+    val onBackStart: LiveData<Boolean> get() = _onBackStart
+
+    private fun backStart() {
+        _onBackStart.value = true
+    }
+
+    fun backStartComplete() {
+        _onBackStart.value = false
     }
 
     override fun onCleared() {

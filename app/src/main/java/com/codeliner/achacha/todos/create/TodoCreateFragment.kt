@@ -16,8 +16,10 @@ import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.databinding.FragmentTodoCreateBinding
 import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
+import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.KeyboardManager
 import com.example.helpers.toastForShort
+import com.example.helpers.ui.AnimationManager
 import com.google.android.material.chip.Chip
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
@@ -35,11 +37,63 @@ class TodoCreateFragment: Fragment() {
         KeyboardManager.keyboardOpen(app, binding.fragmentTodoCreateInput)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onStop() {
+        super.onStop()
+
+        exitAnim()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        enterAnim()
+    }
+
+    private fun exitAnim() {
+        // note. header
+        binding.fragmentTodoCreateHeaderContainer.startAnimation(
+                AnimationManager.getHeaderHide(requireContext()).apply {
+                    duration = Const.animDefaultDuration
+                    fillAfter = true
+                })
+        // note. header
+        binding.fragmentTodoCreateHeaderDividerBottom.startAnimation(
+                AnimationManager.getHeaderHide(requireContext()).apply {
+                    duration = Const.animDefaultDuration
+                    fillAfter = true
+                })
+        // note. body
+        binding.fragmentTodoCreateBodyContainer.startAnimation(
+                AnimationManager.getFadeOut(requireContext()).apply {
+                    duration = Const.animDefaultDuration
+                    fillAfter = true
+                }
+        )
+    }
+
+    private fun enterAnim() {
+        // note. header
+        binding.fragmentTodoCreateHeaderContainer.startAnimation(
+                AnimationManager.getHeaderShow(requireContext()).apply {
+                    duration = Const.animDefaultDuration
+                    fillAfter = true
+                })
+        // note. header
+        binding.fragmentTodoCreateHeaderDividerBottom.startAnimation(
+                AnimationManager.getHeaderShow(requireContext()).apply {
+                    duration = Const.animDefaultDuration
+                    fillAfter = true
+                })
+        // note. body
+        binding.fragmentTodoCreateBodyContainer.startAnimation(
+                AnimationManager.getFadeIn(requireContext()).apply {
+                    duration = Const.animDefaultDuration
+                    fillAfter = true
+                }
+        )
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTodoCreateBinding.inflate(inflater)
         binding.lifecycleOwner = this
         app = requireNotNull(activity).application
@@ -55,7 +109,7 @@ class TodoCreateFragment: Fragment() {
 
     private fun initBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            back()
+            viewModel.backReady()
         }
     }
 
@@ -85,11 +139,30 @@ class TodoCreateFragment: Fragment() {
     private fun initObservers() {
         // note. when selected chip item
         observeHelps()
+        // note. when called back (ui)
+        observeBackPressed()
+    }
+
+    private fun observeBackPressed() {
+        viewModel.onBackReady.observe(viewLifecycleOwner, Observer { isReady ->
+            if (isReady) {
+                // note. start animation
+                exitAnim()
+            }
+        })
+        // note. when called back (feature)
+        viewModel.onBackStart.observe(viewLifecycleOwner, Observer { isStart ->
+            if (isStart) {
+                // note. real back
+                back()
+
+                viewModel.backStartComplete()
+            }
+        })
     }
 
     private fun observeHelps() {
         viewModel.helps.observe(viewLifecycleOwner, Observer { helps ->
-            Timber.d("helps updated: $helps ${helps.isNotEmpty()}")
             binding.fragmentTodoCreateInputContainer.helperText = helps
         })
     }
@@ -155,7 +228,7 @@ class TodoCreateFragment: Fragment() {
                         }
 
                         false -> {
-                            back()
+                            viewModel.backReady()
                         }
                     }
                 })
