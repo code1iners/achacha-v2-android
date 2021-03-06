@@ -22,6 +22,7 @@ import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.utils.Const
+import com.codeliner.achacha.utils.log
 import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager
 import timber.log.Timber
@@ -205,22 +206,22 @@ class TodoListFragment: Fragment()
     }
 
     private fun observeTodos() {
-        viewModel.todos.observe(viewLifecycleOwner, Observer { it ->
-            it?.let { todos ->
-                todoAdapter.submitList(todos)
-            }
+        viewModel.todos.observe(viewLifecycleOwner, Observer { todos ->
+
+            todoAdapter.testSubmitList(todos.map { it.copy() })
         })
     }
 
     override fun onClick(todo: Todo) {
-        Timber.v("work: ${todo.work}, position: ${todo.position}")
+        todo.log("d")
     }
 
     override fun onRemove(todo: Todo) {
         viewModel.onRemoveTodo(todo)
     }
 
-    override fun onFinished(todo: Todo) {
+    override fun onFinished(todo: Todo, position: Int) {
+
         viewModel.onUpdateTodoIsFinished(todo)
     }
 

@@ -15,19 +15,27 @@
         <variable
             name="moveListener"
             type="com.codeliner.achacha.todos.list.TodoMoveListener" />
+
+        <variable
+            name="position"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemTodo_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/spacing_xs"
-        android:paddingHorizontal="@dimen/spacing_s">
+        android:paddingVertical="@dimen/spacing_s"
+        android:paddingHorizontal="@dimen/spacing_m">
 
-        <CheckBox
+        <ImageButton
             android:id="@+id/itemTodo_isFinished"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="@{() -> clickListener.onFinished(todo)}"
+            android:src="@drawable/icon_radio_button_unchecked"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:onClick="@{() -> clickListener.onFinished(todo, position)}"
             app:todoIsFinished="@{todo}"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -38,14 +46,15 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/itemTodo_workContainer"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_m"
             android:orientation="vertical"
             android:gravity="center_vertical"
             android:onClick="@{() -> clickListener.onClick(todo)}"
             app:layout_constraintStart_toEndOf="@+id/itemTodo_isFinished"
             app:layout_constraintEnd_toStartOf="@+id/itemTodo_remove"
-            app:layout_constraintTop_toTopOf="@+id/itemTodo_isFinished"
-            app:layout_constraintBottom_toBottomOf="@+id/itemTodo_isFinished">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <TextView
                 android:id="@+id/itemTodo_work"
@@ -85,13 +94,22 @@
                 app:layout_constraintTop_toTopOf="@+id/itemTodo_helps"
                 app:layout_constraintBottom_toBottomOf="@+id/itemTodo_helps"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/spacing_s"
+                android:text="@string/is_finished"
+                android:textSize="@dimen/text_xs"
+                todoIsFinishedString="@{todo}"
+                app:layout_constraintBottom_toTopOf="@+id/itemTodo_created"
+                app:layout_constraintEnd_toEndOf="@+id/itemTodo_created"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageButton
             android:id="@+id/itemTodo_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_m"
             android:src="@drawable/icon_drag_indicator"
             android:background="@null"
             android:scaleType="fitCenter"

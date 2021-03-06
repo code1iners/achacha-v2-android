@@ -14,9 +14,6 @@ interface TodoDatabaseDao {
     @Query("SELECT * FROM todos_table ORDER BY id DESC")
     fun getAllOrderedById(): LiveData<List<Todo>>
 
-    @Query("SELECT * FROM todos_table ORDER BY position")
-    fun getAllOrderedByPosition(): LiveData<List<Todo>>
-
     @Query("SELECT * FROM todos_table WHERE id = :todoId")
     fun getTodoById(todoId: Long): Todo
 

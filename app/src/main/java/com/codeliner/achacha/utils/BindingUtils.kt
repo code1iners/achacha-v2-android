@@ -1,10 +1,13 @@
 package com.codeliner.achacha.utils
 
 import android.widget.CheckBox
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.codeliner.achacha.R
 import com.codeliner.achacha.domains.todos.Todo
 import com.example.helpers.CreatedParser
+import timber.log.Timber
 
 @BindingAdapter("todoWorkString")
 fun TextView.setTodoWork(item: Todo?) {
@@ -21,9 +24,12 @@ fun TextView.setTodoHelp(item: Todo?) {
 }
 
 @BindingAdapter("todoIsFinished")
-fun CheckBox.setIsFinished(item: Todo?) {
+fun ImageButton.setIsFinished(item: Todo?) {
     item?.let {
-        isChecked = item.isFinished
+        when (it.isFinished) {
+            true -> setImageResource(R.drawable.icon_radio_button_checked)
+            false -> setImageResource(R.drawable.icon_radio_button_unchecked)
+        }
     }
 }
 
@@ -41,5 +47,12 @@ fun TextView.setTodoCreated(item: Todo?) {
         
         // note. new format
         text = CreatedParser().parse(formattedDate)
+    }
+}
+
+@BindingAdapter("todoIsFinishedString")
+fun TextView.setTodoIsFinishedAsString(item: Todo?) {
+    item?.let {
+        text = it.isFinished.toString()
     }
 }

@@ -21,6 +21,7 @@ data class Todo (
         @ColumnInfo(name = "work")
         var work: String? = null,
 
+        // note. need rename help to tags later
         @ColumnInfo(name = "help")
         var help: String? = null,
 
@@ -28,8 +29,5 @@ data class Todo (
         var isFinished: Boolean = false,
 
         @ColumnInfo(name = "is_important")
-        var isImportant: Boolean = false,
-
-        @ColumnInfo(name = "position")
-        var position: Int = -1
+        var isImportant: Boolean = false
 )

@@ -7,14 +7,41 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.codeliner.achacha.databinding.ItemTodoBinding
 import com.codeliner.achacha.domains.todos.Todo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-class TodoAdapter(
-    val clickListener: TodoClickListener,
-    val moveListener: TodoMoveListener):
+class TodoAdapter(val clickListener: TodoClickListener, val moveListener: TodoMoveListener):
     ListAdapter<Todo, TodoAdapter.ViewHolder>(TodoDiffCallback())
     , ItemTouchHelperListener
 {
+
+    private var adapterScope = CoroutineScope(Dispatchers.Default)
+
+    fun testSubmitList(list: List<Todo>?) {
+        adapterScope.launch {
+
+            withContext(Dispatchers.Main) {
+                submitList(list)
+            }
+        }
+    }
+
+    private var storedList: ArrayList<Todo> = ArrayList()
+    fun getStoredList(): ArrayList<Todo> {
+        return storedList
+    }
+    fun setStoredList(list: List<Todo>?) {
+        list?.let { newList ->
+            storedList.clear()
+            storedList.addAll(newList)
+        }
+    }
+    fun logStoredList() {
+        for (todo in storedList) Timber.v("id: ${todo.id}, work: ${todo.work}, isFinished: ${todo.isFinished}")
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -24,7 +51,7 @@ class TodoAdapter(
         val item = getItem(position)
         when {
             itemCount > 0 -> {
-                holder.bind(item, clickListener, moveListener)
+                holder.bind(item, position, clickListener, moveListener)
             }
 
             else -> {
@@ -34,10 +61,11 @@ class TodoAdapter(
     }
 
     class ViewHolder private constructor(val binding: ItemTodoBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Todo, clickListener: TodoClickListener, moveListener: TodoMoveListener) {
+        fun bind(item: Todo, position: Int, clickListener: TodoClickListener, moveListener: TodoMoveListener) {
             binding.todo = item
             binding.clickListener = clickListener
             binding.moveListener = moveListener
+            binding.position = position
             binding.executePendingBindings()
         }
 
@@ -47,26 +75,6 @@ class TodoAdapter(
                 val binding = ItemTodoBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
-        }
-    }
-
-    class TodoDiffCallback: DiffUtil.ItemCallback<Todo>() {
-        override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean {
-            if (oldItem.id != newItem.id) {
-                Timber.w("areItemsTheSame: ${oldItem.id == newItem.id}")
-                Timber.i("old - id: ${oldItem.id} work: ${oldItem.work}, position: ${oldItem.position}")
-                Timber.i("new - id: ${newItem.id} work: ${newItem.work}, position: ${newItem.position}")
-            }
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Todo, newItem: Todo): Boolean {
-            if (oldItem != newItem) {
-                Timber.w("areContentsTheSame: ${oldItem == newItem}")
-                Timber.i("$oldItem")
-                Timber.d("$newItem")
-            }
-            return oldItem == newItem
         }
     }
 
@@ -84,7 +92,7 @@ class TodoAdapter(
 interface TodoClickListener {
     fun onClick(todo: Todo)
     fun onRemove(todo: Todo)
-    fun onFinished(todo: Todo)
+    fun onFinished(todo: Todo, position: Int)
 }
 
 interface TodoMoveListener {

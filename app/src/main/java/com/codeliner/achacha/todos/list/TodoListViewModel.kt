@@ -10,6 +10,7 @@ import com.codeliner.achacha.domains.todos.TodoDatabaseDao
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.Date
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class TodoListViewModel(
@@ -23,8 +24,9 @@ class TodoListViewModel(
     private val _date = MutableLiveData(Date())
     val date: LiveData<Date> get() = _date
 
-    private val _todos = todoDatabaseDao.getAllOrderedByPosition()
-    val todos: LiveData<List<Todo>> get() = _todos
+    val todos = todoDatabaseDao.getAllOrderedById()
+
+    var todosSwitch = true
 
     val tasks = Transformations.map(todos) {
         it.size
@@ -88,16 +90,16 @@ class TodoListViewModel(
     }
 
     fun onUpdateTodoIsFinished(todo: Todo) {
-        viewModelScope.launch {
-            val oldTodo = todo
-            oldTodo.isFinished = !todo.isFinished
-            update(oldTodo)
+        uiScope.launch {
+            update(todo)
         }
     }
 
     private suspend fun update(todo: Todo) {
         withContext(Dispatchers.IO) {
-            todoDatabaseDao.update(todo)
+            val oldTodo = todo.copy()
+            oldTodo.isFinished = !oldTodo.isFinished
+            todoDatabaseDao.update(oldTodo)
         }
     }
 
@@ -128,7 +130,10 @@ class TodoListViewModel(
     private val _onTestTrigger = MutableLiveData<Boolean>()
     val onTestTrigger: LiveData<Boolean> get() = _onTestTrigger
     fun onTestStart() {
-        _onTestTrigger.value = true
+        uiScope.launch {
+
+            _onTestTrigger.value = true
+        }
     }
     fun onTestComplete() {
         _onTestTrigger.value = false

@@ -49,7 +49,6 @@ class TodoCreateViewModel(
                 val todo = Todo().apply {
                     work = newWork
                     help = helps.value
-                    position = tasks
                 }
                 insert(todo)
             }
