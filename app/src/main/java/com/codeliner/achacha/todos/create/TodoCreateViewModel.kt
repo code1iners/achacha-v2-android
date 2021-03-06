@@ -1,14 +1,11 @@
 package com.codeliner.achacha.todos.create
 
-import android.app.Activity
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.codeliner.achacha.domains.todos.Todo
 import com.codeliner.achacha.domains.todos.TodoDatabaseDao
-import com.codeliner.achacha.utils.KeyboardManager
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -30,7 +27,7 @@ class TodoCreateViewModel(
             // note. validation work
                 val todo = Todo().apply {
                     work = newWork
-                    help = "Test message"
+                    help = helps.value
                     position = tasks
                 }
                 insert(todo)
@@ -47,6 +44,13 @@ class TodoCreateViewModel(
     
     fun updateWork(text: String) {
         _work.value = text
+    }
+
+    private val _helps = MutableLiveData("Nothing")
+    val helps: LiveData<String> get() = _helps
+
+    fun setHelps(helps: String) {
+        _helps.value = helps
     }
 
     override fun onCleared() {

@@ -35,7 +35,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/itemTodo_workContainer"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -53,37 +53,45 @@
                 android:layout_height="wrap_content"
                 android:text="@string/work"
                 android:textSize="@dimen/text_m"
-                app:todoWorkString="@{todo}"/>
+                app:todoWorkString="@{todo}"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/itemTodo_helps"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/help"
+                android:textSize="@dimen/text_xs"
+                android:singleLine="true"
+                android:ellipsize="end"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/itemTodo_created"
+                app:layout_constraintTop_toBottomOf="@+id/itemTodo_work"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:todoHelpString="@{todo}" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing_s"
-                    android:text="@string/help"
-                    android:textSize="@dimen/text_xs"
-                    app:todoHelpString="@{todo}"/>
+            <TextView
+                android:id="@+id/itemTodo_created"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/spacing_s"
+                android:text="@string/created"
+                android:textSize="@dimen/text_xs"
+                app:todoCreatedFormatted="@{todo}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/itemTodo_helps"
+                app:layout_constraintBottom_toBottomOf="@+id/itemTodo_helps"/>
 
-                <TextView
-                    android:id="@+id/itemTodo_created"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/created"
-                    android:textSize="@dimen/text_xs"
-                    app:todoCreatedFormatted="@{todo}"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageButton
             android:id="@+id/itemTodo_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_m"
             android:src="@drawable/icon_drag_indicator"
             android:background="@null"
             android:scaleType="fitCenter"

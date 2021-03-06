@@ -2,21 +2,22 @@ package com.codeliner.achacha.todos.create
 
 import android.app.Application
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
 import androidx.activity.addCallback
+import androidx.core.view.forEach
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.databinding.FragmentTodoCreateBinding
 import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.utils.KeyboardManager
+import com.example.helpers.toastForShort
 import com.google.android.material.chip.Chip
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
@@ -28,6 +29,11 @@ class TodoCreateFragment: Fragment() {
     private lateinit var binding: FragmentTodoCreateBinding
     private lateinit var viewModel: TodoCreateViewModel
     private lateinit var app: Application
+
+    override fun onResume() {
+        super.onResume()
+        KeyboardManager.keyboardOpen(app, binding.fragmentTodoCreateInput)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,18 +47,10 @@ class TodoCreateFragment: Fragment() {
         initBackPressed()
         initViewModel()
         initListeners()
+        initObservers()
         initFocus()
 
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        KeyboardManager.keyboardOpen(app, binding.fragmentTodoCreateInput)
-    }
-
-    private fun initFocus() {
-        binding.fragmentTodoCreateInput.requestFocus()
     }
 
     private fun initBackPressed() {
@@ -81,20 +79,38 @@ class TodoCreateFragment: Fragment() {
         // note. keyboard show/hide
         listenerKeyboard()
         // note. when clicked chip item
-        val checkedChipId = binding.fragmentTodoCreateChipGroup.checkedChipId // Returns View.NO_ID if singleSelection = false
-        val checkedChipIds = binding.fragmentTodoCreateChipGroup.checkedChipIds // Returns a list of the selected chips' IDs, if any
-        val list = mutableListOf<String>()
-        for (i in 0 until binding.fragmentTodoCreateChipGroup.childCount) {
-            val chip = binding.fragmentTodoCreateChipGroup.getChildAt(i) as Chip
-            chip.setOnCheckedChangeListener { view, isChecked ->
-                if (isChecked) {
-                    list.add(view.text.toString())
-                } else {
-                    list.remove(view.text.toString())
+        listenerChips()
+    }
+
+    private fun initObservers() {
+        // note. when selected chip item
+        observeHelps()
+    }
+
+    private fun observeHelps() {
+        viewModel.helps.observe(viewLifecycleOwner, Observer { helps ->
+            Timber.d("helps updated: $helps ${helps.isNotEmpty()}")
+            binding.fragmentTodoCreateInputContainer.helperText = helps
+        })
+    }
+
+    private fun listenerChips() {
+        binding.fragmentTodoCreateChipGroup.forEach { child ->
+            (child as Chip).setOnCheckedChangeListener { _, _ ->
+                val ids = binding.fragmentTodoCreateChipGroup.checkedChipIds
+                val helps: ArrayList<CharSequence> = ArrayList()
+
+                ids.forEach { id ->
+                    helps.add(binding.fragmentTodoCreateChipGroup.findViewById<Chip>(id).text)
                 }
+
+                if (helps.isEmpty()) {
+                    helps.add("Nothing")
+                }
+
+                viewModel.setHelps(helps.joinToString(", "))
             }
         }
-        Timber.d("checkedChipId: $checkedChipIds")
     }
 
     private fun listenerKeyboardDone() {
@@ -143,6 +159,10 @@ class TodoCreateFragment: Fragment() {
                         }
                     }
                 })
+    }
+
+    private fun initFocus() {
+        binding.fragmentTodoCreateInput.requestFocus()
     }
 
     private fun back() {

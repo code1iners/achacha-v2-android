@@ -85,11 +85,13 @@ class MainActivity : AppCompatActivity()
 
         fun onBottomNavigationShow() {
             binding.activityMainBottomNav.startAnimation(animShow)
+            binding.activityMainBottomNav.visibility = View.VISIBLE
             viewModel.setBottomNavigationShowing(true)
         }
 
         fun onBottomNavigationHide() {
             binding.activityMainBottomNav.startAnimation(animHide)
+            binding.activityMainBottomNav.visibility = View.GONE
             viewModel.setBottomNavigationShowing(false)
         }
     }
