@@ -13,10 +13,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentTodoCreateBinding
 import com.codeliner.achacha.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.utils.Const
+import com.codeliner.achacha.utils.Const.ERROR_EMPTY
 import com.codeliner.achacha.utils.KeyboardManager
 import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager
@@ -136,37 +138,6 @@ class TodoCreateFragment: Fragment() {
         listenerChips()
     }
 
-    private fun initObservers() {
-        // note. when selected chip item
-        observeHelps()
-        // note. when called back (ui)
-        observeBackPressed()
-    }
-
-    private fun observeBackPressed() {
-        viewModel.onBackReady.observe(viewLifecycleOwner, Observer { isReady ->
-            if (isReady) {
-                // note. start animation
-                exitAnim()
-            }
-        })
-        // note. when called back (feature)
-        viewModel.onBackStart.observe(viewLifecycleOwner, Observer { isStart ->
-            if (isStart) {
-                // note. real back
-                back()
-
-                viewModel.backStartComplete()
-            }
-        })
-    }
-
-    private fun observeHelps() {
-        viewModel.helps.observe(viewLifecycleOwner, Observer { helps ->
-            binding.fragmentTodoCreateInputContainer.helperText = helps
-        })
-    }
-
     private fun listenerChips() {
         binding.fragmentTodoCreateChipGroup.forEach { child ->
             (child as Chip).setOnCheckedChangeListener { _, _ ->
@@ -207,6 +178,11 @@ class TodoCreateFragment: Fragment() {
 
     private fun listenerInput() {
         binding.fragmentTodoCreateInput.doOnTextChanged { text, _, _, _ ->
+            if (text.toString().isEmpty()) {
+                viewModel.discoveredError(getString(R.string.error_message_text_input_empty))
+            } else {
+                viewModel.undiscoveredError()
+            }
             viewModel.updateWork(text.toString())
         }
     }
@@ -232,6 +208,45 @@ class TodoCreateFragment: Fragment() {
                         }
                     }
                 })
+    }
+
+    private fun initObservers() {
+        // note. when selected chip item
+        observeHelps()
+        // note. when called back (ui)
+        observeBackPressed()
+        // note. when discovered error
+        observeInputError()
+    }
+
+    private fun observeInputError() {
+        viewModel.hasError.observe(viewLifecycleOwner, Observer { error ->
+            binding.fragmentTodoCreateInputContainer.error = error
+        })
+    }
+
+    private fun observeHelps() {
+        viewModel.helps.observe(viewLifecycleOwner, Observer { helps ->
+            binding.fragmentTodoCreateInputContainer.helperText = helps
+        })
+    }
+
+    private fun observeBackPressed() {
+        viewModel.onBackReady.observe(viewLifecycleOwner, Observer { isReady ->
+            if (isReady) {
+                // note. start animation
+                exitAnim()
+            }
+        })
+        // note. when called back (feature)
+        viewModel.onBackStart.observe(viewLifecycleOwner, Observer { isStart ->
+            if (isStart) {
+                // note. real back
+                back()
+
+                viewModel.backStartComplete()
+            }
+        })
     }
 
     private fun initFocus() {

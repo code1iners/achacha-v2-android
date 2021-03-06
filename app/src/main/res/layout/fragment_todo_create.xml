@@ -25,8 +25,8 @@
 
             <ImageButton
                 android:id="@+id/fragmentTodoCreate_close"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/icon_close"
                 android:background="@null"
                 android:scaleType="fitCenter"
@@ -41,11 +41,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/work"
                 android:layout_marginHorizontal="@dimen/spacing_s"
-                app:helperTextEnabled="true"
-                app:helperText="@string/help"
-                android:gravity="center_vertical"
-                app:helperTextTextColor="@color/primaryTextColor"
-                app:errorEnabled="true"
                 app:endIconMode="clear_text"
                 app:layout_constraintStart_toEndOf="@+id/fragmentTodoCreate_close"
                 app:layout_constraintEnd_toStartOf="@+id/fragmentTodoCreate_submit"

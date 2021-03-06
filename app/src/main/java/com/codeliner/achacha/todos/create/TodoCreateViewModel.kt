@@ -22,18 +22,38 @@ class TodoCreateViewModel(
     
     private val _work = MutableLiveData<String>()
     val work: LiveData<String> get() = _work
+
+    private val _hasError = MutableLiveData<String>()
+    val hasError: LiveData<String> get() = _hasError
+
+    fun discoveredError(error: String) {
+        Timber.w("discoveredError: $error")
+        _hasError.value = error
+    }
+
+    fun undiscoveredError() {
+        _hasError.value = null
+    }
     
     fun onSaveTodo() {
-        work.value?.let { newWork ->
-            uiScope.launch {
-            // note. validation work
-                val todo = Todo().apply {
-                    work = newWork
-                    help = helps.value
-                    position = tasks
+        when (work.value.isNullOrEmpty()) {
+            true -> {
+
+            }
+
+            false -> {
+                work.value?.let { newWork ->
+                    uiScope.launch {
+                        // note. validation work
+                        val todo = Todo().apply {
+                            work = newWork
+                            help = helps.value
+                            position = tasks
+                        }
+                        insert(todo)
+                        _work.value = null
+                    }
                 }
-                insert(todo)
-                _work.value = null
             }
         }
     }
