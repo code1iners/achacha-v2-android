@@ -10,11 +10,11 @@
 
         <variable
             name="clickListener"
-            type="com.codeliner.achacha.todos.list.TodoClickListener" />
+            type="com.codeliner.achacha.ui.todos.list.TodoClickListener" />
 
         <variable
             name="moveListener"
-            type="com.codeliner.achacha.todos.list.TodoMoveListener" />
+            type="com.codeliner.achacha.ui.todos.list.TodoMoveListener" />
 
         <variable
             name="position"

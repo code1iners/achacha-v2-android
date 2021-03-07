@@ -1,11 +1,10 @@
-package com.codeliner.achacha.todos.create
+package com.codeliner.achacha.ui.todos.create
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.codeliner.achacha.data.todos.Todo
-import com.codeliner.achacha.data.todos.TodoDatabaseDao
 import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.utils.Const
 import kotlinx.coroutines.*

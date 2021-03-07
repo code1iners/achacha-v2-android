@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/todoListFragment"
-        android:name="com.codeliner.achacha.todos.list.TodoListFragment"
+        android:name="com.codeliner.achacha.ui.todos.list.TodoListFragment"
         android:label="Todos"
         tools:layout="@layout/fragment_todo_list">
         <action
@@ -22,12 +22,12 @@
     </fragment>
     <fragment
         android:id="@+id/accountListFragment"
-        android:name="com.codeliner.achacha.accounts.list.AccountListFragment"
+        android:name="com.codeliner.achacha.ui.accounts.list.AccountListFragment"
         android:label="accountListFragment"
         tools:layout="@layout/fragment_account_list"/>
     <fragment
         android:id="@+id/todoCreateFragment"
-        android:name="com.codeliner.achacha.todos.create.TodoCreateFragment"
+        android:name="com.codeliner.achacha.ui.todos.create.TodoCreateFragment"
         android:label="TodoCreateFragment"
         tools:layout="@layout/fragment_todo_create">
         <argument

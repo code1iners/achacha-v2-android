@@ -1,20 +1,21 @@
-package com.codeliner.achacha.todos.list
+package com.codeliner.achacha.ui.todos.create
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.codeliner.achacha.data.todos.TodoDatabaseDao
 import com.codeliner.achacha.data.todos.TodoRepository
 
-class TodoListViewModelFactory(
+class TodoCreateViewModelFactory(
     private val app: Application,
-    private val todoRepository: TodoRepository
+    private val todoRepository: TodoRepository,
+    private val tasks: Int
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TodoListViewModel::class.java)) {
-            return TodoListViewModel(
+        if (modelClass.isAssignableFrom(TodoCreateViewModel::class.java)) {
+            return TodoCreateViewModel(
                 app,
-                todoRepository
+                todoRepository,
+                tasks
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

@@ -1,4 +1,4 @@
-package com.codeliner.achacha.todos.list
+package com.codeliner.achacha.ui.todos.list
 
 import androidx.recyclerview.widget.DiffUtil
 import com.codeliner.achacha.data.todos.Todo

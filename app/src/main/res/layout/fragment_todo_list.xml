@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.codeliner.achacha.todos.list.TodoListViewModel" />
+            type="com.codeliner.achacha.ui.todos.list.TodoListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

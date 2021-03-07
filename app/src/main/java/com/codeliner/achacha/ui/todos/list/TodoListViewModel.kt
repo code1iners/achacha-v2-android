@@ -1,11 +1,10 @@
-package com.codeliner.achacha.todos.list
+package com.codeliner.achacha.ui.todos.list
 
 import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import com.codeliner.achacha.data.todos.Todo
-import com.codeliner.achacha.data.todos.TodoDatabaseDao
 import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.Date

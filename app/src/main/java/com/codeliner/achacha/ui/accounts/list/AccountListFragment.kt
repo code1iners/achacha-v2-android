@@ -1,4 +1,4 @@
-package com.codeliner.achacha.accounts.list
+package com.codeliner.achacha.ui.accounts.list
 
 import android.os.Bundle
 import android.view.LayoutInflater

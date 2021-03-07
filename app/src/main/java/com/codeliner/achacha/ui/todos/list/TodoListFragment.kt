@@ -1,4 +1,4 @@
-package com.codeliner.achacha.todos.list
+package com.codeliner.achacha.ui.todos.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
