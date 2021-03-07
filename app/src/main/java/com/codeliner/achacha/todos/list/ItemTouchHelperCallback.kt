@@ -13,8 +13,8 @@ class ItemTouchHelperCallback(private val listener: ItemTouchHelperListener) :
     ): Int {
 //        val drag_flags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
 //        return makeMovementFlags(drag_flags, swipe_flags)
-        val swipe_flags = ItemTouchHelper.START or ItemTouchHelper.END
-        return makeMovementFlags(0, swipe_flags)
+//        val swipe_flags = ItemTouchHelper.START or ItemTouchHelper.END
+        return makeMovementFlags(0, 0)
     }
 
     override fun isLongPressDragEnabled(): Boolean {

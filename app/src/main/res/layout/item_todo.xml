@@ -63,6 +63,7 @@
                 android:text="@string/work"
                 android:textSize="@dimen/text_m"
                 app:todoWorkString="@{todo}"
+                app:todoSetTextDarkWhenFinished="@{todo}"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -76,6 +77,7 @@
                 android:textSize="@dimen/text_xs"
                 android:singleLine="true"
                 android:ellipsize="end"
+                app:setVisible="@{!todo.finished}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/itemTodo_created"
                 app:layout_constraintTop_toBottomOf="@+id/itemTodo_work"
@@ -86,38 +88,55 @@
                 android:id="@+id/itemTodo_created"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/spacing_s"
+                android:paddingStart="@dimen/spacing_s"
                 android:text="@string/created"
                 android:textSize="@dimen/text_xs"
+                app:setVisible="@{!todo.finished}"
                 app:todoCreatedFormatted="@{todo}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/itemTodo_helps"
-                app:layout_constraintBottom_toBottomOf="@+id/itemTodo_helps"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
+                android:id="@+id/itemTodo_isFinishedString"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/spacing_s"
+                android:paddingStart="@dimen/spacing_s"
                 android:text="@string/is_finished"
                 android:textSize="@dimen/text_xs"
-                todoIsFinishedString="@{todo}"
-                app:layout_constraintBottom_toTopOf="@+id/itemTodo_created"
+                app:todoIsFinishedString="@{todo}"
+                app:setVisible="@{todo.finished}"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/itemTodo_created"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="@dimen/spacing_s"
+                android:background="@color/divider"
+                app:setAnimation="@{todo.finished}"
+                app:layout_constraintStart_toEndOf="@+id/itemTodo_work"
+                app:layout_constraintEnd_toStartOf="@id/itemTodo_isFinishedString"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageButton
             android:id="@+id/itemTodo_remove"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/icon_drag_indicator"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/icon_remove_outline"
             android:background="@null"
             android:scaleType="fitCenter"
+            android:onClick="@{() -> clickListener.onRemove(todo)}"
+            app:setVisible="@{todo.finished}"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/itemTodo_workContainer"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/itemTodo_isFinished"
-            app:layout_constraintBottom_toBottomOf="@+id/itemTodo_isFinished" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
