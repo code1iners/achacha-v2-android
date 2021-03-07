@@ -4,14 +4,15 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.codeliner.achacha.data.domains.todos.Todo
-import com.codeliner.achacha.data.domains.todos.TodoDatabaseDao
+import com.codeliner.achacha.data.todos.Todo
+import com.codeliner.achacha.data.todos.TodoDatabaseDao
+import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.utils.Const
 import kotlinx.coroutines.*
 
 class TodoCreateViewModel(
     app: Application,
-    private val dataSourceDao: TodoDatabaseDao,
+    private val todoRepository: TodoRepository,
     private val tasks: Int
 ): AndroidViewModel(app) {
 
@@ -55,7 +56,7 @@ class TodoCreateViewModel(
 
     private suspend fun insert(todo: Todo) {
         withContext(Dispatchers.IO) {
-            dataSourceDao.insert(todo)
+            todoRepository.create(todo)
         }
     }
     

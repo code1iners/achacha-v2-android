@@ -1,4 +1,4 @@
-package com.codeliner.achacha.data.domains.todos
+package com.codeliner.achacha.data.todos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -8,21 +8,21 @@ interface TodoDatabaseDao {
 
     // note. Create
     @Insert
-    fun insert(todo: Todo)
+    fun createTodo(todo: Todo)
 
     // note. Read
     @Query("SELECT * FROM todos_table ORDER BY id DESC")
-    fun getAllOrderedById(): LiveData<List<Todo>>
+    fun readAllOrderedById(): LiveData<List<Todo>>
 
     @Query("SELECT * FROM todos_table WHERE id = :todoId")
-    fun getTodoById(todoId: Long): Todo
+    fun readTodoById(todoId: Long): Todo
 
     @Query("SELECT * FROM todos_table ORDER BY id DESC LIMIT 1")
-    fun getTodoLatest(): LiveData<Todo>?
+    fun readTodoLatest(): LiveData<Todo>?
 
     // note. Update
     @Update
-    fun update(todo: Todo)
+    fun updateTodo(todo: Todo)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateTodos(todos: List<Todo>)

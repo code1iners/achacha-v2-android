@@ -1,4 +1,4 @@
-package com.codeliner.achacha.data.domains.todos
+package com.codeliner.achacha.data.todos
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -15,7 +15,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentTodoCreateBinding
-import com.codeliner.achacha.data.domains.todos.TodoDatabase
+import com.codeliner.achacha.data.AppDatabase
+import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.KeyboardManager
@@ -116,8 +117,9 @@ class TodoCreateFragment: Fragment() {
 
     private fun initViewModel() {
         val tasks = TodoCreateFragmentArgs.fromBundle(requireArguments()).tasks
-        val dataSourceDao = TodoDatabase.getInstance(requireContext()).todoDatabaseDao
-        val viewModelFactory = TodoCreateViewModelFactory(app, dataSourceDao, tasks)
+        val dataSourceDao = AppDatabase.getInstance(requireContext()).todoDatabaseDao
+        val todoRepository = TodoRepository(AppDatabase.getInstance(requireContext()))
+        val viewModelFactory = TodoCreateViewModelFactory(app, todoRepository, tasks)
         viewModel = ViewModelProvider(this, viewModelFactory).get(TodoCreateViewModel::class.java)
         binding.viewModel = viewModel
     }

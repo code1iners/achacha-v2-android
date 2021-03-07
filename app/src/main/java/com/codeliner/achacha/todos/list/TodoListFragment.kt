@@ -15,8 +15,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.codeliner.achacha.databinding.FragmentTodoListBinding
-import com.codeliner.achacha.data.domains.todos.Todo
-import com.codeliner.achacha.data.domains.todos.TodoDatabase
+import com.codeliner.achacha.data.todos.Todo
+import com.codeliner.achacha.data.AppDatabase
+import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.log
@@ -112,8 +113,9 @@ class TodoListFragment: Fragment()
 
     private fun initViewModel() {
         val app = requireNotNull(activity).application
-        val todoDatabaseDao = TodoDatabase.getInstance(app.applicationContext).todoDatabaseDao
-        viewModelFactory = TodoListViewModelFactory(app, todoDatabaseDao)
+        val todoDatabaseDao = AppDatabase.getInstance(app.applicationContext).todoDatabaseDao
+        val todoRepository = TodoRepository(AppDatabase.getInstance(app.applicationContext))
+        viewModelFactory = TodoListViewModelFactory(app, todoRepository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(TodoListViewModel::class.java)
         // note. assignment view model into layout
         binding.viewModel = viewModel

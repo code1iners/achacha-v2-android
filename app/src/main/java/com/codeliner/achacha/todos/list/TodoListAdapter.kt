@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.codeliner.achacha.databinding.ItemTodoBinding
-import com.codeliner.achacha.data.domains.todos.Todo
+import com.codeliner.achacha.data.todos.Todo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -1,10 +1,10 @@
-package com.codeliner.achacha.data.domains.accounts
+package com.codeliner.achacha.data.accounts
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "account_table")
+@Entity(tableName = "accounts_table")
 data class Account (
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0L,

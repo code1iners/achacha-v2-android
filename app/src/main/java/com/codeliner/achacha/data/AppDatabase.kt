@@ -1,28 +1,33 @@
-package com.codeliner.achacha.data.domains.todos
+package com.codeliner.achacha.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.codeliner.achacha.data.accounts.Account
+import com.codeliner.achacha.data.accounts.AccountDatabaseDao
+import com.codeliner.achacha.data.todos.Todo
+import com.codeliner.achacha.data.todos.TodoDatabaseDao
 
-@Database(entities = [Todo::class], version = 3, exportSchema = false)
-abstract class TodoDatabase: RoomDatabase() {
+@Database(entities = [Todo::class, Account::class], version = 4, exportSchema = false)
+abstract class AppDatabase: RoomDatabase() {
 
     abstract val todoDatabaseDao: TodoDatabaseDao
+    abstract val accountDatabaseDao: AccountDatabaseDao
 
     companion object {
         @Volatile
-        private var INSTANCE: TodoDatabase? = null
+        private var INSTANCE: AppDatabase? = null
 
-        fun getInstance(context: Context): TodoDatabase {
+        fun getInstance(context: Context): AppDatabase {
             synchronized(this) {
                 var instance = INSTANCE
 
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        TodoDatabase::class.java,
-                        "todo_history_database"
+                        AppDatabase::class.java,
+                        "achacha_database"
                     )
                         .fallbackToDestructiveMigration()
                         .build()

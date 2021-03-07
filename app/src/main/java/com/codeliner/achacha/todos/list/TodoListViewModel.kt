@@ -4,8 +4,9 @@ import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
-import com.codeliner.achacha.data.domains.todos.Todo
-import com.codeliner.achacha.data.domains.todos.TodoDatabaseDao
+import com.codeliner.achacha.data.todos.Todo
+import com.codeliner.achacha.data.todos.TodoDatabaseDao
+import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.Date
 import kotlinx.coroutines.*
@@ -13,7 +14,7 @@ import kotlinx.coroutines.*
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class TodoListViewModel(
     app: Application,
-    private val todoDatabaseDao: TodoDatabaseDao
+    private val todoRepository: TodoRepository
 ): AndroidViewModel(app) {
 
     private val viewModelJob = Job()
@@ -22,7 +23,7 @@ class TodoListViewModel(
     private val _date = MutableLiveData(Date())
     val date: LiveData<Date> get() = _date
 
-    val todos = todoDatabaseDao.getAllOrderedById()
+    val todos = todoRepository.readAllOrderedById()
 
     var todosSwitch = true
 
@@ -83,7 +84,7 @@ class TodoListViewModel(
 
     private suspend fun clear() {
         withContext(Dispatchers.IO) {
-            todoDatabaseDao.clear()
+            todoRepository.clear()
         }
     }
 
@@ -97,7 +98,7 @@ class TodoListViewModel(
         withContext(Dispatchers.IO) {
             val oldTodo = todo.copy()
             oldTodo.isFinished = !oldTodo.isFinished
-            todoDatabaseDao.update(oldTodo)
+            todoRepository.updateTodo(oldTodo)
         }
     }
 
@@ -109,7 +110,7 @@ class TodoListViewModel(
 
     private suspend fun updateTodos(todos: List<Todo>) {
         withContext(Dispatchers.IO) {
-            todoDatabaseDao.updateTodos(todos)
+            todoRepository.updateTodos(todos)
         }
     }
 
@@ -121,7 +122,7 @@ class TodoListViewModel(
 
     private suspend fun remove(todo: Todo) {
         withContext(Dispatchers.IO) {
-            todoDatabaseDao.deleteTodoById(todo.id)
+            todoRepository.deleteTodoById(todo)
         }
     }
 

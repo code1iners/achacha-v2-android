@@ -1,7 +1,7 @@
 package com.codeliner.achacha.todos.list
 
 import androidx.recyclerview.widget.DiffUtil
-import com.codeliner.achacha.data.domains.todos.Todo
+import com.codeliner.achacha.data.todos.Todo
 
 class TodoDiffCallback: DiffUtil.ItemCallback<Todo>() {
 
