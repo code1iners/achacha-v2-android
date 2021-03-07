@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/accountsFragment"
-        android:name="com.codeliner.achacha.accounts.AccountsFragment"
+        android:name="com.codeliner.achacha.accounts.list.AccountsFragment"
         android:label="AccountsFragment"
         tools:layout="@layout/fragment_accounts"/>
     <fragment

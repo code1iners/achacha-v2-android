@@ -134,6 +134,7 @@
                 android:layout_margin="@dimen/spacing_m"
                 android:src="@drawable/icon_star"
                 android:onClick="@{() -> viewModel.onTestStart()}"
+                android:visibility="gone"
                 app:fabSize="mini"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

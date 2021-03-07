@@ -148,22 +148,22 @@ class TodoListFragment: Fragment()
             if (!isCollapsed) {
                 cs.connect(binding.fragmentTodoListFabCreate.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabMain.id, ConstraintSet.TOP)
                 cs.connect(binding.fragmentTodoListFabClear.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabCreate.id, ConstraintSet.TOP)
-                cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabClear.id, ConstraintSet.TOP)
+//                cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabClear.id, ConstraintSet.TOP)
 
                 binding.fragmentTodoListFabMain.startAnimation(animRotateRight)
                 binding.fragmentTodoListFabCreate.startAnimation(animShow)
                 binding.fragmentTodoListFabClear.startAnimation(animShow)
-                binding.fragmentTodoListFabTest.startAnimation(animShow)
+//                binding.fragmentTodoListFabTest.startAnimation(animShow)
 
             } else {
                 cs.connect(binding.fragmentTodoListFabCreate.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
                 cs.connect(binding.fragmentTodoListFabClear.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
-                cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
+//                cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
 
                 binding.fragmentTodoListFabMain.startAnimation(animRotateLeft)
                 binding.fragmentTodoListFabCreate.startAnimation(animHide)
                 binding.fragmentTodoListFabClear.startAnimation(animHide)
-                binding.fragmentTodoListFabTest.startAnimation(animHide)
+//                binding.fragmentTodoListFabTest.startAnimation(animHide)
             }
 
             TransitionManager.beginDelayedTransition(binding.fragmentTodoListFabList, transition)
