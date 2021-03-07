@@ -15,10 +15,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentTodoCreateBinding
-import com.codeliner.achacha.domains.todos.TodoDatabase
+import com.codeliner.achacha.data.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.utils.Const
-import com.codeliner.achacha.utils.Const.ERROR_EMPTY
 import com.codeliner.achacha.utils.KeyboardManager
 import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager

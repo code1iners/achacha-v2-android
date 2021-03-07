@@ -1,17 +1,14 @@
 package com.codeliner.achacha.utils
 
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.codeliner.achacha.R
-import com.codeliner.achacha.domains.todos.Todo
+import com.codeliner.achacha.data.domains.todos.Todo
 import com.example.helpers.CreatedParser
 import com.example.helpers.ui.getMoveInRight
 import com.example.helpers.ui.getMoveOutLeft
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 
 @BindingAdapter("todoWorkString")
 fun TextView.setTodoWork(item: Todo?) {

@@ -4,12 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.codeliner.achacha.domains.todos.Todo
-import com.codeliner.achacha.domains.todos.TodoDatabaseDao
+import com.codeliner.achacha.data.domains.todos.Todo
+import com.codeliner.achacha.data.domains.todos.TodoDatabaseDao
 import com.codeliner.achacha.utils.Const
 import kotlinx.coroutines.*
-import timber.log.Timber
 
 class TodoCreateViewModel(
     app: Application,

@@ -4,13 +4,11 @@ import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
-import androidx.navigation.NavController
-import com.codeliner.achacha.domains.todos.Todo
-import com.codeliner.achacha.domains.todos.TodoDatabaseDao
+import com.codeliner.achacha.data.domains.todos.Todo
+import com.codeliner.achacha.data.domains.todos.TodoDatabaseDao
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.Date
 import kotlinx.coroutines.*
-import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class TodoListViewModel(

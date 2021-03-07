@@ -11,8 +11,8 @@
         android:label="Todos"
         tools:layout="@layout/fragment_todo_list">
         <action
-            android:id="@+id/action_todoListFragment_to_accountsFragment"
-            app:destination="@id/accountsFragment"
+            android:id="@+id/action_todoListFragment_to_accountListFragment"
+            app:destination="@id/accountListFragment"
             app:popUpTo="@id/todoListFragment" />
         <action
             android:id="@+id/action_todoListFragment_to_todoCreateFragment"
@@ -21,10 +21,10 @@
             app:popUpToInclusive="false" />
     </fragment>
     <fragment
-        android:id="@+id/accountsFragment"
-        android:name="com.codeliner.achacha.accounts.list.AccountsFragment"
-        android:label="AccountsFragment"
-        tools:layout="@layout/fragment_accounts"/>
+        android:id="@+id/accountListFragment"
+        android:name="com.codeliner.achacha.accounts.list.AccountListFragment"
+        android:label="accountListFragment"
+        tools:layout="@layout/fragment_account_list"/>
     <fragment
         android:id="@+id/todoCreateFragment"
         android:name="com.codeliner.achacha.todos.create.TodoCreateFragment"

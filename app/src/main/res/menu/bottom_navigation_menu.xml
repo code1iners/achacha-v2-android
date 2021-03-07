@@ -6,7 +6,7 @@
         android:icon="@drawable/icon_todos"
         android:title="@string/bottom_nav_label_todos"/>
     <item
-        android:id="@+id/accountsFragment"
+        android:id="@+id/accountListFragment"
         android:enabled="true"
         android:icon="@drawable/icon_account"
         android:title="@string/bottom_nav_label_accounts"/>

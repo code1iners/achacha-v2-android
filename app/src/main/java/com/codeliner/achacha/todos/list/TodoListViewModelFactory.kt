@@ -3,7 +3,7 @@ package com.codeliner.achacha.todos.list
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.codeliner.achacha.domains.todos.TodoDatabaseDao
+import com.codeliner.achacha.data.domains.todos.TodoDatabaseDao
 
 class TodoListViewModelFactory(
     private val app: Application,

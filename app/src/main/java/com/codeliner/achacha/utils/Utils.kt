@@ -1,6 +1,6 @@
 package com.codeliner.achacha.utils
 
-import com.codeliner.achacha.domains.todos.Todo
+import com.codeliner.achacha.data.domains.todos.Todo
 import timber.log.Timber
 
 fun Todo.log(type: String) {

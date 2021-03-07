@@ -1,4 +1,4 @@
-package com.codeliner.achacha.domains.todos
+package com.codeliner.achacha.data.domains.todos
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

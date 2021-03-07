@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,16 +14,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
-import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentTodoListBinding
-import com.codeliner.achacha.domains.todos.Todo
-import com.codeliner.achacha.domains.todos.TodoDatabase
+import com.codeliner.achacha.data.domains.todos.Todo
+import com.codeliner.achacha.data.domains.todos.TodoDatabase
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.log
 import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager
-import timber.log.Timber
 
 class TodoListFragment: Fragment()
     , TodoClickListener
