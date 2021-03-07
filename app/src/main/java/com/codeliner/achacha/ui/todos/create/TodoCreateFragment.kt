@@ -25,13 +25,14 @@ import com.example.helpers.ui.AnimationManager
 import com.google.android.material.chip.Chip
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
 class TodoCreateFragment: Fragment() {
 
     private lateinit var binding: FragmentTodoCreateBinding
-    private lateinit var viewModel: TodoCreateViewModel
+    private val viewModel: TodoCreateViewModel by viewModel()
     private lateinit var app: Application
 
     override fun onResume() {
@@ -98,10 +99,10 @@ class TodoCreateFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTodoCreateBinding.inflate(inflater)
         binding.lifecycleOwner = this
+        binding.viewModel = viewModel
         app = requireNotNull(activity).application
 
         initBackPressed()
-        initViewModel()
         initListeners()
         initObservers()
         initFocus()
@@ -113,15 +114,6 @@ class TodoCreateFragment: Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             viewModel.backReady()
         }
-    }
-
-    private fun initViewModel() {
-        val tasks = TodoCreateFragmentArgs.fromBundle(requireArguments()).tasks
-        val dataSourceDao = AppDatabase.getInstance(requireContext()).todoDatabaseDao
-        val todoRepository = TodoRepository(AppDatabase.getInstance(requireContext()))
-        val viewModelFactory = TodoCreateViewModelFactory(app, todoRepository, tasks)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(TodoCreateViewModel::class.java)
-        binding.viewModel = viewModel
     }
 
     private fun initListeners() {

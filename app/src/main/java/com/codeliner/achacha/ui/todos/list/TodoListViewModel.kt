@@ -24,8 +24,6 @@ class TodoListViewModel(
 
     val todos = todoRepository.readAllOrderedById()
 
-    var todosSwitch = true
-
     val tasks = Transformations.map(todos) {
         it.size
     }

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.codeliner.achacha.ui.accounts.list.AccountListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import timber.log.Timber
@@ -24,8 +25,4 @@ class MainViewModel(
     fun setBottomNavigationShowing(status: Boolean) {
         _isBottomNavigationShowing.value = status
     }
-}
-
-val mainViewModel = module {
-    viewModel { MainViewModel(get()) }
 }

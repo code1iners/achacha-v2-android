@@ -12,7 +12,7 @@ import kotlinx.coroutines.*
 class TodoCreateViewModel(
     app: Application,
     private val todoRepository: TodoRepository,
-    private val tasks: Int
+//    private val tasks: Int
 ): AndroidViewModel(app) {
 
     private val viewModelJob = Job()

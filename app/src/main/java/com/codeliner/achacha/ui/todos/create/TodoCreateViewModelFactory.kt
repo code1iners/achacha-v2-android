@@ -8,14 +8,14 @@ import com.codeliner.achacha.data.todos.TodoRepository
 class TodoCreateViewModelFactory(
     private val app: Application,
     private val todoRepository: TodoRepository,
-    private val tasks: Int
+//    private val tasks: Int
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TodoCreateViewModel::class.java)) {
             return TodoCreateViewModel(
                 app,
                 todoRepository,
-                tasks
+//                tasks
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

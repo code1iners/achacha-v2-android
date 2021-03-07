@@ -23,6 +23,7 @@ import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.log
 import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TodoListFragment: Fragment()
     , TodoClickListener
@@ -30,8 +31,7 @@ class TodoListFragment: Fragment()
 {
 
     private lateinit var binding: FragmentTodoListBinding
-    private lateinit var viewModelFactory: TodoListViewModelFactory
-    private lateinit var viewModel: TodoListViewModel
+    private val viewModel: TodoListViewModel by viewModel()
 
     // note. adapters
     private lateinit var todoAdapter: TodoAdapter
@@ -79,10 +79,10 @@ class TodoListFragment: Fragment()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentTodoListBinding.inflate(inflater)
+        binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         initAnimations()
-        initViewModel()
         initAdapters()
         initObservers()
 
@@ -109,16 +109,6 @@ class TodoListFragment: Fragment()
             duration = Const.animDefaultDuration
             interpolator = AccelerateDecelerateInterpolator()
         }
-    }
-
-    private fun initViewModel() {
-        val app = requireNotNull(activity).application
-        val todoDatabaseDao = AppDatabase.getInstance(app.applicationContext).todoDatabaseDao
-        val todoRepository = TodoRepository(AppDatabase.getInstance(app.applicationContext))
-        viewModelFactory = TodoListViewModelFactory(app, todoRepository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(TodoListViewModel::class.java)
-        // note. assignment view model into layout
-        binding.viewModel = viewModel
     }
 
     private fun initAdapters() {
