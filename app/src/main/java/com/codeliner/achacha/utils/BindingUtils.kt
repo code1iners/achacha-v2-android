@@ -9,6 +9,7 @@ import com.codeliner.achacha.data.todos.Todo
 import com.example.helpers.CreatedParser
 import com.example.helpers.ui.getMoveInRight
 import com.example.helpers.ui.getMoveOutLeft
+import timber.log.Timber
 
 @BindingAdapter("todoWorkString")
 fun TextView.setTodoWork(item: Todo?) {
@@ -74,6 +75,7 @@ fun TextView.setTextDarkWhenFinished(item: Todo?) {
 
 @BindingAdapter("setVisible")
 fun View.setVisible(status: Boolean) {
+//    Timber.w("status: $status")
     when (status) {
         true -> this.visibility = View.VISIBLE
         false -> this.visibility = View.GONE
@@ -82,7 +84,7 @@ fun View.setVisible(status: Boolean) {
 
 @BindingAdapter("setAnimation")
 fun View.setAnimation(status: Boolean) {
-    val defaultDuration = this.resources.getInteger(R.integer.default_animation_duration)
+    val defaultDuration = this.resources.getInteger(R.integer.animation_duration_default)
     when (status) {
         true -> {
             this.startAnimation(this.context.getMoveInRight().apply {

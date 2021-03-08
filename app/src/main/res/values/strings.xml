@@ -28,5 +28,6 @@
     <string name="completed">Completed</string>
     <string name="error_message_text_input_empty">Enter the work do you want..</string>
     <string name="is_finished">IsFinished</string>
-    <integer name="default_animation_duration">1000</integer>
+    <integer name="animation_duration_short">300</integer>
+    <integer name="animation_duration_default">1000</integer>
 </resources>

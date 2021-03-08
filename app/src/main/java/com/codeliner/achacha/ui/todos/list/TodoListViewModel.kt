@@ -62,16 +62,16 @@ class TodoListViewModel(
         _onNavigateToCreateTodoReady.value = false
     }
 
-    fun switchCollapse() {
-        when (isFavCollapsed.value) {
-            true -> {
-                _isFavCollapsed.value = false
-            }
-            false -> {
-                _isFavCollapsed.value = true
-            }
-        }
-    }
+//    fun switchCollapse() {
+//        when (isFavCollapsed.value) {
+//            true -> {
+//                _isFavCollapsed.value = false
+//            }
+//            false -> {
+//                _isFavCollapsed.value = true
+//            }
+//        }
+//    }
     
     fun onClearTodos() {
         viewModelScope.launch {

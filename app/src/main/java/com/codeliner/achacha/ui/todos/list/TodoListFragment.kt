@@ -19,11 +19,13 @@ import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.data.AppDatabase
 import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.mains.MainActivity
+import com.codeliner.achacha.mains.MainViewModel
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.log
 import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class TodoListFragment: Fragment()
     , TodoClickListener
@@ -32,6 +34,7 @@ class TodoListFragment: Fragment()
 
     private lateinit var binding: FragmentTodoListBinding
     private val viewModel: TodoListViewModel by viewModel()
+    private val mainViewModel: MainViewModel by viewModel()
 
     // note. adapters
     private lateinit var todoAdapter: TodoAdapter
@@ -119,79 +122,84 @@ class TodoListFragment: Fragment()
     }
 
     private fun initObservers() {
-        // note. fab main
-        observeFavMain()
-        // note. fab menu 1
-        observeFavOne()
-        // note. fab menu test
-        observeFabTest()
+        observeFabs()
         // note. todos
         observeTodos()
     }
 
+    private fun observeFabs() {
+        // note. fab main
+//        observeFavMain()
+        // note. fab menu 1
+        observeFavOne()
+        // note. fab menu test
+//        observeFabTest()
+    }
+//
     private fun observeFavMain() {
-        val cs = ConstraintSet()
-        cs.clone(binding.fragmentTodoListFabList)
-        viewModel.isFavCollapsed.observe(viewLifecycleOwner, Observer { isCollapsed ->
-            if (!isCollapsed) {
-                cs.connect(binding.fragmentTodoListFabCreate.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabMain.id, ConstraintSet.TOP)
-                cs.connect(binding.fragmentTodoListFabClear.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabCreate.id, ConstraintSet.TOP)
-//                cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabClear.id, ConstraintSet.TOP)
-
-                binding.fragmentTodoListFabMain.startAnimation(animRotateRight)
-                binding.fragmentTodoListFabCreate.startAnimation(animShow)
-                binding.fragmentTodoListFabClear.startAnimation(animShow)
-//                binding.fragmentTodoListFabTest.startAnimation(animShow)
-
-            } else {
-                cs.connect(binding.fragmentTodoListFabCreate.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
-                cs.connect(binding.fragmentTodoListFabClear.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
-//                cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
-
-                binding.fragmentTodoListFabMain.startAnimation(animRotateLeft)
-                binding.fragmentTodoListFabCreate.startAnimation(animHide)
-                binding.fragmentTodoListFabClear.startAnimation(animHide)
-//                binding.fragmentTodoListFabTest.startAnimation(animHide)
-            }
-
-            TransitionManager.beginDelayedTransition(binding.fragmentTodoListFabList, transition)
-            cs.applyTo(binding.fragmentTodoListFabList)
-        })
+//        val cs = ConstraintSet()
+//        cs.clone(binding.fragmentTodoListFabList)
+//        viewModel.isFavCollapsed.observe(viewLifecycleOwner, Observer { isCollapsed ->
+//            if (!isCollapsed) {
+//                cs.connect(binding.fragmentTodoListFabCreate.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabMain.id, ConstraintSet.TOP)
+//                cs.connect(binding.fragmentTodoListFabClear.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabCreate.id, ConstraintSet.TOP)
+////                cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabClear.id, ConstraintSet.TOP)
+//
+//                binding.fragmentTodoListFabMain.startAnimation(animRotateRight)
+//                binding.fragmentTodoListFabCreate.startAnimation(animShow)
+//                binding.fragmentTodoListFabClear.startAnimation(animShow)
+////                binding.fragmentTodoListFabTest.startAnimation(animShow)
+//
+//            } else {
+//                cs.connect(binding.fragmentTodoListFabCreate.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
+//                cs.connect(binding.fragmentTodoListFabClear.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
+////                cs.connect(binding.fragmentTodoListFabTest.id, ConstraintSet.BOTTOM, binding.fragmentTodoListFabList.id, ConstraintSet.BOTTOM)
+//
+//                binding.fragmentTodoListFabMain.startAnimation(animRotateLeft)
+//                binding.fragmentTodoListFabCreate.startAnimation(animHide)
+//                binding.fragmentTodoListFabClear.startAnimation(animHide)
+////                binding.fragmentTodoListFabTest.startAnimation(animHide)
+//            }
+//
+//            TransitionManager.beginDelayedTransition(binding.fragmentTodoListFabList, transition)
+//            cs.applyTo(binding.fragmentTodoListFabList)
+//        })
     }
-
+//
     private fun observeFavOne() {
-        viewModel.onNavigateToCreateTodoReady.observe(viewLifecycleOwner, Observer { isReady ->
-            if (isReady) {
-                // note. update ui
-                MainActivity.onBottomNavigationHide()
-                binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderHide)
-                binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderHide)
-                binding.fragmentTodoListTodoList.startAnimation(animHide)
-                binding.fragmentTodoListFabList.startAnimation(animHide)
 
-                viewModel.navigateToCreateTodoReady()
-                viewModel.navigateToCreateTodoComplete()
-            }
-        })
-
-        viewModel.onNavigateToCreateTodoProcess.observe(viewLifecycleOwner, Observer { start ->
-            if (start) {
-
-                findNavController().navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value ?: -1))
-
-                viewModel.navigateToCreateTodoProcessComplete()
-            }
-        })
+//        viewModel.onNavigateToCreateTodoReady.observe(viewLifecycleOwner, Observer { isReady ->
+//            if (isReady) {
+//                // note. update ui
+//                MainActivity.onBottomNavigationHide()
+//                binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderHide)
+//                binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderHide)
+//                binding.fragmentTodoListTodoList.startAnimation(animHide)
+////                binding.fragmentTodoListFabList.startAnimation(animHide)
+//
+//                viewModel.navigateToCreateTodoReady()
+//                viewModel.navigateToCreateTodoComplete()
+//            }
+//        })
+//
+//        viewModel.onNavigateToCreateTodoProcess.observe(viewLifecycleOwner, Observer { start ->
+//            if (start) {
+//
+//                findNavController().navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value ?: -1))
+//
+//                viewModel.navigateToCreateTodoProcessComplete()
+//            }
+//        })
     }
-
-    private fun observeFabTest() {
-        viewModel.onTestTrigger.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                context?.toastForShort("Test button clicked!")
-                viewModel.onTestComplete()
-            }
-        })
-    }
+//
+//    private fun observeFabTest() {
+//        viewModel.onTestTrigger.observe(viewLifecycleOwner, Observer {
+//            if (it) {
+//                context?.toastForShort("Test button clicked!")
+//                viewModel.onTestComplete()
+//            }
+//        })
+//    }
 
     private fun observeTodos() {
         viewModel.todos.observe(viewLifecycleOwner, Observer { todos ->

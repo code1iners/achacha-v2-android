@@ -18,6 +18,7 @@ import com.codeliner.achacha.databinding.FragmentTodoCreateBinding
 import com.codeliner.achacha.data.AppDatabase
 import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.mains.MainActivity
+import com.codeliner.achacha.mains.MainViewModel
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.KeyboardManager
 import com.example.helpers.toastForShort
@@ -33,6 +34,7 @@ class TodoCreateFragment: Fragment() {
 
     private lateinit var binding: FragmentTodoCreateBinding
     private val viewModel: TodoCreateViewModel by viewModel()
+    private val mainViewModel: MainViewModel by viewModel()
     private lateinit var app: Application
 
     override fun onResume() {
@@ -259,7 +261,8 @@ class TodoCreateFragment: Fragment() {
     }
 
     private fun back() {
-        MainActivity.onBottomNavigationShow()
+        mainViewModel.setBottomNavigationShowing(true)
+//        MainActivity.onBottomNavigationShow()
         this@TodoCreateFragment.findNavController().popBackStack()
     }
 }
