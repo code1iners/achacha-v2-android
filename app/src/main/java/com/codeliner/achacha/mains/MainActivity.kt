@@ -24,7 +24,14 @@ import androidx.transition.TransitionManager
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.ActivityMainBinding
 import com.codeliner.achacha.ui.todos.list.TodoListFragmentDirections
+import com.codeliner.achacha.ui.todos.list.TodoListViewModel
 import com.codeliner.achacha.utils.Const
+import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CLEAR
+import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CREATE
+import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_TEST
+import com.codeliner.achacha.utils.Const.ACTION_TODO_CLEAR
+import com.codeliner.achacha.utils.Const.ACTION_TODO_CREATE
+import com.codeliner.achacha.utils.Const.ACTION_TODO_TEST
 import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager
 import com.example.helpers.ui.getFadeIn
@@ -40,10 +47,13 @@ class MainActivity : AppCompatActivity()
 
     private lateinit var nc: NavController
     private val viewModel: MainViewModel by viewModel()
+    private val todoListViewModel: TodoListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initialize()
+        // note. for observers
+        observers()
     }
 
     private fun initialize() {
@@ -67,14 +77,18 @@ class MainActivity : AppCompatActivity()
         initAnimations()
         // note. for bottom navigation with nav controller
         initBottomNavi()
-        initObservers()
     }
 
-    private fun initObservers() {
+    private fun initBottomNavi() {
+        binding.activityMainBottomNav.setupWithNavController(nc)
+        binding.activityMainBottomNav.setOnNavigationItemReselectedListener(this)
+    }
+
+    private fun observers() {
         // note. for fab buttons
         observeFabs()
 
-        val d = resources.getInteger(R.integer.animation_duration_short).toLong()
+        val delayShort = resources.getInteger(R.integer.animation_duration_short).toLong()
         // note. for bottom nav position
         viewModel.currentBottomNavPosition.observe(this, Observer { position ->
             Timber.d("position: $position")
@@ -105,18 +119,11 @@ class MainActivity : AppCompatActivity()
         })
     }
 
-    private fun initBottomNavi() {
-        binding.activityMainBottomNav.setupWithNavController(nc)
-        binding.activityMainBottomNav.setOnNavigationItemReselectedListener(this)
-    }
-
     private fun observeFabs() {
         // note. fab main
         observeFavMain()
-        // note. fab menu 1
-        observeFavOne()
-        // note. fab menu test
-        observeFabTest()
+        // note. fab actions
+        observeFavActions()
     }
 
     private fun observeFavMain() {
@@ -149,38 +156,37 @@ class MainActivity : AppCompatActivity()
         })
     }
 
-    private fun observeFavOne() {
-//        viewModel.onNavigateToCreateTodoReady.observe(viewLifecycleOwner, Observer { isReady ->
-//            if (isReady) {
-//                // note. update ui
-//                MainActivity.onBottomNavigationHide()
-//                binding.activityMainCalendarContainer.startAnimation(animHeaderHide)
-//                binding.activityMainCalendarDividerBottom.startAnimation(animHeaderHide)
-//                binding.activityMainTodoList.startAnimation(animHide)
-//                binding.activityMainFabList.startAnimation(animHide)
-//
-//                viewModel.navigateToCreateTodoReady()
-//                viewModel.navigateToCreateTodoComplete()
-//            }
-//        })
-//
-//        viewModel.onNavigateToCreateTodoProcess.observe(viewLifecycleOwner, Observer { start ->
-//            if (start) {
-//
-//                findNavController().navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value ?: -1))
-//
-//                viewModel.navigateToCreateTodoProcessComplete()
-//            }
-//        })
-    }
+    private fun observeFavActions() {
+        viewModel.onClickCreateAction.observe(this, Observer {
+            it?.let { action ->
+                Timber.d("action: $action")
+                when (action) {
+                    ACTION_TODO_CREATE -> {
+                        TodoListViewModel.todoCreateJob()
+                    }
 
-    private fun observeFabTest() {
-//        viewModel.onTestTrigger.observe(viewLifecycleOwner, Observer {
-//            if (it) {
-//                context?.toastForShort("Test button clicked!")
-//                viewModel.onTestComplete()
-//            }
-//        })
+                    ACTION_TODO_CLEAR -> {
+                        TodoListViewModel.todoClearJob()
+                    }
+
+                    ACTION_TODO_TEST -> {
+                        TodoListViewModel.todoTestJob()
+                    }
+
+                    ACTION_ACCOUNT_CREATE -> {
+
+                    }
+
+                    ACTION_ACCOUNT_CLEAR -> {
+
+                    }
+
+                    ACTION_ACCOUNT_TEST -> {
+
+                    }
+                }
+            }
+        })
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
@@ -189,7 +195,6 @@ class MainActivity : AppCompatActivity()
 
     companion object {
         private lateinit var binding: ActivityMainBinding
-        private lateinit var viewModel: MainViewModel
         private var app: Application? = null
         private lateinit var animBottomNavHide: Animation
         private lateinit var animBottomNavShow: Animation
@@ -228,18 +233,6 @@ class MainActivity : AppCompatActivity()
                     interpolator = AccelerateDecelerateInterpolator()
                 }
             }
-        }
-
-        fun onBottomNavigationShow() {
-            binding.activityMainBottomNav.startAnimation(animShow)
-            binding.activityMainBottomNav.visibility = View.VISIBLE
-            viewModel.setBottomNavigationShowing(true)
-        }
-
-        fun onBottomNavigationHide() {
-            binding.activityMainBottomNav.startAnimation(animHide)
-            binding.activityMainBottomNav.visibility = View.GONE
-            viewModel.setBottomNavigationShowing(false)
         }
     }
 }

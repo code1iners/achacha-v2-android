@@ -9,12 +9,42 @@ import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.Date
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class TodoListViewModel(
     app: Application,
     private val todoRepository: TodoRepository
 ): AndroidViewModel(app) {
+
+    companion object {
+        private val _onTodoCreate = MutableLiveData<Boolean>()
+        val onTodoCreate: LiveData<Boolean> get() = _onTodoCreate
+        fun todoCreateJob() {
+            _onTodoCreate.value = true
+        }
+        fun todoCreateJobComplete() {
+            _onTodoCreate.value = false
+        }
+
+        private val _onTodoClear = MutableLiveData<Boolean>()
+        val onTodoClear: LiveData<Boolean> get() = _onTodoClear
+        fun todoClearJob() {
+            _onTodoClear.value = true
+        }
+        fun todoClearJobComplete() {
+            _onTodoClear.value = false
+        }
+
+        private val _onTodoTest = MutableLiveData<Boolean>()
+        val onTodoTest: LiveData<Boolean> get() = _onTodoTest
+        fun todoTestJob() {
+            _onTodoTest.value = true
+        }
+        fun todoTestJobComplete() {
+            _onTodoTest.value = false
+        }
+    }
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -73,7 +103,7 @@ class TodoListViewModel(
 //        }
 //    }
     
-    fun onClearTodos() {
+    fun clearTodos() {
         viewModelScope.launch {
             clear()
         }
@@ -121,18 +151,6 @@ class TodoListViewModel(
         withContext(Dispatchers.IO) {
             todoRepository.deleteTodoById(todo)
         }
-    }
-
-    private val _onTestTrigger = MutableLiveData<Boolean>()
-    val onTestTrigger: LiveData<Boolean> get() = _onTestTrigger
-    fun onTestStart() {
-        uiScope.launch {
-
-            _onTestTrigger.value = true
-        }
-    }
-    fun onTestComplete() {
-        _onTestTrigger.value = false
     }
 
     override fun onCleared() {

@@ -5,6 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.codeliner.achacha.ui.accounts.list.AccountListViewModel
+import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CLEAR
+import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CREATE
+import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_TEST
+import com.codeliner.achacha.utils.Const.ACTION_TODO_CLEAR
+import com.codeliner.achacha.utils.Const.ACTION_TODO_CREATE
+import com.codeliner.achacha.utils.Const.ACTION_TODO_TEST
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -45,6 +51,53 @@ class MainViewModel(
             false -> {
                 _isFavCollapsed.value = true
             }
+        }
+    }
+    
+    private val _onClickCreateAction = MutableLiveData<String>()
+    val onClickCreateAction: LiveData<String> get() = _onClickCreateAction
+    
+    fun favAction(action: String) {
+        when (currentBottomNavPosition.value) {
+            0 -> {
+                when (action) {
+                    "create" -> {
+                        _onClickCreateAction.value = ACTION_TODO_CREATE
+                    }
+
+                    "clear" -> {
+                        _onClickCreateAction.value = ACTION_TODO_CLEAR
+                    }
+
+                    "test" -> {
+                        _onClickCreateAction.value = ACTION_TODO_TEST
+                    }
+                }
+            }
+
+            1 -> {
+                when (action) {
+                    "create" -> {
+                        _onClickCreateAction.value = ACTION_ACCOUNT_CREATE
+                    }
+
+                    "clear" -> {
+                        _onClickCreateAction.value = ACTION_ACCOUNT_CLEAR
+                    }
+
+                    "test" -> {
+                        _onClickCreateAction.value = ACTION_ACCOUNT_TEST
+                    }
+                }
+            }
+        }
+        _onClickCreateAction.value = null
+    }
+
+    fun favClear() {
+        when (currentBottomNavPosition.value) {
+            0 -> {}
+            1 -> {}
         }
     }
 
