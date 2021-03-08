@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.utils.Const
+import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import kotlinx.coroutines.*
 
 class TodoCreateViewModel(
@@ -75,7 +76,7 @@ class TodoCreateViewModel(
     fun backReady() {
         uiScope.launch {
             _onBackReady.value = true
-            delay(Const.animDefaultDuration + 100L)
+            delay(ANIMATION_DURATION_SHORT + 100L)
             backReadyComplete()
         }
     }
@@ -98,6 +99,6 @@ class TodoCreateViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        viewModelJob.cancel()
+        uiScope.cancel()
     }
 }

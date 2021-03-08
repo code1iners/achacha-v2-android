@@ -21,6 +21,7 @@ import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.mains.MainViewModel
 import com.codeliner.achacha.utils.Const
+import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import com.codeliner.achacha.utils.log
 import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager
@@ -60,7 +61,7 @@ class TodoListFragment: Fragment()
         // note. body
         binding.fragmentTodoListTodoList.startAnimation(
                 AnimationManager.getFadeOut(requireContext()).apply {
-                    duration = Const.animDefaultDuration
+                    duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
                 })
     }
@@ -75,7 +76,7 @@ class TodoListFragment: Fragment()
         // note. body
         binding.fragmentTodoListTodoList.startAnimation(
                 AnimationManager.getFadeIn(requireContext()).apply {
-                    duration = Const.animDefaultDuration
+                    duration = Const.ANIMATION_DURATION_SHORT
                     fillAfter = true
                 })
     }
@@ -100,16 +101,16 @@ class TodoListFragment: Fragment()
         animRotateRight = AnimationManager.getRotateRight45(requireContext())
 
         animHide = AnimationManager.getFadeOut(requireContext()).apply {
-            duration = Const.animDefaultDuration
+            duration = Const.ANIMATION_DURATION_SHORT
             fillAfter = true
         }
         animShow = AnimationManager.getFadeIn(requireContext()).apply {
-            duration = Const.animDefaultDuration
+            duration = Const.ANIMATION_DURATION_SHORT
             fillAfter = true
         }
 
         transition = AutoTransition().apply {
-            duration = Const.animDefaultDuration
+            duration = Const.ANIMATION_DURATION_SHORT
             interpolator = AccelerateDecelerateInterpolator()
         }
     }

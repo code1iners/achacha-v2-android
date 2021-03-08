@@ -72,7 +72,7 @@ class TodoListViewModel(
     fun navigateToCreateTodoReady() {
         uiScope.launch {
             // note. delay for animations in ui
-            delay(Const.animDefaultDuration + 100L)
+            delay(Const.ANIMATION_DURATION_SHORT + 100L)
             navigateToCreateTodoProcess()
         }
     }

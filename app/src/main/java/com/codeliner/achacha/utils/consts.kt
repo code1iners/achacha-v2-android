@@ -2,7 +2,8 @@ package com.codeliner.achacha.utils
 
 object Const {
     const val WORK = "WORK"
-    const val animDefaultDuration = 300L
+    const val ANIMATION_DURATION_DEFAULT = 1000L
+    const val ANIMATION_DURATION_SHORT = 300L
     const val ERROR_EMPTY = "EMPTY"
     const val ACTION_TODO_CREATE = "TODO_CREATE"
     const val ACTION_TODO_CLEAR = "TODO_CLEAR"

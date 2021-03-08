@@ -13,6 +13,8 @@ import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_TEST
 import com.codeliner.achacha.utils.Const.ACTION_TODO_CLEAR
 import com.codeliner.achacha.utils.Const.ACTION_TODO_CREATE
 import com.codeliner.achacha.utils.Const.ACTION_TODO_TEST
+import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_DEFAULT
+import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -27,36 +29,50 @@ class MainViewModel(
         private val viewModelJob = Job()
         private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-        private val _isFabShowing = MutableLiveData<Boolean>()
-        val isFabShowing: LiveData<Boolean> get() = _isFabShowing
+        // note. fabs
+        private val _onFabAnimation = MutableLiveData<Boolean>()
+        val onFabAnimation: LiveData<Boolean> get() = _onFabAnimation
 
-        fun setFabShowingUI(status: Boolean) {
+        fun setFabAnimation(status: Boolean, duration: Long) {
             uiScope.launch {
-                _isFabShowing.value = status
-                delay(300)
-                setFabShowingProcess(status)
+                _onFabAnimation.value = status
+                delay(duration)
+                setFabVisibility(status)
             }
         }
 
-        private val _isFabShowingProcess = MutableLiveData<Boolean>()
-        val isFabShowingProcess: LiveData<Boolean> get() = _isFabShowingProcess
-        private fun setFabShowingProcess(status: Boolean) {
-            _isFabShowingProcess.value = status
+        private val _onFabVisibility = MutableLiveData<Boolean>()
+        val onFabVisibility: LiveData<Boolean> get() = _onFabVisibility
+        private fun setFabVisibility(status: Boolean) {
+            _onFabVisibility.value = status
         }
-        fun setFabShowingProcessComplete() {
-            _isFabShowingProcess.value = null
+        fun setFabVisibilityComplete() {
+            _onFabVisibility.value = null
+        }
+
+        // note. bottom navigation
+        private val _onBottomNavigationAnimation = MutableLiveData<Boolean>()
+        val onBottomNavigationAnimation: LiveData<Boolean> get() = _onBottomNavigationAnimation
+        fun setBottomNavigationAnimation(status: Boolean, duration: Long) {
+            uiScope.launch {
+                _onBottomNavigationAnimation.value = status
+                delay(duration)
+                setBottomNavigationVisibility(status)
+            }
+        }
+
+        private val _onBottomNavigationVisibility = MutableLiveData<Boolean>()
+        val onBottomNavigationVisibility: LiveData<Boolean> get() = _onBottomNavigationVisibility
+        private fun setBottomNavigationVisibility(status: Boolean) {
+            _onBottomNavigationVisibility.value = status
+        }
+        fun setBottomNavigationVisibilityComplete() {
+            _onBottomNavigationVisibility.value = null
         }
     }
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    private val _isBottomNavigationShowing = MutableLiveData(true)
-    val isBottomNavigationShowing: LiveData<Boolean> get() = _isBottomNavigationShowing
-
-    fun setBottomNavigationShowing(status: Boolean) {
-        _isBottomNavigationShowing.value = status
-    }
 
     private val _currentBottomNavPosition = MutableLiveData(0)
     val currentBottomNavPosition: LiveData<Int> get() = _currentBottomNavPosition
@@ -77,6 +93,10 @@ class MainViewModel(
                 _isFavCollapsed.value = true
             }
         }
+    }
+
+    fun setFabCollapse(status: Boolean) {
+        _isFavCollapsed.value = status
     }
     
     private val _onClickCreateAction = MutableLiveData<String>()

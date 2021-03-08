@@ -20,6 +20,7 @@ import com.codeliner.achacha.data.todos.TodoRepository
 import com.codeliner.achacha.mains.MainActivity
 import com.codeliner.achacha.mains.MainViewModel
 import com.codeliner.achacha.utils.Const
+import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import com.codeliner.achacha.utils.KeyboardManager
 import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager
@@ -58,19 +59,19 @@ class TodoCreateFragment: Fragment() {
         // note. header
         binding.fragmentTodoCreateHeaderContainer.startAnimation(
                 AnimationManager.getHeaderHide(requireContext()).apply {
-                    duration = Const.animDefaultDuration
+                    duration = Const.ANIMATION_DURATION_SHORT
                     fillAfter = true
                 })
         // note. header
         binding.fragmentTodoCreateHeaderDividerBottom.startAnimation(
                 AnimationManager.getHeaderHide(requireContext()).apply {
-                    duration = Const.animDefaultDuration
+                    duration = Const.ANIMATION_DURATION_SHORT
                     fillAfter = true
                 })
         // note. body
         binding.fragmentTodoCreateBodyContainer.startAnimation(
                 AnimationManager.getFadeOut(requireContext()).apply {
-                    duration = Const.animDefaultDuration
+                    duration = Const.ANIMATION_DURATION_SHORT
                     fillAfter = true
                 }
         )
@@ -80,19 +81,19 @@ class TodoCreateFragment: Fragment() {
         // note. header
         binding.fragmentTodoCreateHeaderContainer.startAnimation(
                 AnimationManager.getHeaderShow(requireContext()).apply {
-                    duration = Const.animDefaultDuration
+                    duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
                 })
         // note. header
         binding.fragmentTodoCreateHeaderDividerBottom.startAnimation(
                 AnimationManager.getHeaderShow(requireContext()).apply {
-                    duration = Const.animDefaultDuration
+                    duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
                 })
         // note. body
         binding.fragmentTodoCreateBodyContainer.startAnimation(
                 AnimationManager.getFadeIn(requireContext()).apply {
-                    duration = Const.animDefaultDuration
+                    duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
                 }
         )
@@ -262,9 +263,9 @@ class TodoCreateFragment: Fragment() {
 
     private fun back() {
         // note. fabs turn on
-        MainViewModel.setFabShowingUI(true)
+        MainViewModel.setFabAnimation(true, ANIMATION_DURATION_SHORT)
         // note. bottom nav turn on
-
+        MainViewModel.setBottomNavigationAnimation(true, ANIMATION_DURATION_SHORT)
         // note. back
         this@TodoCreateFragment.findNavController().popBackStack()
     }

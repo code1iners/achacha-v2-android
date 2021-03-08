@@ -32,6 +32,8 @@ import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_TEST
 import com.codeliner.achacha.utils.Const.ACTION_TODO_CLEAR
 import com.codeliner.achacha.utils.Const.ACTION_TODO_CREATE
 import com.codeliner.achacha.utils.Const.ACTION_TODO_TEST
+import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_DEFAULT
+import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import com.example.helpers.toastForShort
 import com.example.helpers.ui.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -85,48 +87,8 @@ class MainActivity : AppCompatActivity()
     private fun observers() {
         // note. for fab buttons
         observeFabs()
-
-        val delayShort = resources.getInteger(R.integer.animation_duration_short).toLong()
-        // note. for bottom nav position
-        viewModel.currentBottomNavPosition.observe(this, Observer { position ->
-            Timber.d("position: $position")
-            when (position) {
-                0 -> {
-
-                }
-
-                1 -> {
-
-                }
-            }
-
-            closeFabs()
-        })
-
-        // note. for bottom nav
-        viewModel.isBottomNavigationShowing.observe(this, Observer { isShowing ->
-            when (isShowing) {
-                true -> {
-                    binding.activityMainBottomNav.startAnimation(
-                            this.getBottomNavShow()
-                    )
-                    binding.activityMainBottomNav.visibility = View.VISIBLE
-                }
-
-                false -> {
-                    binding.activityMainBottomNav.startAnimation(
-                            this.getBottomNavHide()
-                    )
-                    binding.activityMainBottomNav.visibility = View.GONE
-                }
-            }
-        })
-    }
-
-    private fun closeFabs() {
-        if (viewModel.isFavCollapsed.value == false) {
-            viewModel.switchCollapse()
-        }
+        // note. for bottom navigation
+        observeBottomNav()
     }
 
     private fun observeFabs() {
@@ -140,6 +102,7 @@ class MainActivity : AppCompatActivity()
         val cs = ConstraintSet()
         cs.clone(binding.activityMainFabContainer)
         viewModel.isFavCollapsed.observe(this, Observer { isCollapsed ->
+            Timber.d("isCollapsed: $isCollapsed")
             if (!isCollapsed) {
                 cs.connect(binding.activityMainFabCreate.id, ConstraintSet.BOTTOM, binding.activityMainFabMain.id, ConstraintSet.TOP)
                 cs.connect(binding.activityMainFabClear.id, ConstraintSet.BOTTOM, binding.activityMainFabCreate.id, ConstraintSet.TOP)
@@ -165,14 +128,13 @@ class MainActivity : AppCompatActivity()
             cs.applyTo(binding.activityMainFabContainer)
         })
 
-        MainViewModel.isFabShowing.observe(this, Observer {
+        MainViewModel.onFabAnimation.observe(this, Observer {
             it?.let { isShowing ->
-                val d = resources.getInteger(R.integer.animation_duration_short).toLong()
                 when (isShowing) {
                     true -> {
                         binding.activityMainFabContainer.startAnimation(
                                 this.getFadeIn().apply {
-                                    duration = d
+                                    duration = ANIMATION_DURATION_SHORT
                                     fillAfter = true
                                 })
                     }
@@ -180,7 +142,7 @@ class MainActivity : AppCompatActivity()
                     false -> {
                         binding.activityMainFabContainer.startAnimation(
                                 this.getFadeOut().apply {
-                                    duration = d
+                                    duration = ANIMATION_DURATION_SHORT
                                     fillAfter = true
                                 })
                     }
@@ -188,7 +150,7 @@ class MainActivity : AppCompatActivity()
             }
         })
 
-        MainViewModel.isFabShowingProcess.observe(this, Observer {
+        MainViewModel.onFabVisibility.observe(this, Observer {
             it?.let { status ->
                 when (status) {
                     true -> {
@@ -198,7 +160,7 @@ class MainActivity : AppCompatActivity()
                         binding.activityMainFabContainer.visibility = View.GONE
                     }
                 }
-                MainViewModel.setFabShowingProcessComplete()
+                MainViewModel.setFabVisibilityComplete()
             }
         })
     }
@@ -206,13 +168,14 @@ class MainActivity : AppCompatActivity()
     private fun observeFavActions() {
         viewModel.onClickCreateAction.observe(this, Observer {
             it?.let { action ->
-                Timber.d("action: $action")
+//                Timber.d("action: $action")
                 when (action) {
                     ACTION_TODO_CREATE -> {
-                        closeFabs()
-                        // note. fab
-                        MainViewModel.setFabShowingUI(false)
-
+                        // note. update fab ui
+                        MainViewModel.setFabAnimation(false, ANIMATION_DURATION_SHORT)
+                        // note. bottom nav turn off
+                        MainViewModel.setBottomNavigationAnimation(false, ANIMATION_DURATION_SHORT)
+                        // note. move navigation
                         TodoListViewModel.todoCreateJob()
                     }
 
@@ -236,6 +199,62 @@ class MainActivity : AppCompatActivity()
 
                     }
                 }
+            }
+        })
+    }
+
+    private fun observeBottomNav() {
+        val delayShort = resources.getInteger(R.integer.animation_duration_short).toLong()
+        // note. for bottom nav position
+        viewModel.currentBottomNavPosition.observe(this, Observer { position ->
+//            Timber.d("position: $position")
+            when (position) {
+                0 -> {
+
+                }
+
+                1 -> {
+
+                }
+            }
+
+        })
+
+        // note. for bottom nav
+        MainViewModel.onBottomNavigationAnimation.observe(this, Observer { isShowing ->
+            when (isShowing) {
+                true -> {
+                    binding.activityMainBottomNav.startAnimation(
+                            this.getBottomNavShow().apply {
+                                duration = ANIMATION_DURATION_SHORT
+                                fillAfter = true
+                            }
+                    )
+                }
+
+                false -> {
+                    binding.activityMainBottomNav.startAnimation(
+                            this.getBottomNavHide().apply {
+                                duration = ANIMATION_DURATION_SHORT
+                                fillAfter = true
+                            }
+                    )
+                }
+            }
+        })
+
+        MainViewModel.onBottomNavigationVisibility.observe(this, Observer {
+            it?.let { visible ->
+                when (visible) {
+                    true -> {
+                        binding.activityMainBottomNav.visibility = View.VISIBLE
+                    }
+
+                    false -> {
+                        binding.activityMainBottomNav.visibility = View.GONE
+                    }
+                }
+                MainViewModel.setBottomNavigationVisibilityComplete()
             }
         })
     }
@@ -271,16 +290,16 @@ class MainActivity : AppCompatActivity()
                 animRotateRight = AnimationManager.getRotateRight45(it)
 
                 animHide = AnimationManager.getFadeOut(it).apply {
-                    duration = Const.animDefaultDuration
+                    duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
                 }
                 animShow = AnimationManager.getFadeIn(it).apply {
-                    duration = Const.animDefaultDuration
+                    duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
                 }
 
                 transition = AutoTransition().apply {
-                    duration = Const.animDefaultDuration
+                    duration = ANIMATION_DURATION_SHORT
                     interpolator = AccelerateDecelerateInterpolator()
                 }
             }
