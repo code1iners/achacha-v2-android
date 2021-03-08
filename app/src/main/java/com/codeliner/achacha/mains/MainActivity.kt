@@ -207,7 +207,7 @@ class MainActivity : AppCompatActivity()
         val delayShort = resources.getInteger(R.integer.animation_duration_short).toLong()
         // note. for bottom nav position
         viewModel.currentBottomNavPosition.observe(this, Observer { position ->
-//            Timber.d("position: $position")
+            Timber.d("position: $position")
             when (position) {
                 0 -> {
 
@@ -217,7 +217,6 @@ class MainActivity : AppCompatActivity()
 
                 }
             }
-
         })
 
         // note. for bottom nav
