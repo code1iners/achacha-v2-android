@@ -33,9 +33,7 @@ import com.codeliner.achacha.utils.Const.ACTION_TODO_CLEAR
 import com.codeliner.achacha.utils.Const.ACTION_TODO_CREATE
 import com.codeliner.achacha.utils.Const.ACTION_TODO_TEST
 import com.example.helpers.toastForShort
-import com.example.helpers.ui.AnimationManager
-import com.example.helpers.ui.getFadeIn
-import com.example.helpers.ui.getFadeOut
+import com.example.helpers.ui.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -101,22 +99,34 @@ class MainActivity : AppCompatActivity()
 
                 }
             }
+
+            closeFabs()
         })
 
         // note. for bottom nav
         viewModel.isBottomNavigationShowing.observe(this, Observer { isShowing ->
             when (isShowing) {
                 true -> {
-                    binding.activityMainBottomNav.startAnimation(animShow)
+                    binding.activityMainBottomNav.startAnimation(
+                            this.getBottomNavShow()
+                    )
                     binding.activityMainBottomNav.visibility = View.VISIBLE
                 }
 
                 false -> {
-                    binding.activityMainBottomNav.startAnimation(animHide)
+                    binding.activityMainBottomNav.startAnimation(
+                            this.getBottomNavHide()
+                    )
                     binding.activityMainBottomNav.visibility = View.GONE
                 }
             }
         })
+    }
+
+    private fun closeFabs() {
+        if (viewModel.isFavCollapsed.value == false) {
+            viewModel.switchCollapse()
+        }
     }
 
     private fun observeFabs() {
@@ -128,7 +138,7 @@ class MainActivity : AppCompatActivity()
 
     private fun observeFavMain() {
         val cs = ConstraintSet()
-        cs.clone(binding.activityMainFabList)
+        cs.clone(binding.activityMainFabContainer)
         viewModel.isFavCollapsed.observe(this, Observer { isCollapsed ->
             if (!isCollapsed) {
                 cs.connect(binding.activityMainFabCreate.id, ConstraintSet.BOTTOM, binding.activityMainFabMain.id, ConstraintSet.TOP)
@@ -141,9 +151,9 @@ class MainActivity : AppCompatActivity()
 //                binding.activityMainFabTest.startAnimation(animShow)
 
             } else {
-                cs.connect(binding.activityMainFabCreate.id, ConstraintSet.BOTTOM, binding.activityMainFabList.id, ConstraintSet.BOTTOM)
-                cs.connect(binding.activityMainFabClear.id, ConstraintSet.BOTTOM, binding.activityMainFabList.id, ConstraintSet.BOTTOM)
-                cs.connect(binding.activityMainFabTest.id, ConstraintSet.BOTTOM, binding.activityMainFabList.id, ConstraintSet.BOTTOM)
+                cs.connect(binding.activityMainFabCreate.id, ConstraintSet.BOTTOM, binding.activityMainFabContainer.id, ConstraintSet.BOTTOM)
+                cs.connect(binding.activityMainFabClear.id, ConstraintSet.BOTTOM, binding.activityMainFabContainer.id, ConstraintSet.BOTTOM)
+                cs.connect(binding.activityMainFabTest.id, ConstraintSet.BOTTOM, binding.activityMainFabContainer.id, ConstraintSet.BOTTOM)
 
                 binding.activityMainFabMain.startAnimation(animRotateLeft)
                 binding.activityMainFabCreate.startAnimation(animHide)
@@ -151,8 +161,45 @@ class MainActivity : AppCompatActivity()
 //                binding.activityMainFabTest.startAnimation(animHide)
             }
 
-            TransitionManager.beginDelayedTransition(binding.activityMainFabList, transition)
-            cs.applyTo(binding.activityMainFabList)
+            TransitionManager.beginDelayedTransition(binding.activityMainFabContainer, transition)
+            cs.applyTo(binding.activityMainFabContainer)
+        })
+
+        MainViewModel.isFabShowing.observe(this, Observer {
+            it?.let { isShowing ->
+                val d = resources.getInteger(R.integer.animation_duration_short).toLong()
+                when (isShowing) {
+                    true -> {
+                        binding.activityMainFabContainer.startAnimation(
+                                this.getFadeIn().apply {
+                                    duration = d
+                                    fillAfter = true
+                                })
+                    }
+
+                    false -> {
+                        binding.activityMainFabContainer.startAnimation(
+                                this.getFadeOut().apply {
+                                    duration = d
+                                    fillAfter = true
+                                })
+                    }
+                }
+            }
+        })
+
+        MainViewModel.isFabShowingProcess.observe(this, Observer {
+            it?.let { status ->
+                when (status) {
+                    true -> {
+                        binding.activityMainFabContainer.visibility = View.VISIBLE
+                    }
+                    false -> {
+                        binding.activityMainFabContainer.visibility = View.GONE
+                    }
+                }
+                MainViewModel.setFabShowingProcessComplete()
+            }
         })
     }
 
@@ -162,6 +209,10 @@ class MainActivity : AppCompatActivity()
                 Timber.d("action: $action")
                 when (action) {
                     ACTION_TODO_CREATE -> {
+                        closeFabs()
+                        // note. fab
+                        MainViewModel.setFabShowingUI(false)
+
                         TodoListViewModel.todoCreateJob()
                     }
 

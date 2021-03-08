@@ -261,8 +261,11 @@ class TodoCreateFragment: Fragment() {
     }
 
     private fun back() {
-        mainViewModel.setBottomNavigationShowing(true)
-//        MainActivity.onBottomNavigationShow()
+        // note. fabs turn on
+        MainViewModel.setFabShowingUI(true)
+        // note. bottom nav turn on
+
+        // note. back
         this@TodoCreateFragment.findNavController().popBackStack()
     }
 }

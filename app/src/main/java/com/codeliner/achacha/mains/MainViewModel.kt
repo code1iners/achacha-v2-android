@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import com.codeliner.achacha.R
 import com.codeliner.achacha.ui.accounts.list.AccountListViewModel
 import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CLEAR
 import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CREATE
@@ -17,15 +19,37 @@ import org.koin.dsl.module
 import timber.log.Timber
 
 class MainViewModel(
-    app: Application
+    val app: Application
 ): AndroidViewModel(app) {
+
+    companion object {
+
+        private val viewModelJob = Job()
+        private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+        private val _isFabShowing = MutableLiveData<Boolean>()
+        val isFabShowing: LiveData<Boolean> get() = _isFabShowing
+
+        fun setFabShowingUI(status: Boolean) {
+            uiScope.launch {
+                _isFabShowing.value = status
+                delay(300)
+                setFabShowingProcess(status)
+            }
+        }
+
+        private val _isFabShowingProcess = MutableLiveData<Boolean>()
+        val isFabShowingProcess: LiveData<Boolean> get() = _isFabShowingProcess
+        private fun setFabShowingProcess(status: Boolean) {
+            _isFabShowingProcess.value = status
+        }
+        fun setFabShowingProcessComplete() {
+            _isFabShowingProcess.value = null
+        }
+    }
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    fun test() {
-        Timber.w("hello i am main view model")
-    }
 
     private val _isBottomNavigationShowing = MutableLiveData(true)
     val isBottomNavigationShowing: LiveData<Boolean> get() = _isBottomNavigationShowing
@@ -48,6 +72,7 @@ class MainViewModel(
             true -> {
                 _isFavCollapsed.value = false
             }
+
             false -> {
                 _isFavCollapsed.value = true
             }
@@ -92,17 +117,6 @@ class MainViewModel(
             }
         }
         _onClickCreateAction.value = null
-    }
-
-    fun favClear() {
-        when (currentBottomNavPosition.value) {
-            0 -> {}
-            1 -> {}
-        }
-    }
-
-    fun favTestButtonJob() {
-        Timber.d("hello i am test button")
     }
 
     override fun onCleared() {
