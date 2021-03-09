@@ -24,7 +24,11 @@
         android:id="@+id/accountListFragment"
         android:name="com.codeliner.achacha.ui.accounts.list.AccountListFragment"
         android:label="accountListFragment"
-        tools:layout="@layout/fragment_account_list"/>
+        tools:layout="@layout/fragment_account_list">
+        <action
+            android:id="@+id/action_accountListFragment_to_accountCreateFragment"
+            app:destination="@id/accountCreateFragment" />
+    </fragment>
     <fragment
         android:id="@+id/todoCreateFragment"
         android:name="com.codeliner.achacha.ui.todos.create.TodoCreateFragment"
@@ -35,4 +39,9 @@
             app:argType="integer"
             android:defaultValue="-1" />
     </fragment>
+    <fragment
+        android:id="@+id/accountCreateFragment"
+        android:name="com.codeliner.achacha.ui.accounts.create.AccountCreateFragment"
+        android:label="AccountCreateFragment"
+        tools:layout="@layout/fragment_account_create"/>
 </navigation>

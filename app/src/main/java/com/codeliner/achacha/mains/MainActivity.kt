@@ -23,6 +23,7 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.ActivityMainBinding
+import com.codeliner.achacha.ui.accounts.list.AccountListViewModel
 import com.codeliner.achacha.ui.todos.list.TodoListFragmentDirections
 import com.codeliner.achacha.ui.todos.list.TodoListViewModel
 import com.codeliner.achacha.utils.Const
@@ -188,15 +189,15 @@ class MainActivity : AppCompatActivity()
                     }
 
                     ACTION_ACCOUNT_CREATE -> {
-
+                        AccountListViewModel.accountCreateJob()
                     }
 
                     ACTION_ACCOUNT_CLEAR -> {
-
+                        AccountListViewModel.accountClearJob()
                     }
 
                     ACTION_ACCOUNT_TEST -> {
-
+                        AccountListViewModel.accountTestJob()
                     }
                 }
             }
