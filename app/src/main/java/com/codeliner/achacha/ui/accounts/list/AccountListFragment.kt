@@ -7,8 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentAccountListBinding
 import com.codeliner.achacha.mains.MainViewModel
+import com.codeliner.achacha.utils.Const
+import com.example.helpers.ui.AnimationManager
+import com.example.helpers.ui.getHeaderHide
+import com.example.helpers.ui.getHeaderShow
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -17,6 +22,42 @@ class AccountListFragment: Fragment() {
     private lateinit var binding: FragmentAccountListBinding
     private val viewModel: AccountListViewModel by viewModel()
     private val mainViewModel: MainViewModel by viewModel()
+
+    override fun onStop() {
+        context?.let {
+            val duration = resources.getInteger(R.integer.animation_duration_short).toLong()
+            val animHeaderHide = it.getHeaderHide().apply {
+                this.duration = duration
+            }
+
+            // note. header
+            binding.headerContainer.startAnimation(animHeaderHide)
+            // note. header
+            binding.headerDividerBottom.startAnimation(animHeaderHide)
+            // note. body
+
+        }
+
+        super.onStop()
+    }
+
+    override fun onStart() {
+        context?.let {
+            val duration = resources.getInteger(R.integer.animation_duration_short).toLong()
+            val animHeaderShow = it.getHeaderShow().apply {
+                this.duration = duration
+            }
+
+            // note. header
+            binding.headerContainer.startAnimation(animHeaderShow)
+            // note. header
+            binding.headerDividerBottom.startAnimation(animHeaderShow)
+            // note. body
+
+        }
+
+        super.onStart()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize(inflater)

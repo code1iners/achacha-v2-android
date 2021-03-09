@@ -28,6 +28,14 @@
     <string name="completed">Completed</string>
     <string name="error_message_text_input_empty">Enter the work do you want..</string>
     <string name="is_finished">IsFinished</string>
+    <string name="title">Title</string>
+    <string name="label">Label</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="username">username</string>
+    <string name="password">Password</string>
+    <string name="hint">Hint</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="thumbnail_hint_string">T</string>
     <integer name="animation_duration_short">300</integer>
     <integer name="animation_duration_default">1000</integer>
 </resources>

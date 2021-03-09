@@ -42,8 +42,6 @@ class TodoListFragment: Fragment()
     lateinit var animShow: Animation
     lateinit var transition: AutoTransition
 
-    // note. actions
-
     override fun onStop() {
         super.onStop()
 
