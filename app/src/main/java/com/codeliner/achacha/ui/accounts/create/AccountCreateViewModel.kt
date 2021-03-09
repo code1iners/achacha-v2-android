@@ -30,6 +30,7 @@ class AccountCreateViewModel(
         backJob()
     }
 
+    // note. back
     private val _onBackJob = MutableLiveData(false)
     val onBackJob: LiveData<Boolean> get() = _onBackJob
     private fun backJob() {

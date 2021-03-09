@@ -14,6 +14,9 @@ import com.codeliner.achacha.utils.Const
 import com.example.helpers.ui.AnimationManager
 import com.example.helpers.ui.getHeaderHide
 import com.example.helpers.ui.getHeaderShow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -24,6 +27,11 @@ class AccountListFragment: Fragment() {
     private val mainViewModel: MainViewModel by viewModel()
 
     override fun onStop() {
+        super.onStop()
+        exitAnim()
+    }
+
+    private fun exitAnim() {
         context?.let {
             val duration = resources.getInteger(R.integer.animation_duration_short).toLong()
             val animHeaderHide = it.getHeaderHide().apply {
@@ -35,13 +43,15 @@ class AccountListFragment: Fragment() {
             // note. header
             binding.headerDividerBottom.startAnimation(animHeaderHide)
             // note. body
-
         }
-
-        super.onStop()
     }
 
     override fun onStart() {
+        super.onStart()
+        enterAnim()
+    }
+
+    private fun enterAnim() {
         context?.let {
             val duration = resources.getInteger(R.integer.animation_duration_short).toLong()
             val animHeaderShow = it.getHeaderShow().apply {
@@ -55,8 +65,6 @@ class AccountListFragment: Fragment() {
             // note. body
 
         }
-
-        super.onStart()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -84,21 +92,30 @@ class AccountListFragment: Fragment() {
 
     private fun observeFabCreate() {
         AccountListViewModel.onAccountCreate.observe(viewLifecycleOwner, Observer { started ->
+            Timber.d("onAccountCreate: $started")
             if (started) {
 
-                viewModel.navigateToAccountCreate()
+                viewModel.navigateToAccountCreateAnimation()
 
                 AccountListViewModel.accountCreateJobComplete()
             }
         })
 
-        viewModel.onNavigateToAccountCreate.observe(viewLifecycleOwner, Observer { started ->
+        viewModel.onNavigateToAccountCreateAnimation.observe(viewLifecycleOwner, Observer { started ->
+            Timber.d("onNavigateToAccountCreateAnimation: $started")
             if (started) {
-                Timber.d("navigate to account create")
+                // note. navigate (ui)
+                exitAnim()
+            }
+        })
 
+        viewModel.onNavigateToAccountCreateJob.observe(viewLifecycleOwner, Observer { started ->
+            Timber.d("onNavigateToAccountCreateJob: $started")
+            if (started) {
+                // note. navigate (feature)
                 findNavController().navigate(AccountListFragmentDirections.actionAccountListFragmentToAccountCreateFragment())
 
-                viewModel.navigateToAccountCreateComplete()
+                viewModel.navigateToAccountCreateJobComplete()
             }
         })
     }

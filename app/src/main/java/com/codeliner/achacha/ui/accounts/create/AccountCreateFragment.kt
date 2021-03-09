@@ -40,6 +40,7 @@ class AccountCreateFragment : Fragment() {
             if (job) {
                 // note. back (feature)
                 back()
+
                 viewModel.backJobComplete()
             }
         })
