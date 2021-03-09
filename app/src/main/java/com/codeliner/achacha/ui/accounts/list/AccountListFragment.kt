@@ -91,28 +91,26 @@ class AccountListFragment: Fragment() {
     }
 
     private fun observeFabCreate() {
+        // note. when clicked create fab button from main
         AccountListViewModel.onAccountCreate.observe(viewLifecycleOwner, Observer { started ->
-            Timber.d("onAccountCreate: $started")
             if (started) {
-
+                // note. start anim
                 viewModel.navigateToAccountCreateAnimation()
-
+                // note. complete navigate to create action
                 AccountListViewModel.accountCreateJobComplete()
             }
         })
 
+        // note. navigate (ui)
         viewModel.onNavigateToAccountCreateAnimation.observe(viewLifecycleOwner, Observer { started ->
-            Timber.d("onNavigateToAccountCreateAnimation: $started")
             if (started) {
-                // note. navigate (ui)
                 exitAnim()
             }
         })
 
+        // note. navigate (feature)
         viewModel.onNavigateToAccountCreateJob.observe(viewLifecycleOwner, Observer { started ->
-            Timber.d("onNavigateToAccountCreateJob: $started")
             if (started) {
-                // note. navigate (feature)
                 findNavController().navigate(AccountListFragmentDirections.actionAccountListFragmentToAccountCreateFragment())
 
                 viewModel.navigateToAccountCreateJobComplete()
