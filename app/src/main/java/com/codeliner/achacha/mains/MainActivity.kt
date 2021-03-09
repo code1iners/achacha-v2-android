@@ -189,6 +189,11 @@ class MainActivity : AppCompatActivity()
                     }
 
                     ACTION_ACCOUNT_CREATE -> {
+                        // note. update fab ui
+                        MainViewModel.setFabAnimation(false, ANIMATION_DURATION_SHORT)
+                        // note. bottom nav turn off
+                        MainViewModel.setBottomNavigationAnimation(false, ANIMATION_DURATION_SHORT)
+                        // note. move navigation
                         AccountListViewModel.accountCreateJob()
                     }
 
