@@ -12,4 +12,6 @@
 
   <color name="bottomNavSelectedColor">#fd154f</color>
   <color name="bottomNavUnselectedColor">#2c2c2c</color>
+
+  <color name="submit">#00BCD4</color>
 </resources>

@@ -33,7 +33,7 @@ class KeyboardManager private constructor() : LiveData<KeyboardManager.KeyboardS
             imm.hideSoftInputFromWindow(view.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
             // note. Edit text clear
-            view.text?.clear()
+//            view.text?.clear()
         }
     }
 

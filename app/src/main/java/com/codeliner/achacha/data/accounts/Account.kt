@@ -10,13 +10,13 @@ data class Account (
     var id: Long = 0L,
 
     @ColumnInfo(name = "created")
-    val created: Long = System.currentTimeMillis(),
+    var created: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "title")
-    val title: String? = null,
+    var title: String? = null,
 
     @ColumnInfo(name = "subtitle")
-    val subtitle: String? = null,
+    var subtitle: String? = null,
 
     @ColumnInfo(name = "username")
     var username: String? = null,

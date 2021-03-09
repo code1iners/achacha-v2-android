@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -71,6 +72,17 @@ class AccountCreateFragment : Fragment() {
     }
 
     private fun backObserve() {
+        observeBack()
+        observeAccountValue()
+    }
+
+    private fun observeAccountValue() {
+        viewModel.onAccountValue.observe(viewLifecycleOwner, Observer {
+            Timber.d("account updated: $it")
+        })
+    }
+
+    private fun observeBack() {
         viewModel.onBackReady.observe(viewLifecycleOwner, Observer { ready ->
             if (ready) {
                 // note. back (animation)
@@ -95,6 +107,7 @@ class AccountCreateFragment : Fragment() {
     private fun listeners() {
         backListener()
         keyboardListener()
+        accountValueListener()
     }
 
     private fun backListener() {
@@ -105,20 +118,43 @@ class AccountCreateFragment : Fragment() {
 
     private fun keyboardListener() {
         setEventListener(
-                requireActivity(),
-                viewLifecycleOwner,
-                KeyboardVisibilityEventListener { visible ->
-                    when (visible) {
-                        true -> {
-                            // note. open keyboard
-                        }
+            requireActivity(),
+            viewLifecycleOwner,
+            KeyboardVisibilityEventListener { visible ->
+                when (visible) {
+                    true -> {
+                        // note. open keyboard
+                    }
 
-                        false -> {
-                            viewModel.backReady()
-                        }
+                    false -> {
+                        viewModel.backReady()
                     }
                 }
+            }
         )
+    }
+
+    private fun accountValueListener() {
+        // note. title
+        binding.titleValue.doOnTextChanged { text, _, _, _ ->
+            viewModel.setAccountValue("title", text)
+        }
+        // note. subtitle
+        binding.subtitleValue.doOnTextChanged { text, _, _, _ ->
+            viewModel.setAccountValue("subtitle", text)
+        }
+        // note. subtitle
+        binding.usernameValue.doOnTextChanged { text, _, _, _ ->
+            viewModel.setAccountValue("username", text)
+        }
+        // note. subtitle
+        binding.passwordValue.doOnTextChanged { text, _, _, _ ->
+            viewModel.setAccountValue("password", text)
+        }
+        // note. subtitle
+        binding.hintValue.doOnTextChanged { text, _, _, _ ->
+            viewModel.setAccountValue("hint", text)
+        }
     }
 
     private fun back() {
