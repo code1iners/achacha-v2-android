@@ -62,12 +62,11 @@ class AccountCreateViewModel(
     }
 
     fun createAccountJob() {
-        uiScope.launch {
-
-            val account = Account().apply {
-
+        onAccountValue.value?.let {
+            uiScope.launch {
+                val account = it.copy()
+                createAccount(account)
             }
-            createAccount(account)
         }
     }
 

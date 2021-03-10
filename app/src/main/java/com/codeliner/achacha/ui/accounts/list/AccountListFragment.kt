@@ -82,6 +82,11 @@ class AccountListFragment: Fragment() {
 
     private fun observe() {
         observeFabs()
+        viewModel.accounts.observe(viewLifecycleOwner, Observer {
+            Timber.d("accounts updated: ${it.size}")
+            for (account in it) Timber.v("account: $account")
+        })
+
     }
 
     private fun observeFabs() {
@@ -121,6 +126,8 @@ class AccountListFragment: Fragment() {
     private fun observeFabClear() {
         AccountListViewModel.onAccountClear.observe(viewLifecycleOwner, Observer { started ->
             if (started) {
+
+                viewModel.clearAccounts()
 
                 AccountListViewModel.accountClearJobComplete()
             }

@@ -69,11 +69,11 @@ class AccountCreateFragment : Fragment() {
 
     private fun observers() {
         backObserve()
+        observeAccountValue()
     }
 
     private fun backObserve() {
         observeBack()
-        observeAccountValue()
     }
 
     private fun observeAccountValue() {

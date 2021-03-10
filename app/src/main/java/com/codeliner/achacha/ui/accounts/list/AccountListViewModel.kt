@@ -73,6 +73,21 @@ class AccountListViewModel(
         _onNavigateToAccountCreateJob.value = false
     }
 
+    // note. data
+    val accounts = accountRepository.readAllOrderedById()
+
+    fun clearAccounts() {
+        uiScope.launch {
+            clearAccountsJob()
+        }
+    }
+
+    private suspend fun clearAccountsJob() {
+        withContext(Dispatchers.IO) {
+            accountRepository.clear()
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         uiScope.cancel()
