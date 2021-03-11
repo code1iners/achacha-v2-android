@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.addCallback
@@ -16,6 +17,11 @@ import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentAccountCreateBinding
 import com.codeliner.achacha.mains.MainViewModel
 import com.codeliner.achacha.utils.Const
+import com.codeliner.achacha.utils.Const.HINT
+import com.codeliner.achacha.utils.Const.PASSWORD
+import com.codeliner.achacha.utils.Const.SUBTITLE
+import com.codeliner.achacha.utils.Const.TITLE
+import com.codeliner.achacha.utils.Const.USERNAME
 import com.codeliner.achacha.utils.KeyboardManager
 import com.example.helpers.ui.getFadeIn
 import com.example.helpers.ui.getFadeOut
@@ -104,7 +110,7 @@ class AccountCreateFragment : Fragment() {
 
     private fun observeAccountValue() {
         viewModel.onAccountValue.observe(viewLifecycleOwner, Observer {
-            Timber.d("account updated: $it")
+//            Timber.d("account updated: $it")
         })
     }
 
@@ -112,11 +118,11 @@ class AccountCreateFragment : Fragment() {
         viewModel.onSubmit.observe(viewLifecycleOwner) { started ->
             if (started) {
                 val view = when (viewModel.currentField) {
-                    "title" -> binding.titleValue
-                    "subtitle" -> binding.subtitleValue
-                    "username" -> binding.usernameValue
-                    "password" -> binding.passwordValue
-                    "hint" -> binding.hintValue
+                    TITLE -> binding.titleValue
+                    SUBTITLE -> binding.subtitleValue
+                    USERNAME -> binding.usernameValue
+                    PASSWORD -> binding.passwordValue
+                    HINT -> binding.hintValue
                     else -> null
                 }
                 // note. back
@@ -132,6 +138,7 @@ class AccountCreateFragment : Fragment() {
         keyboardListener()
         accountValueListener()
         formFocusListeners()
+        hintDoneListener()
     }
 
     private fun backListener() {
@@ -183,34 +190,31 @@ class AccountCreateFragment : Fragment() {
 
     private fun formFocusListeners() {
         binding.titleValue.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                Timber.d("titleValue has focus")
-                viewModel.currentField = "title"
-            }
+            if (hasFocus) { viewModel.currentField = "title" }
         }
         binding.subtitleValue.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                Timber.d("subtitleValue has focus")
-                viewModel.currentField = "subtitle"
-            }
+            if (hasFocus) { viewModel.currentField = "subtitle" }
         }
         binding.usernameValue.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                Timber.d("usernameValue has focus")
-                viewModel.currentField = "username"
-            }
+            if (hasFocus) { viewModel.currentField = "username" }
         }
         binding.passwordValue.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                Timber.d("passwordValue has focus")
-                viewModel.currentField = "password"
-            }
+            if (hasFocus) { viewModel.currentField = "password" }
         }
         binding.hintValue.setOnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                Timber.d("hintValue has focus")
-                viewModel.currentField = "hint"
+            if (hasFocus) { viewModel.currentField = "hint" }
+        }
+    }
+
+    private fun hintDoneListener() {
+        binding.hintValue.setOnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE -> {
+                    viewModel.createAccountJob()
+                    return@setOnEditorActionListener true
+                }
             }
+            false
         }
     }
 

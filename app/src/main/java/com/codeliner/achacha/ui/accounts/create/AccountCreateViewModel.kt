@@ -6,6 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.codeliner.achacha.data.accounts.Account
 import com.codeliner.achacha.data.accounts.AccountRepository
 import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
+import com.codeliner.achacha.utils.Const.HINT
+import com.codeliner.achacha.utils.Const.PASSWORD
+import com.codeliner.achacha.utils.Const.SUBTITLE
+import com.codeliner.achacha.utils.Const.TITLE
+import com.codeliner.achacha.utils.Const.USERNAME
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -48,11 +53,11 @@ class AccountCreateViewModel(
         _onAccountValue.value?.let { account ->
             val newAccount = account.copy()
             when (key) {
-                "title" -> { newAccount.title = value.toString() }
-                "subtitle" -> { newAccount.subtitle = value.toString() }
-                "username" -> { newAccount.username = value.toString() }
-                "password" -> { newAccount.password = value.toString() }
-                "hint" -> { newAccount.hint = value.toString() }
+                TITLE -> { newAccount.title = value.toString() }
+                SUBTITLE -> { newAccount.subtitle = value.toString() }
+                USERNAME -> { newAccount.username = value.toString() }
+                PASSWORD -> { newAccount.password = value.toString() }
+                HINT -> { newAccount.hint = value.toString() }
             }
 
             _onAccountValue.value = newAccount

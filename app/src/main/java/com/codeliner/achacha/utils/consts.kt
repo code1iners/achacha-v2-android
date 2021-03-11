@@ -11,4 +11,9 @@ object Const {
     const val ACTION_ACCOUNT_CREATE = "ACCOUNT_CREATE"
     const val ACTION_ACCOUNT_CLEAR = "ACCOUNT_CLEAR"
     const val ACTION_ACCOUNT_TEST = "ACCOUNT_TEST"
+    const val TITLE = "TITLE"
+    const val SUBTITLE = "SUBTITLE"
+    const val USERNAME = "USERNAME"
+    const val PASSWORD = "PASSWORD"
+    const val HINT = "HINT"
 }
