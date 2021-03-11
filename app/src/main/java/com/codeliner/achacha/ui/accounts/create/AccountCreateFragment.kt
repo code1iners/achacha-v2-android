@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -22,11 +21,8 @@ import com.codeliner.achacha.utils.Const.PASSWORD
 import com.codeliner.achacha.utils.Const.SUBTITLE
 import com.codeliner.achacha.utils.Const.TITLE
 import com.codeliner.achacha.utils.Const.USERNAME
-import com.codeliner.achacha.utils.clearErrorsWithHelperText
 import com.example.helpers.ui.getFadeIn
 import com.example.helpers.ui.getFadeOut
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -57,7 +53,7 @@ class AccountCreateFragment : Fragment() {
         KeyboardManager.keyboardOpen(app, binding.titleValue)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize(inflater)
         observers()
         listeners()
@@ -88,7 +84,7 @@ class AccountCreateFragment : Fragment() {
     }
 
     private fun observeBack() {
-        viewModel.onBackReady.observe(viewLifecycleOwner, Observer { ready ->
+        viewModel.onBackReady.observe(viewLifecycleOwner) { ready ->
             if (ready) {
                 // note. back (animation)
                 binding.layout.startAnimation(
@@ -98,21 +94,22 @@ class AccountCreateFragment : Fragment() {
                         }
                 )
             }
-        })
-        viewModel.onBackJob.observe(viewLifecycleOwner, Observer { job ->
+        }
+
+        viewModel.onBackJob.observe(viewLifecycleOwner) { job ->
             if (job) {
                 // note. back (feature)
                 back()
 
                 viewModel.backJobComplete()
             }
-        })
+        }
     }
 
     private fun observeAccountValue() {
-        viewModel.onAccountValue.observe(viewLifecycleOwner, Observer {
+        viewModel.onAccountValue.observe(viewLifecycleOwner) {
             Timber.d("account updated: $it")
-        })
+        }
     }
 
     private fun observeSubmit() {
@@ -217,19 +214,19 @@ class AccountCreateFragment : Fragment() {
     }
 
     private fun formFocusListeners() {
-        binding.titleValue.setOnFocusChangeListener { v, hasFocus ->
+        binding.titleValue.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) { viewModel.currentField = "title" }
         }
-        binding.subtitleValue.setOnFocusChangeListener { v, hasFocus ->
+        binding.subtitleValue.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) { viewModel.currentField = "subtitle" }
         }
-        binding.usernameValue.setOnFocusChangeListener { v, hasFocus ->
+        binding.usernameValue.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) { viewModel.currentField = "username" }
         }
-        binding.passwordValue.setOnFocusChangeListener { v, hasFocus ->
+        binding.passwordValue.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) { viewModel.currentField = "password" }
         }
-        binding.hintValue.setOnFocusChangeListener { v, hasFocus ->
+        binding.hintValue.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) { viewModel.currentField = "hint" }
         }
     }

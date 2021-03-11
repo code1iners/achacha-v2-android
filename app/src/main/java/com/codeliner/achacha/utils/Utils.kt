@@ -28,7 +28,6 @@ fun Todo.log(type: String) {
 fun List<TextInputLayout>.clearErrors() {
     this.forEach {
         it.isErrorEnabled = false
-//        it.isHelperTextEnabled = false
         it.error = null
     }
 }
