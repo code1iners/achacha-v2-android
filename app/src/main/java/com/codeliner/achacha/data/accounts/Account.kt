@@ -7,7 +7,7 @@ import com.codeliner.achacha.utils.Const.HINT
 import com.codeliner.achacha.utils.Const.PASSWORD
 import com.codeliner.achacha.utils.Const.SUBTITLE
 import com.codeliner.achacha.utils.Const.TITLE
-import com.codeliner.achacha.utils.Const.USERNAME
+import com.codeliner.achacha.utils.Const.IDENTITY
 
 @Entity(tableName = "accounts_table")
 data class Account (
@@ -23,8 +23,8 @@ data class Account (
     @ColumnInfo(name = "subtitle")
     var subtitle: String? = null,
 
-    @ColumnInfo(name = "username")
-    var username: String? = null,
+    @ColumnInfo(name = "identity")
+    var identity: String? = null,
 
     @ColumnInfo(name = "password")
     var password: String? = null,
@@ -47,8 +47,8 @@ data class Account (
                 values = values.copy(first = false, second = SUBTITLE)
             }
 
-            username.isNullOrEmpty() -> {
-                values = values.copy(first = false, second = USERNAME)
+            identity.isNullOrEmpty() -> {
+                values = values.copy(first = false, second = IDENTITY)
             }
 
             password.isNullOrEmpty() -> {

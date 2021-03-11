@@ -12,7 +12,7 @@ import com.codeliner.achacha.utils.Const.PASSWORD
 import com.codeliner.achacha.utils.Const.SUBTITLE
 import com.codeliner.achacha.utils.Const.THUMBNAIL
 import com.codeliner.achacha.utils.Const.TITLE
-import com.codeliner.achacha.utils.Const.USERNAME
+import com.codeliner.achacha.utils.Const.IDENTITY
 import kotlinx.coroutines.*
 import timber.log.Timber
 
@@ -57,7 +57,7 @@ class AccountCreateViewModel(
             when (key) {
                 TITLE -> { newAccount.title = value.toString() }
                 SUBTITLE -> { newAccount.subtitle = value.toString() }
-                USERNAME -> { newAccount.username = value.toString() }
+                IDENTITY -> { newAccount.identity = value.toString() }
                 PASSWORD -> { newAccount.password = value.toString() }
                 HINT -> { newAccount.hint = value.toString() }
                 THUMBNAIL -> { newAccount.thumbnail = value.toString() }

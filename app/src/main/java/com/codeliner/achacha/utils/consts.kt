@@ -13,7 +13,7 @@ object Const {
     const val ACTION_ACCOUNT_TEST = "ACCOUNT_TEST"
     const val TITLE = "TITLE"
     const val SUBTITLE = "SUBTITLE"
-    const val USERNAME = "USERNAME"
+    const val IDENTITY = "IDENTITY"
     const val PASSWORD = "PASSWORD"
     const val HINT = "HINT"
     const val THUMBNAIL = "THUMBNAIL"

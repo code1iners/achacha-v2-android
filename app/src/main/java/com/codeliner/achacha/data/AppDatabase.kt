@@ -9,7 +9,7 @@ import com.codeliner.achacha.data.accounts.AccountDatabaseDao
 import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.data.todos.TodoDatabaseDao
 
-@Database(entities = [Todo::class, Account::class], version = 4, exportSchema = false)
+@Database(entities = [Todo::class, Account::class], version = 5, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract val todoDatabaseDao: TodoDatabaseDao

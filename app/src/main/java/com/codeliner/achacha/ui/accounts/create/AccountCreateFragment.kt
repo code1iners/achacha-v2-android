@@ -24,7 +24,7 @@ import com.codeliner.achacha.utils.Const.PASSWORD
 import com.codeliner.achacha.utils.Const.SUBTITLE
 import com.codeliner.achacha.utils.Const.THUMBNAIL
 import com.codeliner.achacha.utils.Const.TITLE
-import com.codeliner.achacha.utils.Const.USERNAME
+import com.codeliner.achacha.utils.Const.IDENTITY
 import com.example.helpers.GlideOptions
 import com.example.helpers.ui.getFadeIn
 import com.example.helpers.ui.getFadeOut
@@ -190,7 +190,7 @@ class AccountCreateFragment : Fragment() {
                 val container = when (values.second) {
                     TITLE -> { binding.titleContainer }
                     SUBTITLE -> { binding.subtitleContainer }
-                    USERNAME -> { binding.usernameContainer }
+                    IDENTITY -> { binding.usernameContainer }
                     PASSWORD -> { binding.passwordContainer }
                     HINT -> { binding.hintContainer }
                     else -> null
@@ -228,7 +228,7 @@ class AccountCreateFragment : Fragment() {
         }
         // note. subtitle
         binding.usernameValue.doOnTextChanged { text, _, _, _ ->
-            viewModel.setAccountValue(USERNAME, text)
+            viewModel.setAccountValue(IDENTITY, text)
         }
         // note. subtitle
         binding.passwordValue.doOnTextChanged { text, _, _, _ ->
@@ -248,7 +248,7 @@ class AccountCreateFragment : Fragment() {
             if (hasFocus) { viewModel.currentField = "subtitle" }
         }
         binding.usernameValue.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) { viewModel.currentField = "username" }
+            if (hasFocus) { viewModel.currentField = "identity" }
         }
         binding.passwordValue.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) { viewModel.currentField = "password" }
@@ -283,7 +283,7 @@ class AccountCreateFragment : Fragment() {
         return when (viewModel.currentField) {
             TITLE -> binding.titleValue
             SUBTITLE -> binding.subtitleValue
-            USERNAME -> binding.usernameValue
+            IDENTITY -> binding.usernameValue
             PASSWORD -> binding.passwordValue
             HINT -> binding.hintValue
             else -> binding.titleValue

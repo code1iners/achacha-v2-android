@@ -19,6 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/spacing_s"
+            android:paddingStart="@dimen/spacing_m"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -27,10 +28,10 @@
                 android:id="@+id/headerTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create Account"
+                android:text="@string/create_account"
                 android:textSize="@dimen/text_l"
+                android:layout_marginStart="@dimen/spacing_s"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -189,7 +190,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing_m"
-                    android:hint="@string/username"
+                    android:hint="@string/identity"
                     app:helperTextEnabled="true"
                     app:helperText="@string/required"
                     app:endIconMode="clear_text"

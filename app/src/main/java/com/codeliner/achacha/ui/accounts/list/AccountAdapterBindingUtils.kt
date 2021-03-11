@@ -6,6 +6,7 @@ import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.codeliner.achacha.data.accounts.Account
+import com.example.helpers.GlideOptions
 import timber.log.Timber
 import java.util.*
 
@@ -19,7 +20,7 @@ fun TextView.setAccountTitle(item: Account?) {
 @BindingAdapter("setAccountUsername")
 fun TextView.setAccountUsername(item: Account?) {
     item?.let {
-        text = it.username
+        text = it.identity
     }
 }
 
@@ -41,6 +42,8 @@ fun ImageView.setThumbnailAsImage(item: Account?) {
             Glide
                 .with(this.context)
                 .load(thumbnail.toUri())
+                .centerCrop()
+                .apply(GlideOptions.centerCropAndRadius(16))
                 .into(this)
         }
     }

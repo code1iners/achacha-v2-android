@@ -33,7 +33,7 @@
     <string name="title">Title</string>
     <string name="label">Label</string>
     <string name="subtitle">Subtitle</string>
-    <string name="username">Username</string>
+    <string name="identity">Identity</string>
     <string name="password">Password</string>
     <string name="hint">Hint</string>
     <string name="thumbnail">Thumbnail</string>
@@ -41,6 +41,7 @@
     <string name="submit">Submit</string>
     <string name="icon">Icon</string>
     <string name="my_accounts">My Accounts</string>
+    <string name="create_account">Create Account</string>
     <integer name="animation_duration_short">300</integer>
     <integer name="animation_duration_default">1000</integer>
 </resources>
