@@ -1,9 +1,6 @@
 package com.codeliner.achacha.ui.accounts.list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.codeliner.achacha.data.accounts.AccountRepository
 import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import kotlinx.coroutines.*
@@ -51,6 +48,10 @@ class AccountListViewModel(
 
     // note. data
     val accounts = accountRepository.readAllOrderedById()
+
+    val accountCount = Transformations.map(accounts) {
+        it.size
+    }
 
     fun clearAccounts() {
         uiScope.launch {

@@ -24,13 +24,23 @@
             app:layout_constraintBottom_toTopOf="@+id/headerDividerBottom">
 
             <TextView
-                android:text="My Accounts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/my_accounts"
+                android:textSize="@dimen/text_l"
+                android:layout_marginStart="@dimen/spacing_s"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/accountCount(viewModel.accountCount)}"
+                android:textSize="@dimen/text_s"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
