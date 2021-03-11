@@ -91,7 +91,7 @@ class AccountCreateViewModel(
         _onSubmit.value = false
     }
 
-    var currentField: String? = null
+    var currentField: String = TITLE
 
     override fun onCleared() {
         super.onCleared()
