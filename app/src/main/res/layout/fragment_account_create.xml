@@ -115,10 +115,11 @@
 
                     <ImageView
                         android:id="@+id/thumbnailImage"
-                        android:background="@drawable/border_circle_2dp"
+                        android:src="@drawable/border_circle_2dp"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:alpha="0.6"
+                        android:onClick="@{() -> viewModel.openGallery()}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -128,7 +129,7 @@
                         android:id="@+id/thumbnailText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/thumbnail_hint_string"
+                        android:text="@string/icon"
                         android:textSize="@dimen/text_4xl"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -145,6 +146,7 @@
                     android:hint="@string/title"
                     app:helperTextEnabled="true"
                     app:helperText="@string/required"
+                    app:endIconMode="clear_text"
                     app:layout_constraintStart_toStartOf="@id/guideStart"
                     app:layout_constraintEnd_toEndOf="@id/guideEnd"
                     app:layout_constraintTop_toBottomOf="@+id/thumbnailContainer"
@@ -154,7 +156,8 @@
                         android:id="@+id/titleValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"/>
+                        android:singleLine="true"
+                        android:inputType="textCapWords"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -166,6 +169,7 @@
                     android:hint="@string/subtitle"
                     app:helperTextEnabled="true"
                     app:helperText="@string/required"
+                    app:endIconMode="clear_text"
                     app:layout_constraintStart_toStartOf="@id/guideStart"
                     app:layout_constraintEnd_toEndOf="@id/guideEnd"
                     app:layout_constraintTop_toBottomOf="@+id/titleContainer"
@@ -175,7 +179,8 @@
                         android:id="@+id/subtitleValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"/>
+                        android:singleLine="true"
+                        android:inputType="textCapWords"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -187,6 +192,7 @@
                     android:hint="@string/username"
                     app:helperTextEnabled="true"
                     app:helperText="@string/required"
+                    app:endIconMode="clear_text"
                     app:layout_constraintStart_toStartOf="@id/guideStart"
                     app:layout_constraintEnd_toEndOf="@id/guideEnd"
                     app:layout_constraintTop_toBottomOf="@+id/subtitleContainer"
@@ -208,6 +214,7 @@
                     android:hint="@string/password"
                     app:helperTextEnabled="true"
                     app:helperText="@string/required"
+                    app:endIconMode="password_toggle"
                     app:layout_constraintStart_toStartOf="@id/guideStart"
                     app:layout_constraintEnd_toEndOf="@id/guideEnd"
                     app:layout_constraintTop_toBottomOf="@+id/usernameContainer"
@@ -229,6 +236,7 @@
                     android:hint="@string/hint"
                     app:helperTextEnabled="true"
                     app:helperText="@string/required"
+                    app:endIconMode="clear_text"
                     app:layout_constraintStart_toStartOf="@id/guideStart"
                     app:layout_constraintEnd_toEndOf="@id/guideEnd"
                     app:layout_constraintTop_toBottomOf="@+id/passwordContainer"
@@ -239,7 +247,8 @@
                         android:id="@+id/hintValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"/>
+                        android:singleLine="true"
+                        android:inputType="textCapWords"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

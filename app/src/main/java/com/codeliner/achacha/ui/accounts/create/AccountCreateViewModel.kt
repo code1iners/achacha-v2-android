@@ -1,5 +1,6 @@
 package com.codeliner.achacha.ui.accounts.create
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,12 +10,11 @@ import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import com.codeliner.achacha.utils.Const.HINT
 import com.codeliner.achacha.utils.Const.PASSWORD
 import com.codeliner.achacha.utils.Const.SUBTITLE
+import com.codeliner.achacha.utils.Const.THUMBNAIL
 import com.codeliner.achacha.utils.Const.TITLE
 import com.codeliner.achacha.utils.Const.USERNAME
 import kotlinx.coroutines.*
 import timber.log.Timber
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.full.valueParameters
 
 class AccountCreateViewModel(
     private val repository: AccountRepository
@@ -60,17 +60,33 @@ class AccountCreateViewModel(
                 USERNAME -> { newAccount.username = value.toString() }
                 PASSWORD -> { newAccount.password = value.toString() }
                 HINT -> { newAccount.hint = value.toString() }
+                THUMBNAIL -> { newAccount.thumbnail = value.toString() }
             }
 
             _onAccountValue.value = newAccount
         }
     }
 
+    private val _onOpenGallery = MutableLiveData<Boolean>()
+    val onOpenGallery: LiveData<Boolean> get() = _onOpenGallery
+    fun openGallery() {
+        _onOpenGallery.value = true
+    }
+    fun openGalleryComplete() {
+        _onOpenGallery.value = false
+    }
+
+    private val _onThumbnailImage = MutableLiveData<Uri>()
+    val onThumbnailImage: LiveData<Uri> get() = _onThumbnailImage
+    fun setThumbnailImage(uri: Uri) {
+        _onThumbnailImage.value = uri
+    }
+
     fun createAccountJob() {
         onAccountValue.value?.let {
             uiScope.launch {
-                Timber.w("account: $it")
                 val values = it.isValid()
+                Timber.w("account: $it, isValid: ${values.first}")
                 when (values.first) {
                     true -> {
                         val account = it.copy()

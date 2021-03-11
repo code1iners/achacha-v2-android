@@ -16,4 +16,5 @@ object Const {
     const val USERNAME = "USERNAME"
     const val PASSWORD = "PASSWORD"
     const val HINT = "HINT"
+    const val THUMBNAIL = "THUMBNAIL"
 }

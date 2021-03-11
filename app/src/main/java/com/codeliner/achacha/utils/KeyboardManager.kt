@@ -10,6 +10,7 @@ import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.lifecycle.LiveData
+import timber.log.Timber
 import java.lang.ref.WeakReference
 
 @SuppressLint("StaticFieldLeak")
@@ -24,8 +25,12 @@ class KeyboardManager private constructor() : LiveData<KeyboardManager.KeyboardS
         }
 
         fun keyboardOpen(app: Application, view: View) {
-            val imm = app.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            if (view.requestFocus()) {
+                val imm = app.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+            } else {
+                Timber.w("View has not focus")
+            }
         }
 
         fun keyboardClose(app: Application, view: EditText) {
