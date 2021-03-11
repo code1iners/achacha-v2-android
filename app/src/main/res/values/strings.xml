@@ -28,6 +28,7 @@
     <string name="completed">Completed</string>
     <string name="error_message_text_input_empty">Enter the work do you want..</string>
     <string name="is_finished">IsFinished</string>
+    <string name="required">Required</string>
     <string name="title">Title</string>
     <string name="label">Label</string>
     <string name="subtitle">Subtitle</string>

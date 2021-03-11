@@ -16,16 +16,17 @@ import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentAccountCreateBinding
 import com.codeliner.achacha.mains.MainViewModel
-import com.codeliner.achacha.utils.Const
+import com.codeliner.achacha.utils.*
 import com.codeliner.achacha.utils.Const.HINT
 import com.codeliner.achacha.utils.Const.PASSWORD
 import com.codeliner.achacha.utils.Const.SUBTITLE
 import com.codeliner.achacha.utils.Const.TITLE
 import com.codeliner.achacha.utils.Const.USERNAME
-import com.codeliner.achacha.utils.KeyboardManager
+import com.codeliner.achacha.utils.clearErrorsWithHelperText
 import com.example.helpers.ui.getFadeIn
 import com.example.helpers.ui.getFadeOut
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -110,7 +111,7 @@ class AccountCreateFragment : Fragment() {
 
     private fun observeAccountValue() {
         viewModel.onAccountValue.observe(viewLifecycleOwner, Observer {
-//            Timber.d("account updated: $it")
+            Timber.d("account updated: $it")
         })
     }
 
@@ -123,12 +124,39 @@ class AccountCreateFragment : Fragment() {
                     USERNAME -> binding.usernameValue
                     PASSWORD -> binding.passwordValue
                     HINT -> binding.hintValue
-                    else -> null
+                    else -> binding.titleValue
                 }
                 // note. back
                 KeyboardManager.keyboardClose(app, view as EditText)
                 // note. complete
                 viewModel.submitAccountComplete()
+            }
+        }
+
+        viewModel.hasError.observe(viewLifecycleOwner) { values ->
+            if (!values.first) {
+
+                listOf(
+                    binding.titleContainer
+                    ,binding.subtitleContainer
+                    ,binding.usernameContainer
+                    ,binding.passwordContainer
+                    ,binding.hintContainer
+                ).clearErrorsWithHelperOff()
+
+                val container = when (values.second) {
+                    TITLE -> { binding.titleContainer }
+                    SUBTITLE -> { binding.subtitleContainer }
+                    USERNAME -> { binding.usernameContainer }
+                    PASSWORD -> { binding.passwordContainer }
+                    HINT -> { binding.hintContainer }
+                    else -> null
+                }
+
+                container?.let {
+                    it.error = getString(R.string.required)
+                    it.getChildAt(0).requestFocus()
+                }
             }
         }
     }
@@ -138,7 +166,7 @@ class AccountCreateFragment : Fragment() {
         keyboardListener()
         accountValueListener()
         formFocusListeners()
-        hintDoneListener()
+        formDoneListener()
     }
 
     private fun backListener() {
@@ -168,23 +196,23 @@ class AccountCreateFragment : Fragment() {
     private fun accountValueListener() {
         // note. title
         binding.titleValue.doOnTextChanged { text, _, _, _ ->
-            viewModel.setAccountValue("title", text)
+            viewModel.setAccountValue(TITLE, text)
         }
         // note. subtitle
         binding.subtitleValue.doOnTextChanged { text, _, _, _ ->
-            viewModel.setAccountValue("subtitle", text)
+            viewModel.setAccountValue(SUBTITLE, text)
         }
         // note. subtitle
         binding.usernameValue.doOnTextChanged { text, _, _, _ ->
-            viewModel.setAccountValue("username", text)
+            viewModel.setAccountValue(USERNAME, text)
         }
         // note. subtitle
         binding.passwordValue.doOnTextChanged { text, _, _, _ ->
-            viewModel.setAccountValue("password", text)
+            viewModel.setAccountValue(PASSWORD, text)
         }
         // note. subtitle
         binding.hintValue.doOnTextChanged { text, _, _, _ ->
-            viewModel.setAccountValue("hint", text)
+            viewModel.setAccountValue(HINT, text)
         }
     }
 
@@ -206,7 +234,7 @@ class AccountCreateFragment : Fragment() {
         }
     }
 
-    private fun hintDoneListener() {
+    private fun formDoneListener() {
         binding.hintValue.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {

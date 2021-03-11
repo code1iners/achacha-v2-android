@@ -13,6 +13,8 @@ import com.codeliner.achacha.utils.Const.TITLE
 import com.codeliner.achacha.utils.Const.USERNAME
 import kotlinx.coroutines.*
 import timber.log.Timber
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.full.valueParameters
 
 class AccountCreateViewModel(
     private val repository: AccountRepository
@@ -67,11 +69,27 @@ class AccountCreateViewModel(
     fun createAccountJob() {
         onAccountValue.value?.let {
             uiScope.launch {
-                val account = it.copy()
-                createAccount(account)
-                submitAccount()
+                Timber.w("account: $it")
+                val values = it.isValid()
+                when (values.first) {
+                    true -> {
+                        val account = it.copy()
+                        createAccount(account)
+                        submitAccount()
+                    }
+
+                    false -> {
+                        setHasError(values)
+                    }
+                }
             }
         }
+    }
+
+    private val _hasError = MutableLiveData<Pair<Boolean, String?>>()
+    val hasError: LiveData<Pair<Boolean, String?>> get() = _hasError
+    private fun setHasError(values: Pair<Boolean, String?>) {
+        _hasError.value = values.copy()
     }
 
     private suspend fun createAccount(account: Account) {

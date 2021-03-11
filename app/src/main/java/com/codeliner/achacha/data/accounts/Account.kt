@@ -3,6 +3,11 @@ package com.codeliner.achacha.data.accounts
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.codeliner.achacha.utils.Const.HINT
+import com.codeliner.achacha.utils.Const.PASSWORD
+import com.codeliner.achacha.utils.Const.SUBTITLE
+import com.codeliner.achacha.utils.Const.TITLE
+import com.codeliner.achacha.utils.Const.USERNAME
 
 @Entity(tableName = "accounts_table")
 data class Account (
@@ -29,4 +34,31 @@ data class Account (
 
     @ColumnInfo(name = "thumbnail")
     var thumbnail: String? = null
-)
+) {
+    fun isValid(): Pair<Boolean, String?> {
+        var values = Pair<Boolean, String?>(true, null)
+
+        when {
+            title.isNullOrEmpty() -> {
+                values = values.copy(first = false, second = TITLE)
+            }
+
+            subtitle.isNullOrEmpty() -> {
+                values = values.copy(first = false, second = SUBTITLE)
+            }
+
+            username.isNullOrEmpty() -> {
+                values = values.copy(first = false, second = USERNAME)
+            }
+
+            password.isNullOrEmpty() -> {
+                values = values.copy(first = false, second = PASSWORD)
+            }
+
+            hint.isNullOrEmpty() -> {
+                values = values.copy(first = false, second = HINT)
+            }
+        }
+        return values
+    }
+}
