@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.codeliner.achacha.data.accounts.Account
-import com.codeliner.achacha.data.accounts.AccountDatabaseDao
 import com.codeliner.achacha.data.accounts.AccountRepository
-import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import kotlinx.coroutines.*
 import timber.log.Timber
@@ -66,6 +64,7 @@ class AccountCreateViewModel(
             uiScope.launch {
                 val account = it.copy()
                 createAccount(account)
+                submitAccount()
             }
         }
     }
@@ -75,6 +74,19 @@ class AccountCreateViewModel(
             repository.createAccount(account)
         }
     }
+
+    private val _onSubmit = MutableLiveData<Boolean>()
+    val onSubmit: LiveData<Boolean> get() = _onSubmit
+    private suspend fun submitAccount() {
+        withContext(Dispatchers.Main) {
+            _onSubmit.value = true
+        }
+    }
+    fun submitAccountComplete() {
+        _onSubmit.value = false
+    }
+
+    var currentField: String? = null
 
     override fun onCleared() {
         super.onCleared()

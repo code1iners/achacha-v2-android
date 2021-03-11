@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -17,6 +19,7 @@ import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.KeyboardManager
 import com.example.helpers.ui.getFadeIn
 import com.example.helpers.ui.getFadeOut
+import com.google.android.material.textfield.TextInputEditText
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -70,16 +73,11 @@ class AccountCreateFragment : Fragment() {
     private fun observers() {
         backObserve()
         observeAccountValue()
+        observeSubmit()
     }
 
     private fun backObserve() {
         observeBack()
-    }
-
-    private fun observeAccountValue() {
-        viewModel.onAccountValue.observe(viewLifecycleOwner, Observer {
-            Timber.d("account updated: $it")
-        })
     }
 
     private fun observeBack() {
@@ -104,10 +102,36 @@ class AccountCreateFragment : Fragment() {
         })
     }
 
+    private fun observeAccountValue() {
+        viewModel.onAccountValue.observe(viewLifecycleOwner, Observer {
+            Timber.d("account updated: $it")
+        })
+    }
+
+    private fun observeSubmit() {
+        viewModel.onSubmit.observe(viewLifecycleOwner) { started ->
+            if (started) {
+                val view = when (viewModel.currentField) {
+                    "title" -> binding.titleValue
+                    "subtitle" -> binding.subtitleValue
+                    "username" -> binding.usernameValue
+                    "password" -> binding.passwordValue
+                    "hint" -> binding.hintValue
+                    else -> null
+                }
+                // note. back
+                KeyboardManager.keyboardClose(app, view as EditText)
+                // note. complete
+                viewModel.submitAccountComplete()
+            }
+        }
+    }
+
     private fun listeners() {
         backListener()
         keyboardListener()
         accountValueListener()
+        formFocusListeners()
     }
 
     private fun backListener() {
@@ -154,6 +178,39 @@ class AccountCreateFragment : Fragment() {
         // note. subtitle
         binding.hintValue.doOnTextChanged { text, _, _, _ ->
             viewModel.setAccountValue("hint", text)
+        }
+    }
+
+    private fun formFocusListeners() {
+        binding.titleValue.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                Timber.d("titleValue has focus")
+                viewModel.currentField = "title"
+            }
+        }
+        binding.subtitleValue.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                Timber.d("subtitleValue has focus")
+                viewModel.currentField = "subtitle"
+            }
+        }
+        binding.usernameValue.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                Timber.d("usernameValue has focus")
+                viewModel.currentField = "username"
+            }
+        }
+        binding.passwordValue.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                Timber.d("passwordValue has focus")
+                viewModel.currentField = "password"
+            }
+        }
+        binding.hintValue.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                Timber.d("hintValue has focus")
+                viewModel.currentField = "hint"
+            }
         }
     }
 
