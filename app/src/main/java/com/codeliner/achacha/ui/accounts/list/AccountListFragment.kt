@@ -8,27 +8,23 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.R
+import com.codeliner.achacha.data.accounts.Account
 import com.codeliner.achacha.databinding.FragmentAccountListBinding
-import com.codeliner.achacha.mains.MainViewModel
-import com.codeliner.achacha.utils.Const
-import com.example.helpers.ui.AnimationManager
-import com.example.helpers.ui.getHeaderHide
-import com.example.helpers.ui.getHeaderShow
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.helpers.ui.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class AccountListFragment: Fragment() {
+class AccountListFragment: Fragment()
+    , AccountClickListener
+{
 
     private lateinit var binding: FragmentAccountListBinding
     private val viewModel: AccountListViewModel by viewModel()
-    private val mainViewModel: MainViewModel by viewModel()
+    private lateinit var accountListAdapter: AccountListAdapter
 
     override fun onStop() {
-        super.onStop()
         exitAnim()
+        super.onStop()
     }
 
     private fun exitAnim() {
@@ -37,18 +33,23 @@ class AccountListFragment: Fragment() {
             val animHeaderHide = it.getHeaderHide().apply {
                 this.duration = duration
             }
+            val animFadeOut = it.getFadeOut().apply {
+                this.duration = duration
+                this.fillAfter = true
+            }
 
             // note. header
             binding.headerContainer.startAnimation(animHeaderHide)
             // note. header
             binding.headerDividerBottom.startAnimation(animHeaderHide)
             // note. body
+            binding.accountList.startAnimation(animFadeOut)
         }
     }
 
     override fun onStart() {
-        super.onStart()
         enterAnim()
+        super.onStart()
     }
 
     private fun enterAnim() {
@@ -57,13 +58,17 @@ class AccountListFragment: Fragment() {
             val animHeaderShow = it.getHeaderShow().apply {
                 this.duration = duration
             }
+            val animFadeIn = it.getFadeIn().apply {
+                this.duration = duration
+                this.fillAfter = true
+            }
 
             // note. header
             binding.headerContainer.startAnimation(animHeaderShow)
             // note. header
             binding.headerDividerBottom.startAnimation(animHeaderShow)
             // note. body
-
+            binding.accountList.startAnimation(animFadeIn)
         }
     }
 
@@ -75,18 +80,26 @@ class AccountListFragment: Fragment() {
     }
 
     private fun initialize(inflater: LayoutInflater) {
+        initializeBinding(inflater)
+        initializeAdapter()
+    }
+
+    private fun initializeBinding(inflater: LayoutInflater) {
         binding = FragmentAccountListBinding.inflate(inflater)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
     }
 
+    private fun initializeAdapter() {
+        accountListAdapter = AccountListAdapter(this)
+        binding.accountList.adapter = accountListAdapter
+    }
+
     private fun observe() {
         observeFabs()
-        viewModel.accounts.observe(viewLifecycleOwner, Observer {
-            Timber.d("accounts updated: ${it.size}")
-            for (account in it) Timber.v("account: $account")
+        viewModel.accounts.observe(viewLifecycleOwner, { accounts ->
+            accountListAdapter.submitList(accounts.map { it.copy() })
         })
-
     }
 
     private fun observeFabs() {
@@ -97,9 +110,9 @@ class AccountListFragment: Fragment() {
 
     private fun observeFabCreate() {
         // note. when clicked create fab button from main
-        AccountListViewModel.onAccountCreate.observe(viewLifecycleOwner, Observer { started ->
+        AccountListViewModel.onAccountCreate.observe(viewLifecycleOwner, { started ->
+            Timber.d("onAccountCreate: $started")
             if (started) {
-                // note. start anim
                 viewModel.navigateToAccountCreateAnimation()
                 // note. complete navigate to create action
                 AccountListViewModel.accountCreateJobComplete()
@@ -107,14 +120,17 @@ class AccountListFragment: Fragment() {
         })
 
         // note. navigate (ui)
-        viewModel.onNavigateToAccountCreateAnimation.observe(viewLifecycleOwner, Observer { started ->
+        viewModel.onNavigateToAccountCreateAnimation.observe(viewLifecycleOwner, { started ->
+            Timber.d("onNavigateToAccountCreateAnimation: $started")
             if (started) {
+                // note. start anim
                 exitAnim()
             }
         })
 
         // note. navigate (feature)
-        viewModel.onNavigateToAccountCreateJob.observe(viewLifecycleOwner, Observer { started ->
+        viewModel.onNavigateToAccountCreateJob.observe(viewLifecycleOwner, { started ->
+            Timber.d("onNavigateToAccountCreateJob: $started")
             if (started) {
                 findNavController().navigate(AccountListFragmentDirections.actionAccountListFragmentToAccountCreateFragment())
 
@@ -124,7 +140,7 @@ class AccountListFragment: Fragment() {
     }
 
     private fun observeFabClear() {
-        AccountListViewModel.onAccountClear.observe(viewLifecycleOwner, Observer { started ->
+        AccountListViewModel.onAccountClear.observe(viewLifecycleOwner, { started ->
             if (started) {
 
                 viewModel.clearAccounts()
@@ -135,11 +151,15 @@ class AccountListFragment: Fragment() {
     }
 
     private fun observeFabTest() {
-        AccountListViewModel.onAccountTest.observe(viewLifecycleOwner, Observer { started ->
+        AccountListViewModel.onAccountTest.observe(viewLifecycleOwner, { started ->
             if (started) {
 
                 AccountListViewModel.accountTestJobComplete()
             }
         })
+    }
+
+    override fun onClick(account: Account) {
+        Timber.w("account: $account")
     }
 }

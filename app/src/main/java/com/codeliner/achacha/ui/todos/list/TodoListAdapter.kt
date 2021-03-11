@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.codeliner.achacha.databinding.ItemTodoBinding
 import com.codeliner.achacha.data.todos.Todo
+import com.codeliner.achacha.utils.TodoListDiffCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class TodoAdapter(val clickListener: TodoClickListener, val moveListener: TodoMoveListener):
-    ListAdapter<Todo, TodoAdapter.ViewHolder>(TodoDiffCallback())
+    ListAdapter<Todo, TodoAdapter.ViewHolder>(TodoListDiffCallback())
     , ItemTouchHelperListener
 {
 

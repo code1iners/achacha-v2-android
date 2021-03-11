@@ -155,6 +155,6 @@ class TodoListViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        uiScope.cancel()
+        viewModelJob.cancel()
     }
 }

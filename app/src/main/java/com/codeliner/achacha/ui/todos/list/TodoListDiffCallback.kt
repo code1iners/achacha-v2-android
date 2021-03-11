@@ -1,9 +1,9 @@
-package com.codeliner.achacha.ui.todos.list
+package com.codeliner.achacha.utils
 
 import androidx.recyclerview.widget.DiffUtil
 import com.codeliner.achacha.data.todos.Todo
 
-class TodoDiffCallback: DiffUtil.ItemCallback<Todo>() {
+class TodoListDiffCallback: DiffUtil.ItemCallback<Todo>() {
 
     override fun areItemsTheSame(oldItem: Todo, newItem: Todo): Boolean {
 //            Timber.w("areItemsTheSame: ${oldItem.id == newItem.id}")

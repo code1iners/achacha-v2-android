@@ -78,6 +78,6 @@ class AccountCreateViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        uiScope.cancel()
+        viewModelJob.cancel()
     }
 }
