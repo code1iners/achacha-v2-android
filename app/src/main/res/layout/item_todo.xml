@@ -25,8 +25,7 @@
         android:id="@+id/itemTodo_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/spacing_s"
-        android:paddingHorizontal="@dimen/spacing_m">
+        android:padding="@dimen/spacing_m">
 
         <ImageButton
             android:id="@+id/itemTodo_isFinished"

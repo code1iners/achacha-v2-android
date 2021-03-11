@@ -1,8 +1,13 @@
 package com.codeliner.achacha.ui.accounts.list
 
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import com.bumptech.glide.Glide
 import com.codeliner.achacha.data.accounts.Account
+import timber.log.Timber
+import java.util.*
 
 @BindingAdapter("setAccountTitle")
 fun TextView.setAccountTitle(item: Account?) {
@@ -19,11 +24,24 @@ fun TextView.setAccountUsername(item: Account?) {
 }
 
 @BindingAdapter("setAccountThumbnailAsText")
-fun TextView.setThumbnailAsTest(item: Account?) {
+fun TextView.setThumbnailAsText(item: Account?) {
     item?.let { account ->
         val let = account.title?.let { title ->
-            text = title.capitalize().firstOrNull().toString()
+            text = title.capitalize(Locale.ROOT).firstOrNull().toString()
         }
         let
+    }
+}
+
+@BindingAdapter("setAccountThumbnailAsImage")
+fun ImageView.setThumbnailAsImage(item: Account?) {
+    item?.let { account ->
+        account.thumbnail?.let { thumbnail ->
+            Timber.w("thumbnail: $thumbnail")
+            Glide
+                .with(this.context)
+                .load(thumbnail.toUri())
+                .into(this)
+        }
     }
 }
