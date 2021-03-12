@@ -36,7 +36,7 @@ class MainViewModel(
 
         private val _onFabVisibility = MutableLiveData<Boolean>()
         val onFabVisibility: LiveData<Boolean> get() = _onFabVisibility
-        private fun setFabVisibility(status: Boolean) {
+        fun setFabVisibility(status: Boolean) {
             _onFabVisibility.value = status
         }
         fun setFabVisibilityComplete() {
@@ -56,7 +56,7 @@ class MainViewModel(
 
         private val _onBottomNavigationVisibility = MutableLiveData<Boolean>()
         val onBottomNavigationVisibility: LiveData<Boolean> get() = _onBottomNavigationVisibility
-        private fun setBottomNavigationVisibility(status: Boolean) {
+        fun setBottomNavigationVisibility(status: Boolean) {
             _onBottomNavigationVisibility.value = status
         }
         fun setBottomNavigationVisibilityComplete() {

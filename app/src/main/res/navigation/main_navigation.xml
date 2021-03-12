@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/todoListFragment">
+    app:startDestination="@id/authBioFragment">
 
     <fragment
         android:id="@+id/todoListFragment"
@@ -44,4 +44,13 @@
         android:name="com.codeliner.achacha.ui.accounts.create.AccountCreateFragment"
         android:label="AccountCreateFragment"
         tools:layout="@layout/fragment_account_create"/>
+    <fragment
+        android:id="@+id/authBioFragment"
+        android:name="com.codeliner.achacha.ui.auths.AuthBioFragment"
+        android:label="AuthBioFragment"
+        tools:layout="@layout/fragment_auth_bio">
+        <action
+            android:id="@+id/action_authBioFragment_to_todoListFragment"
+            app:destination="@id/todoListFragment" />
+    </fragment>
 </navigation>
