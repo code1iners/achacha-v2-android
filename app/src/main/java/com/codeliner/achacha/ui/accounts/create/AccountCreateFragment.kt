@@ -54,7 +54,6 @@ class AccountCreateFragment : Fragment() {
     }
 
     override fun onResume() {
-        Timber.w("onResume called")
         super.onResume()
         val view = getCurrentFieldView()
         view.requestFocus()
