@@ -2,9 +2,12 @@ package com.codeliner.achacha.mains
 
 import android.Manifest
 import android.app.Application
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -285,8 +288,6 @@ class MainActivity : AppCompatActivity()
                     // note. When the user pressed "Denied".
                     true -> {
                         // note. Show snackbar to request permission
-                        Timber.w("here 2")
-
                         binding.layout.snacking(
                             R.string.permission_required_message_storage,
                                 Snackbar.LENGTH_INDEFINITE, R.string.ok) {
@@ -299,8 +300,14 @@ class MainActivity : AppCompatActivity()
                     // note. When the user pressed "Don't ask anymore"
                     false -> {
                         // note. Explain how to permission grant in app information
-                        binding.layout.snackingShort(R.string.permission_available_message)
-
+                        binding.layout.snacking(
+                            R.string.permission_available_message
+                        , Snackbar.LENGTH_LONG, R.string.setting) {
+                            startActivity(
+                                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).also {
+                                    it.data = Uri.fromParts("package", packageName, null)
+                                })
+                        }
                     }
                 }
             }
@@ -318,12 +325,13 @@ class MainActivity : AppCompatActivity()
                 when (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     true -> {
                         // note. permission granted successfully
-                        Timber.w("finally permission granted")
+//                        Timber.w("finally permission granted")
                         this.toastingShort(R.string.permission_granted)
                     }
 
                     false -> {
-                        Timber.w("finally permission denied")
+                        // note. permission denied successfully
+//                        Timber.w("finally permission denied")
                         this.toastingShort(R.string.permission_denied)
                     }
                 }
