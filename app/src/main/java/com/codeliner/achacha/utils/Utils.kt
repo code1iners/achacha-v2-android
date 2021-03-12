@@ -1,6 +1,10 @@
 package com.codeliner.achacha.utils
 
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.codeliner.achacha.data.todos.Todo
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import timber.log.Timber
@@ -43,3 +47,13 @@ fun List<TextInputLayout>.clearErrorsWithHelperOff() {
         }
     }
 }
+
+//fun AppCompatActivity.checkSelfPermissionCompat(permission: String) =
+//        ActivityCompat.checkSelfPermission(this, permission)
+//
+//fun AppCompatActivity.shouldShowRequestPermissionRationaleCompat(permission: String) =
+//        ActivityCompat.shouldShowRequestPermissionRationale(this, permission)
+//
+//fun AppCompatActivity.requestPermissionsCompat(permissionsArray: Array<String>, requestCode: Int) {
+//    ActivityCompat.requestPermissions(this, permissionsArray, requestCode)
+//}

@@ -1,44 +1,39 @@
 package com.codeliner.achacha.mains
 
+import android.Manifest
 import android.app.Application
-import android.content.Context
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.view.inputmethod.InputMethodManager
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.ActivityMainBinding
 import com.codeliner.achacha.ui.accounts.list.AccountListViewModel
-import com.codeliner.achacha.ui.todos.list.TodoListFragmentDirections
 import com.codeliner.achacha.ui.todos.list.TodoListViewModel
-import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CLEAR
 import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CREATE
 import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_TEST
 import com.codeliner.achacha.utils.Const.ACTION_TODO_CLEAR
 import com.codeliner.achacha.utils.Const.ACTION_TODO_CREATE
 import com.codeliner.achacha.utils.Const.ACTION_TODO_TEST
-import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_DEFAULT
 import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
-import com.example.helpers.toastForShort
+import com.codeliner.achacha.utils.Const.PERMISSION_REQUEST_READ_EXTERNAL_STORAGE
 import com.example.helpers.ui.*
+import com.example.helpers.utils.checkSelfPermissionCompat
+import com.example.helpers.utils.requestPermissionsCompat
+import com.example.helpers.utils.shouldShowRequestPermissionRationaleCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.*
+import com.google.android.material.snackbar.Snackbar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -48,13 +43,14 @@ class MainActivity : AppCompatActivity()
 
     private lateinit var nc: NavController
     private val viewModel: MainViewModel by viewModel()
-    private val todoListViewModel: TodoListViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initialize()
         // note. for observers
         observers()
+        // note. check device permissions
+        checkPermissions()
     }
 
     private fun initialize() {
@@ -102,8 +98,8 @@ class MainActivity : AppCompatActivity()
     private fun observeFavMain() {
         val cs = ConstraintSet()
         cs.clone(binding.activityMainFabContainer)
-        viewModel.isFavCollapsed.observe(this, Observer { isCollapsed ->
-            Timber.d("isCollapsed: $isCollapsed")
+        viewModel.isFavCollapsed.observe(this) { isCollapsed ->
+//            Timber.d("isCollapsed: $isCollapsed")
             if (!isCollapsed) {
                 cs.connect(binding.activityMainFabCreate.id, ConstraintSet.BOTTOM, binding.activityMainFabMain.id, ConstraintSet.TOP)
                 cs.connect(binding.activityMainFabClear.id, ConstraintSet.BOTTOM, binding.activityMainFabCreate.id, ConstraintSet.TOP)
@@ -127,9 +123,9 @@ class MainActivity : AppCompatActivity()
 
             TransitionManager.beginDelayedTransition(binding.activityMainFabContainer, transition)
             cs.applyTo(binding.activityMainFabContainer)
-        })
+        }
 
-        MainViewModel.onFabAnimation.observe(this, Observer {
+        MainViewModel.onFabAnimation.observe(this) {
             it?.let { isShowing ->
                 when (isShowing) {
                     true -> {
@@ -149,9 +145,9 @@ class MainActivity : AppCompatActivity()
                     }
                 }
             }
-        })
+        }
 
-        MainViewModel.onFabVisibility.observe(this, Observer {
+        MainViewModel.onFabVisibility.observe(this) {
             it?.let { status ->
                 when (status) {
                     true -> {
@@ -163,11 +159,11 @@ class MainActivity : AppCompatActivity()
                 }
                 MainViewModel.setFabVisibilityComplete()
             }
-        })
+        }
     }
 
     private fun observeFavActions() {
-        viewModel.onClickCreateAction.observe(this, Observer {
+        viewModel.onClickCreateAction.observe(this) {
             it?.let { action ->
 //                Timber.d("action: $action")
                 when (action) {
@@ -206,14 +202,13 @@ class MainActivity : AppCompatActivity()
                     }
                 }
             }
-        })
+        }
     }
 
     private fun observeBottomNav() {
-        val delayShort = resources.getInteger(R.integer.animation_duration_short).toLong()
         // note. for bottom nav position
-        viewModel.currentBottomNavPosition.observe(this, Observer { position ->
-            Timber.d("position: $position")
+        viewModel.currentBottomNavPosition.observe(this) { position ->
+//            Timber.d("position: $position")
             when (position) {
                 0 -> {
 
@@ -223,10 +218,10 @@ class MainActivity : AppCompatActivity()
 
                 }
             }
-        })
+        }
 
         // note. for bottom nav
-        MainViewModel.onBottomNavigationAnimation.observe(this, Observer { isShowing ->
+        MainViewModel.onBottomNavigationAnimation.observe(this) { isShowing ->
             when (isShowing) {
                 true -> {
                     binding.activityMainBottomNav.startAnimation(
@@ -246,9 +241,9 @@ class MainActivity : AppCompatActivity()
                     )
                 }
             }
-        })
+        }
 
-        MainViewModel.onBottomNavigationVisibility.observe(this, Observer {
+        MainViewModel.onBottomNavigationVisibility.observe(this) {
             it?.let { visible ->
                 when (visible) {
                     true -> {
@@ -261,11 +256,79 @@ class MainActivity : AppCompatActivity()
                 }
                 MainViewModel.setBottomNavigationVisibilityComplete()
             }
-        })
+        }
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
         // note. not yet
+    }
+
+    // note. permission check method
+    private fun checkPermissions() {
+        checkReadExternalStoragePermission(Manifest.permission.READ_EXTERNAL_STORAGE, PERMISSION_REQUEST_READ_EXTERNAL_STORAGE)
+    }
+    // note. permission request method
+    private fun checkReadExternalStoragePermission(permission: String, requestCode: Int) {
+        when (checkSelfPermissionCompat(permission) == PackageManager.PERMISSION_GRANTED) {
+            true -> {
+                // note. When user already have permission.
+                // note. Implement user want action.
+
+                // note. test log
+//                Timber.w(getString(R.string.permission_granted))
+//                toastingShort(R.string.permission_granted)
+            }
+
+            false -> {
+                // note. When user does not have permission.
+                when (shouldShowRequestPermissionRationaleCompat(permission)) {
+                    // note. When the user pressed "Denied".
+                    true -> {
+                        // note. Show snackbar to request permission
+                        Timber.w("here 2")
+
+                        binding.layout.snacking(
+                            R.string.permission_required_message_storage,
+                                Snackbar.LENGTH_INDEFINITE, R.string.ok) {
+                            // note. Request permission to user.
+                            requestPermissionsCompat(arrayOf(permission),
+                                    requestCode)
+                        }
+                    }
+
+                    // note. When the user pressed "Don't ask anymore"
+                    false -> {
+                        // note. Explain how to permission grant in app information
+                        binding.layout.snackingShort(R.string.permission_available_message)
+
+                    }
+                }
+            }
+        }
+    }
+    // note. permission response method
+    override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            PERMISSION_REQUEST_READ_EXTERNAL_STORAGE -> {
+                when (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    true -> {
+                        // note. permission granted successfully
+                        Timber.w("finally permission granted")
+                        this.toastingShort(R.string.permission_granted)
+                    }
+
+                    false -> {
+                        Timber.w("finally permission denied")
+                        this.toastingShort(R.string.permission_denied)
+                    }
+                }
+            }
+        }
     }
 
     companion object {

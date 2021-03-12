@@ -22,8 +22,8 @@ import com.codeliner.achacha.mains.MainViewModel
 import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import com.codeliner.achacha.utils.KeyboardManager
-import com.example.helpers.toastForShort
 import com.example.helpers.ui.AnimationManager
+import com.example.helpers.ui.toastingShort
 import com.google.android.material.chip.Chip
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent.setEventListener
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener
@@ -169,7 +169,7 @@ class TodoCreateFragment: Fragment() {
         binding.fragmentTodoCreateSubmit.setOnClickListener {
             when (viewModel.work.value.isNullOrEmpty()) {
                 true -> {
-                    context?.toastForShort("작업을 입력해주세요.")
+                    context?.toastingShort("작업을 입력해주세요.")
                 }
 
                 false -> {
