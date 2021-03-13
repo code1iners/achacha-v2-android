@@ -7,17 +7,15 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.transition.AutoTransition
 import com.codeliner.achacha.databinding.FragmentTodoListBinding
 import com.codeliner.achacha.data.todos.Todo
-import com.codeliner.achacha.mains.MainViewModel
-import com.codeliner.achacha.utils.Const
 import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import com.codeliner.achacha.utils.log
 import com.example.helpers.ui.AnimationManager
+import com.example.helpers.ui.toastingShort
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -28,19 +26,18 @@ class TodoListFragment: Fragment()
 
     private lateinit var binding: FragmentTodoListBinding
     private val viewModel: TodoListViewModel by viewModel()
-    private val mainViewModel: MainViewModel by viewModel()
 
     // note. adapters
     private lateinit var todoAdapter: TodoAdapter
 
     // note. animations (ui)
-    lateinit var animHeaderShow: Animation
-    lateinit var animHeaderHide: Animation
-    lateinit var animRotateLeft: Animation
-    lateinit var animRotateRight: Animation
-    lateinit var animHide: Animation
-    lateinit var animShow: Animation
-    lateinit var transition: AutoTransition
+    private lateinit var animHeaderShow: Animation
+    private lateinit var animHeaderHide: Animation
+    private lateinit var animRotateLeft: Animation
+    private lateinit var animRotateRight: Animation
+    private lateinit var animHide: Animation
+    private lateinit var animShow: Animation
+    private lateinit var transition: AutoTransition
 
     override fun onStop() {
         super.onStop()
@@ -50,7 +47,7 @@ class TodoListFragment: Fragment()
         // note. header
         binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderHide)
         // note. body
-        binding.fragmentTodoListTodoList.startAnimation(
+        binding.bodyContainer.startAnimation(
                 AnimationManager.getFadeOut(requireContext()).apply {
                     duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
@@ -65,9 +62,9 @@ class TodoListFragment: Fragment()
         // note. header
         binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderShow)
         // note. body
-        binding.fragmentTodoListTodoList.startAnimation(
+        binding.bodyContainer.startAnimation(
                 AnimationManager.getFadeIn(requireContext()).apply {
-                    duration = Const.ANIMATION_DURATION_SHORT
+                    duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
                 })
     }
@@ -92,30 +89,29 @@ class TodoListFragment: Fragment()
         animRotateRight = AnimationManager.getRotateRight45(requireContext())
 
         animHide = AnimationManager.getFadeOut(requireContext()).apply {
-            duration = Const.ANIMATION_DURATION_SHORT
+            duration = ANIMATION_DURATION_SHORT
             fillAfter = true
         }
         animShow = AnimationManager.getFadeIn(requireContext()).apply {
-            duration = Const.ANIMATION_DURATION_SHORT
+            duration = ANIMATION_DURATION_SHORT
             fillAfter = true
         }
 
         transition = AutoTransition().apply {
-            duration = Const.ANIMATION_DURATION_SHORT
+            duration = ANIMATION_DURATION_SHORT
             interpolator = AccelerateDecelerateInterpolator()
         }
     }
 
     private fun initAdapters() {
         todoAdapter = TodoAdapter(this, this)
-        binding.fragmentTodoListTodoList.adapter = todoAdapter
+        binding.todoList.adapter = todoAdapter
         val helper = ItemTouchHelper(ItemTouchHelperCallback(todoAdapter))
-        helper.attachToRecyclerView(binding.fragmentTodoListTodoList)
+        helper.attachToRecyclerView(binding.todoList)
     }
 
     private fun initObservers() {
         observeFabs()
-        // note. todos
         observeTodos()
     }
 
@@ -129,60 +125,71 @@ class TodoListFragment: Fragment()
     }
 
     private fun observeCreate() {
-        TodoListViewModel.onTodoCreate.observe(viewLifecycleOwner, Observer { isStart ->
+        TodoListViewModel.onTodoCreate.observe(viewLifecycleOwner) { isStart ->
             if (isStart) {
                 viewModel.onNavigateToCreateTodoReady()
 
                 TodoListViewModel.todoCreateJobComplete()
             }
-        })
+        }
 
-        viewModel.onNavigateToCreateTodoReady.observe(viewLifecycleOwner, Observer { isReady ->
+        viewModel.onNavigateToCreateTodoReady.observe(viewLifecycleOwner) { isReady ->
             if (isReady) {
                 // note. update ui
                 binding.fragmentTodoListCalendarContainer.startAnimation(animHeaderHide)
                 binding.fragmentTodoListCalendarDividerBottom.startAnimation(animHeaderHide)
-                binding.fragmentTodoListTodoList.startAnimation(animHide)
+                binding.bodyContainer.startAnimation(animHide)
 
                 viewModel.navigateToCreateTodoReady()
                 viewModel.navigateToCreateTodoComplete()
             }
-        })
+        }
 
-        viewModel.onNavigateToCreateTodoProcess.observe(viewLifecycleOwner, Observer { isStart ->
+        viewModel.onNavigateToCreateTodoProcess.observe(viewLifecycleOwner) { isStart ->
             if (isStart) {
                 findNavController().navigate(TodoListFragmentDirections.actionTodoListFragmentToTodoCreateFragment(viewModel.tasks.value ?: -1))
 
                 viewModel.navigateToCreateTodoProcessComplete()
             }
-        })
+        }
     }
 
     private fun observeClear() {
-        TodoListViewModel.onTodoClear.observe(viewLifecycleOwner, Observer { isStart ->
+        TodoListViewModel.onTodoClear.observe(viewLifecycleOwner) { isStart ->
             if (isStart) {
                 viewModel.clearTodos()
 
                 TodoListViewModel.todoClearJobComplete()
             }
-        })
+        }
     }
 
     private fun observeTest() {
-        TodoListViewModel.onTodoTest.observe(viewLifecycleOwner, Observer { isStart ->
+        TodoListViewModel.onTodoTest.observe(viewLifecycleOwner) { isStart ->
             if (isStart) {
-                Timber.d("hello i am todo test job")
+
+                context?.toastingShort("Look like a Star.")
 
                 TodoListViewModel.todoTestJobComplete()
             }
-        })
+        }
     }
 
     private fun observeTodos() {
-        viewModel.todos.observe(viewLifecycleOwner, Observer { todos ->
+        viewModel.todos.observe(viewLifecycleOwner) { todos ->
+            when (todos.isEmpty()) {
+                true -> {
+                    binding.todoListEmptyText.visibility = View.VISIBLE
+                    binding.todoList.visibility = View.GONE
+                }
 
+                false -> {
+                    binding.todoListEmptyText.visibility = View.GONE
+                    binding.todoList.visibility = View.VISIBLE
+                }
+            }
             todoAdapter.testSubmitList(todos.map { it.copy() })
-        })
+        }
     }
 
     override fun onClick(todo: Todo) {

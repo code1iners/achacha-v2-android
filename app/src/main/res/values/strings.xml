@@ -50,6 +50,10 @@
     <string name="disagree">Disagree</string>
     <string name="initialize">Initialize</string>
 
+    <!--  todo list  -->
+    <string name="item_list_is_empty_message">How about create new a %s?</string>
+
+
     <!--  authenticate  -->
     <string name="auth_pattern_create">Create new pattern to log-in</string>
     <string name="auth_pattern_forgot">Did you forgot the pattern?</string>

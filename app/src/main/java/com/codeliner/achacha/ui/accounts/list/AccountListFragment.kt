@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.R
 import com.codeliner.achacha.data.accounts.Account
@@ -44,7 +42,7 @@ class AccountListFragment: Fragment()
             // note. header
             binding.headerDividerBottom.startAnimation(animHeaderHide)
             // note. body
-            binding.accountList.startAnimation(animFadeOut)
+            binding.bodyContainer.startAnimation(animFadeOut)
         }
     }
 
@@ -69,7 +67,7 @@ class AccountListFragment: Fragment()
             // note. header
             binding.headerDividerBottom.startAnimation(animHeaderShow)
             // note. body
-            binding.accountList.startAnimation(animFadeIn)
+            binding.bodyContainer.startAnimation(animFadeIn)
         }
     }
 
@@ -99,6 +97,17 @@ class AccountListFragment: Fragment()
     private fun observe() {
         observeFabs()
         viewModel.accounts.observe(viewLifecycleOwner, { accounts ->
+            when (accounts.isEmpty()) {
+                true -> {
+                    binding.accountListEmptyText.visibility = View.VISIBLE
+                    binding.accountList.visibility = View.GONE
+                }
+
+                false -> {
+                    binding.accountListEmptyText.visibility = View.GONE
+                    binding.accountList.visibility = View.VISIBLE
+                }
+            }
             accountListAdapter.submitList(accounts.map { it.copy() })
         })
     }
@@ -154,6 +163,8 @@ class AccountListFragment: Fragment()
     private fun observeFabTest() {
         AccountListViewModel.onAccountTest.observe(viewLifecycleOwner, { started ->
             if (started) {
+
+                context?.toastingShort("This is a Star")
 
                 AccountListViewModel.accountTestJobComplete()
             }
