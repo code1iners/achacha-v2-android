@@ -152,11 +152,9 @@ class AuthenticateFragment: Fragment() {
                             .setTitle(getString(R.string.auth_pattern_initialize_message_title))
                             .setMessage(getString(R.string.auth_pattern_initialize_message_subtitle))
                             .setNegativeButton(getString(R.string.disagree)) { _, _ ->
-                                Timber.d("disagree")
 
                             }
                             .setPositiveButton(getString(R.string.agree)) { _, _ ->
-                                Timber.d("agree")
 
                                 viewModel.clearPatternJob()
 
