@@ -25,28 +25,30 @@ import java.util.concurrent.Executor
 class AuthenticateFragment: Fragment() {
 
     private lateinit var binding: FragmentAuthenticateBinding
+
+    // note. Biometrics.
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
+    // note. View models.
     private val viewModel: AuthenticateViewModel by viewModel()
     private val todoListViewModel: TodoListViewModel by viewModel()
     private val accountListViewModel: AccountListViewModel by viewModel()
 
+    // note. Listeners.
     private val patternListener = object: PatternLockViewListener {
         override fun onStarted() {}
 
-        override fun onProgress(progressPattern: MutableList<PatternLockView.Dot>?) {
-//            progressPattern?.let {
-//                for (dot in it) Timber.v("dot: $dot")
-//            }
-        }
+        override fun onProgress(progressPattern: MutableList<PatternLockView.Dot>?) {}
 
         override fun onComplete(patternAsList: MutableList<PatternLockView.Dot>?) {
             patternAsList?.let { it ->
+                // note. Apply data into pattern data object
                 val pattern = Pattern().apply {
                     patternAsString = it.joinToString()
                 }
+                // note. Start authenticate process After compare the two patterns.
                 patternCompleteJob(pattern)
             }
             binding.patternView.clearPattern()
@@ -58,33 +60,34 @@ class AuthenticateFragment: Fragment() {
 
     override fun onStart() {
         super.onStart()
-        // note. fab gone
+        // note. Fab gone.
         MainViewModel.setFabVisibility(false)
-        // note. bottom nav gone
+        // note. Bottom nav gone.
         MainViewModel.setBottomNavigationVisibility(false)
     }
 
     override fun onStop() {
         super.onStop()
-        // note. fab visible
+        // note. Fab visible.
         MainViewModel.setFabVisibility(true)
-        // note. bottom nav visible
+        // note. Bottom nav visible.
         MainViewModel.setBottomNavigationVisibility(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize(inflater)
+        // note. Open biometric authenticate box.
         biometricStart()
 
         return binding.root
     }
 
     private fun initialize(inflater: LayoutInflater) {
-        // note. initialize binding
+        // note. Initialize binding.
         initializeBinding(inflater)
-        // note. initialize listener
+        // note. Initialize listener.
         initializeListeners()
-        // note. initialize biometric
+        // note. Initialize biometric.
         initializeBiometric()
     }
 
@@ -94,21 +97,23 @@ class AuthenticateFragment: Fragment() {
     }
 
     private fun initializeListeners() {
-        // note. pattern event listener
+        // note. Pattern event listener.
         binding.patternView.addPatternLockListener(patternListener)
-        // note. biometric event listener
+        // note. Biometric event listener.
         binding.biometricAgain.setOnClickListener {
+            // note. Open biometric authenticate box.
             biometricStart()
         }
         binding.usePattern.setOnClickListener {
-            patternStart()
+            // note. Change authenticate mode as Pattern.
+            patternModeStart()
         }
     }
 
-    private fun patternStart() {
-        binding.biometricContainer.visibility = View.GONE
-        binding.patternContainer.visibility = View.VISIBLE
-
+    private fun patternModeStart() {
+        // note. Set container visibilities(Biometric hide & Pattern show).
+        biometricHidePatternShow()
+        // note. From now on, will observe the pattern.
         observePattern()
     }
 
@@ -116,38 +121,30 @@ class AuthenticateFragment: Fragment() {
         viewModel.storedPattern.observe(viewLifecycleOwner) { pattern ->
             when (pattern == null) {
                 true -> {
-                    Timber.d("Need create new pattern")
+                    // note. When pattern create.
                     binding.patternCreate.visibility = View.VISIBLE
                     binding.patternForgot.visibility = View.GONE
-
-
                 }
 
                 false -> {
-                    Timber.d("Use pattern to authenticate app")
+                    // note. When pattern authenticate.
                     binding.patternCreate.visibility = View.GONE
                     binding.patternForgot.visibility = View.VISIBLE
-
-
                 }
             }
         }
 
         viewModel.onLogin.observe(viewLifecycleOwner) { isValid ->
-//            Timber.d("onLogin isValid: $isValid")
             when (isValid) {
+                // note. Set success color.
                 true -> {
                     binding.patternForgot.setTextColorById(R.color.sexyGreen)
                     login()
                 }
-
-                false -> {
-                    binding.patternForgot.setTextColorById(R.color.sexyRed)
-                }
-
-                else -> {
-                    binding.patternForgot.setTextColorById(R.color.primaryTextColor)
-                }
+                // note. Set error color.
+                false -> binding.patternForgot.setTextColorById(R.color.sexyRed)
+                // note. Set default color.
+                else -> binding.patternForgot.setTextColorById(R.color.primaryTextColor)
             }
         }
 
@@ -159,11 +156,9 @@ class AuthenticateFragment: Fragment() {
                             .setMessage(getString(R.string.auth_pattern_initialize_message_subtitle))
                             .setNegativeButton(getString(R.string.disagree)) { _, _ -> }
                             .setPositiveButton(getString(R.string.agree)) { _, _ ->
-                                // note. initialize pattern and clear all data
-                                viewModel.clearPatternJob()
-                                todoListViewModel.clearTodos()
-                                accountListViewModel.clearAccounts()
-                                // note. update pattern guide text color by null
+                                // note. Initialize pattern and clear all data.
+                                clearAllStoredData()
+                                // note. Update pattern guide text color by null.
                                 viewModel.clearOnLogin()
                             }
                             .show()
@@ -172,6 +167,15 @@ class AuthenticateFragment: Fragment() {
                 }
             }
         }
+    }
+
+    private fun clearAllStoredData() {
+        // note. Clear pattern.
+        viewModel.clearPatternJob()
+        // note. Clear to-do list.
+        todoListViewModel.clearTodos()
+        // note. Clear account list.
+        accountListViewModel.clearAccounts()
     }
 
     private fun initializeBiometric() {
@@ -190,80 +194,51 @@ class AuthenticateFragment: Fragment() {
                     override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                         super.onAuthenticationError(errorCode, errString)
                         Timber.w("Authentication error\ncode: $errorCode, message: $errString")
-                        //                context?.toastingShort("$errString")
 
                         when (errorCode) {
-                            BiometricPrompt.ERROR_CANCELED -> {
-                                Timber.w("ERROR_CANCELED")
-                            }
-
-                            BiometricPrompt.ERROR_HW_NOT_PRESENT -> {
-                                Timber.w("ERROR_HW_NOT_PRESENT")
-                            }
-
-                            BiometricPrompt.ERROR_HW_UNAVAILABLE -> {
-                                Timber.w("ERROR_HW_UNAVAILABLE")
-                            }
-
-                            BiometricPrompt.ERROR_LOCKOUT -> {
-                                Timber.w("ERROR_LOCKOUT")
-                            }
-
-                            BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> {
-                                Timber.w("ERROR_LOCKOUT_PERMANENT")
-                            }
-
+                            // note. When clicked cancel button in Authentication with biometric.
                             BiometricPrompt.ERROR_NEGATIVE_BUTTON -> {
-                                Timber.w("ERROR_NEGATIVE_BUTTON")
-                                binding.biometricAgain.visibility = View.VISIBLE
-                                binding.usePattern.visibility = View.VISIBLE
+                                // note. Showing biometric again & use pattern button.
+                                biometricPatternButtonsVisible()
                             }
 
+                            // note. When no have Fingerprint data in User device.
                             BiometricPrompt.ERROR_NO_BIOMETRICS -> {
-                                Timber.w("ERROR_NO_BIOMETRICS")
 
-                                // note. using pattern lock
-                                binding.patternContainer.visibility = View.VISIBLE
+                                // note. Now start pattern authenticate mode.
+                                patternModeStart()
+                                // note. Set container visibilities.
+                                biometricHidePatternShow()
                             }
 
-                            BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL -> {
-                                Timber.w("ERROR_NO_DEVICE_CREDENTIAL")
-                            }
-
-                            BiometricPrompt.ERROR_NO_SPACE -> {
-                                Timber.w("ERROR_NO_SPACE")
-                            }
-
+                            // note. When user no input anything while long time.
                             BiometricPrompt.ERROR_TIMEOUT -> {
-                                Timber.w("ERROR_TIMEOUT")
 
+                                // note. Give the change what try again to authenticate with biometric.
                                 binding.biometricAgain.visibility = View.VISIBLE
                             }
 
-                            BiometricPrompt.ERROR_UNABLE_TO_PROCESS -> {
-                                Timber.w("ERROR_UNABLE_TO_PROCESS")
-                            }
-
-                            BiometricPrompt.ERROR_USER_CANCELED -> {
-                                Timber.w("ERROR_USER_CANCELED")
-                            }
-
-                            BiometricPrompt.ERROR_VENDOR -> {
-                                Timber.w("ERROR_VENDOR")
-                            }
+                            BiometricPrompt.ERROR_CANCELED -> Timber.e("ERROR_CANCELED")
+                            BiometricPrompt.ERROR_HW_NOT_PRESENT -> Timber.e("ERROR_HW_NOT_PRESENT")
+                            BiometricPrompt.ERROR_HW_UNAVAILABLE -> Timber.e("ERROR_HW_UNAVAILABLE")
+                            BiometricPrompt.ERROR_LOCKOUT -> Timber.e("ERROR_LOCKOUT")
+                            BiometricPrompt.ERROR_LOCKOUT_PERMANENT -> Timber.e("ERROR_LOCKOUT_PERMANENT")
+                            BiometricPrompt.ERROR_NO_DEVICE_CREDENTIAL -> Timber.e("ERROR_NO_DEVICE_CREDENTIAL")
+                            BiometricPrompt.ERROR_NO_SPACE -> Timber.e("ERROR_NO_SPACE")
+                            BiometricPrompt.ERROR_UNABLE_TO_PROCESS -> Timber.e("ERROR_UNABLE_TO_PROCESS")
+                            BiometricPrompt.ERROR_USER_CANCELED -> Timber.e("ERROR_USER_CANCELED")
+                            BiometricPrompt.ERROR_VENDOR -> Timber.e("ERROR_VENDOR")
                         }
                     }
 
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                         super.onAuthenticationSucceeded(result)
-                        Timber.w("Authentication succeeded")
-
+                        // note. Login successfully (Navigate next view).
                         login()
                     }
 
                     override fun onAuthenticationFailed() {
                         super.onAuthenticationFailed()
-                        Timber.w("Authentication failed")
                     }
                 })
     }
@@ -282,18 +257,27 @@ class AuthenticateFragment: Fragment() {
     }
 
     private fun biometricStart() {
+        // note. Open biometric authenticate box.
         biometricPrompt.authenticate(promptInfo)
     }
 
     private fun patternCompleteJob(pattern: Pattern) {
+        // note. Check exist stored pattern data.
         when (viewModel.storedPattern.value == null) {
-            true -> {
-                viewModel.createPatternJob(pattern)
-            }
-
-            false -> {
-                viewModel.loginJob(pattern)
-            }
+            // note. Will create pattern after clear pattern data.
+            true -> viewModel.createPatternJob(pattern)
+            // note. Will login as pattern authenticate method.
+            false -> viewModel.loginJob(pattern)
         }
+    }
+
+    private fun biometricHidePatternShow() {
+        binding.biometricContainer.visibility = View.GONE
+        binding.patternContainer.visibility = View.VISIBLE
+    }
+
+    private fun biometricPatternButtonsVisible() {
+        binding.biometricAgain.visibility = View.VISIBLE
+        binding.usePattern.visibility = View.VISIBLE
     }
 }
