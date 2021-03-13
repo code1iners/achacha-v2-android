@@ -2,16 +2,12 @@ package com.codeliner.achacha.ui.auths
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.codeliner.achacha.data.patterns.Pattern
 import com.codeliner.achacha.data.patterns.PatternRepository
 import kotlinx.coroutines.*
 import timber.log.Timber
 
-enum class PatternMode {
-    LOGIN, SAVE
-}
 
 class AuthenticateViewModel(
         private val repository: PatternRepository
