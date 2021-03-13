@@ -46,6 +46,9 @@
     <string name="setting">Setting</string>
     <string name="try_again">Try again</string>
     <string name="cancel">Cancel</string>
+    <string name="agree">Agree</string>
+    <string name="disagree">Disagree</string>
+    <string name="initialize">Initialize</string>
 
     <!--  authenticate  -->
     <string name="auth_pattern_create">Create new pattern to log-in</string>
@@ -53,6 +56,8 @@
     <string name="auth_use_pattern">Log-in by pattern</string>
     <string name="auth_authenticate">Authenticate</string>
     <string name="auth_authenticate_by_fingerprint">Verify with fingerprint.</string>
+    <string name="auth_pattern_initialize_message_title">Initialize Pattern.</string>
+    <string name="auth_pattern_initialize_message_subtitle">When press \'AGREE\' button, all stored information is deleted. Would you like to proceed?</string>
 
     <!--  permissions  -->
     <string name="permission_required_message_storage">Need permission about device media storage.</string>

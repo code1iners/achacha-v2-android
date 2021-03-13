@@ -26,14 +26,8 @@ class AuthenticateViewModel(
     val onLogin: LiveData<Boolean> get() = _onLogin
     fun loginJob(pattern: Pattern) {
         storedPattern.value?.let {
-            when (pattern.patternIsSame(pattern, it)) {
-                true -> _onLogin.value = true
-                false -> _onLogin.value = false
-            }
+            _onLogin.value = pattern.patternAsString == it.patternAsString
         }
-    }
-    fun loginJobComplete() {
-        _onLogin.value = null
     }
 
     fun createPatternJob(pattern: Pattern) {
@@ -49,10 +43,14 @@ class AuthenticateViewModel(
         }
     }
 
-    private val _onClearPattern = MutableLiveData<Boolean>()
-    val onClearPattern: LiveData<Boolean> get() = _onClearPattern
+    private val _onClearPatternAsk = MutableLiveData<Boolean>()
+    val onClearPatternAsk: LiveData<Boolean> get() = _onClearPatternAsk
     fun clearPatternAsk() {
-        _onClearPattern.value = true
+        _onClearPatternAsk.value = true
+    }
+
+    fun clearPatternAskComplete() {
+        _onClearPatternAsk.value = null
     }
 
     fun clearPatternJob() {

@@ -14,6 +14,7 @@ import com.codeliner.achacha.R
 import com.codeliner.achacha.data.patterns.Pattern
 import com.codeliner.achacha.databinding.FragmentAuthenticateBinding
 import com.codeliner.achacha.mains.MainViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.util.concurrent.Executor
@@ -43,7 +44,6 @@ class AuthenticateFragment: Fragment() {
                 }
                 patternCompleteJob(pattern)
             }
-
             binding.patternView.clearPattern()
         }
 
@@ -75,12 +75,17 @@ class AuthenticateFragment: Fragment() {
     }
 
     private fun initialize(inflater: LayoutInflater) {
-        binding = FragmentAuthenticateBinding.inflate(inflater)
-
-        // note. pattern
+        // note. initialize binding
+        initializeBinding(inflater)
+        // note. initialize listener
         initializeListeners()
-
+        // note. initialize biometric
         initializeBiometric()
+    }
+
+    private fun initializeBinding(inflater: LayoutInflater) {
+        binding = FragmentAuthenticateBinding.inflate(inflater)
+        binding.viewModel = viewModel
     }
 
     private fun initializeListeners() {
@@ -103,10 +108,6 @@ class AuthenticateFragment: Fragment() {
     }
 
     private fun observePattern() {
-//        viewModel.patternMode.observe(viewLifecycleOwner) { mode ->
-//            Timber.w("mode: $mode")
-//        }
-
         viewModel.storedPattern.observe(viewLifecycleOwner) { pattern ->
             when (pattern == null) {
                 true -> {
@@ -129,7 +130,7 @@ class AuthenticateFragment: Fragment() {
 
         viewModel.onLogin.observe(viewLifecycleOwner) {
             it?.let { isValid ->
-                Timber.d("onLogin isValid: $isValid")
+//                Timber.d("onLogin isValid: $isValid")
                 when (isValid) {
                     true -> {
                         binding.patternForgot.setTextColor(ContextCompat.getColor(requireContext(), R.color.sexyGreen))
@@ -141,21 +142,29 @@ class AuthenticateFragment: Fragment() {
                     }
                 }
             }
-
-            viewModel.loginJobComplete()
         }
 
-        viewModel.onClearPattern.observe(viewLifecycleOwner) {
+        viewModel.onClearPatternAsk.observe(viewLifecycleOwner) {
             it?.let { ask ->
                 Timber.w("ask: $ask")
-                when (ask) {
-                    true -> {
+                if (ask) {
+                    MaterialAlertDialogBuilder(requireContext())
+                            .setTitle(getString(R.string.auth_pattern_initialize_message_title))
+                            .setMessage(getString(R.string.auth_pattern_initialize_message_subtitle))
+                            .setNegativeButton(getString(R.string.disagree)) { _, _ ->
+                                Timber.d("disagree")
 
-                    }
+                            }
+                            .setPositiveButton(getString(R.string.agree)) { _, _ ->
+                                Timber.d("agree")
 
-                    false -> {
+                                viewModel.clearPatternJob()
 
-                    }
+                                binding.patternForgot.setTextColor(ContextCompat.getColor(requireContext(), R.color.primaryTextColor))
+                            }
+                            .show()
+
+                    viewModel.clearPatternAskComplete()
                 }
             }
         }
