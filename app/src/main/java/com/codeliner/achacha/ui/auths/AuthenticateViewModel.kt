@@ -30,6 +30,10 @@ class AuthenticateViewModel(
         }
     }
 
+    fun clearOnLogin() {
+        _onLogin.value = null
+    }
+
     fun createPatternJob(pattern: Pattern) {
         uiScope.launch {
             clearPattern()

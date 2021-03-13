@@ -1,8 +1,10 @@
 package com.codeliner.achacha.utils
 
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.codeliner.achacha.data.todos.Todo
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -48,12 +50,6 @@ fun List<TextInputLayout>.clearErrorsWithHelperOff() {
     }
 }
 
-//fun AppCompatActivity.checkSelfPermissionCompat(permission: String) =
-//        ActivityCompat.checkSelfPermission(this, permission)
-//
-//fun AppCompatActivity.shouldShowRequestPermissionRationaleCompat(permission: String) =
-//        ActivityCompat.shouldShowRequestPermissionRationale(this, permission)
-//
-//fun AppCompatActivity.requestPermissionsCompat(permissionsArray: Array<String>, requestCode: Int) {
-//    ActivityCompat.requestPermissions(this, permissionsArray, requestCode)
-//}
+fun TextView.setTextColorById(colorId: Int) {
+    this.setTextColor(ContextCompat.getColor(context, colorId))
+}

@@ -78,7 +78,8 @@
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/patternView"/>
+                    app:layout_constraintBottom_toTopOf="@+id/patternView"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"/>
 
                 <com.andrognito.patternlockview.PatternLockView
                     android:id="@+id/patternView"

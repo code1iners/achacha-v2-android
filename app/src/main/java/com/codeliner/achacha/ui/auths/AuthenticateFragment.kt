@@ -14,6 +14,9 @@ import com.codeliner.achacha.R
 import com.codeliner.achacha.data.patterns.Pattern
 import com.codeliner.achacha.databinding.FragmentAuthenticateBinding
 import com.codeliner.achacha.mains.MainViewModel
+import com.codeliner.achacha.ui.accounts.list.AccountListViewModel
+import com.codeliner.achacha.ui.todos.list.TodoListViewModel
+import com.codeliner.achacha.utils.setTextColorById
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -27,6 +30,8 @@ class AuthenticateFragment: Fragment() {
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
     private val viewModel: AuthenticateViewModel by viewModel()
+    private val todoListViewModel: TodoListViewModel by viewModel()
+    private val accountListViewModel: AccountListViewModel by viewModel()
 
     private val patternListener = object: PatternLockViewListener {
         override fun onStarted() {}
@@ -128,37 +133,38 @@ class AuthenticateFragment: Fragment() {
             }
         }
 
-        viewModel.onLogin.observe(viewLifecycleOwner) {
-            it?.let { isValid ->
-//                Timber.d("onLogin isValid: $isValid")
-                when (isValid) {
-                    true -> {
-                        binding.patternForgot.setTextColor(ContextCompat.getColor(requireContext(), R.color.sexyGreen))
-                        login()
-                    }
+        viewModel.onLogin.observe(viewLifecycleOwner) { isValid ->
+//            Timber.d("onLogin isValid: $isValid")
+            when (isValid) {
+                true -> {
+                    binding.patternForgot.setTextColorById(R.color.sexyGreen)
+                    login()
+                }
 
-                    false -> {
-                        binding.patternForgot.setTextColor(ContextCompat.getColor(requireContext(), R.color.sexyRed))
-                    }
+                false -> {
+                    binding.patternForgot.setTextColorById(R.color.sexyRed)
+                }
+
+                else -> {
+                    binding.patternForgot.setTextColorById(R.color.primaryTextColor)
                 }
             }
         }
 
         viewModel.onClearPatternAsk.observe(viewLifecycleOwner) {
             it?.let { ask ->
-                Timber.w("ask: $ask")
                 if (ask) {
                     MaterialAlertDialogBuilder(requireContext())
                             .setTitle(getString(R.string.auth_pattern_initialize_message_title))
                             .setMessage(getString(R.string.auth_pattern_initialize_message_subtitle))
-                            .setNegativeButton(getString(R.string.disagree)) { _, _ ->
-
-                            }
+                            .setNegativeButton(getString(R.string.disagree)) { _, _ -> }
                             .setPositiveButton(getString(R.string.agree)) { _, _ ->
-
+                                // note. initialize pattern and clear all data
                                 viewModel.clearPatternJob()
-
-                                binding.patternForgot.setTextColor(ContextCompat.getColor(requireContext(), R.color.primaryTextColor))
+                                todoListViewModel.clearTodos()
+                                accountListViewModel.clearAccounts()
+                                // note. update pattern guide text color by null
+                                viewModel.clearOnLogin()
                             }
                             .show()
 
