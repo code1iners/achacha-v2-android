@@ -38,7 +38,6 @@ fun TextView.setThumbnailAsText(item: Account?) {
 fun ImageView.setThumbnailAsImage(item: Account?) {
     item?.let { account ->
         account.thumbnail?.let { thumbnail ->
-            Timber.w("thumbnail: $thumbnail")
             Glide
                 .with(this.context)
                 .load(thumbnail.toUri())

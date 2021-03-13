@@ -21,7 +21,10 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.ActivityMainBinding
+import com.codeliner.achacha.ui.accounts.list.AccountListFragmentDirections
 import com.codeliner.achacha.ui.accounts.list.AccountListViewModel
+import com.codeliner.achacha.ui.auths.AuthBioFragmentDirections
+import com.codeliner.achacha.ui.todos.list.TodoListFragmentDirections
 import com.codeliner.achacha.ui.todos.list.TodoListViewModel
 import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CLEAR
 import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CREATE
@@ -41,6 +44,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity()
+    , BottomNavigationView.OnNavigationItemSelectedListener
     , BottomNavigationView.OnNavigationItemReselectedListener
 {
 
@@ -76,11 +80,12 @@ class MainActivity : AppCompatActivity()
         // note. for bottom navigation showing/hiding animation when move to todo create fragment
         initAnimations()
         // note. for bottom navigation with nav controller
-        initBottomNavi()
+        initBottomNav()
     }
 
-    private fun initBottomNavi() {
+    private fun initBottomNav() {
         binding.activityMainBottomNav.setupWithNavController(nc)
+        binding.activityMainBottomNav.setOnNavigationItemSelectedListener(this)
         binding.activityMainBottomNav.setOnNavigationItemReselectedListener(this)
     }
 
@@ -260,6 +265,20 @@ class MainActivity : AppCompatActivity()
                 MainViewModel.setBottomNavigationVisibilityComplete()
             }
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.todoListFragment -> {
+                nc.popBackStack(R.id.todoListFragment, false)
+            }
+
+            R.id.accountListFragment -> {
+                nc.navigate(TodoListFragmentDirections.actionTodoListFragmentToAccountListFragment())
+            }
+        }
+
+        return true
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {

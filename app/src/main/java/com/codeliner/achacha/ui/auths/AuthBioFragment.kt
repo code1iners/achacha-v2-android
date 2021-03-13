@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.andrognito.patternlockview.PatternLockView
 import com.andrognito.patternlockview.listener.PatternLockViewListener
+import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentAuthBioBinding
 import com.codeliner.achacha.mains.MainViewModel
 import com.example.helpers.ui.toastingShort
@@ -157,6 +158,8 @@ class AuthBioFragment: Fragment() {
 
                             BiometricPrompt.ERROR_TIMEOUT -> {
                                 Timber.w("ERROR_TIMEOUT")
+
+                                binding.biometricAgain.visibility = View.VISIBLE
                             }
 
                             BiometricPrompt.ERROR_UNABLE_TO_PROCESS -> {
@@ -177,7 +180,8 @@ class AuthBioFragment: Fragment() {
                         super.onAuthenticationSucceeded(result)
                         Timber.w("Authentication succeeded")
 
-                        findNavController().navigate(AuthBioFragmentDirections.actionAuthBioFragmentToTodoListFragment())
+                        this@AuthBioFragment.findNavController()
+                                .navigate(AuthBioFragmentDirections.actionAuthBioFragmentToTodoListFragment())
                     }
 
                     override fun onAuthenticationFailed() {
@@ -189,9 +193,9 @@ class AuthBioFragment: Fragment() {
 
     private fun initializePromptInfo() {
         promptInfo = BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric login for my app")
-                .setSubtitle("Log in using your biometric credential")
-                .setNegativeButtonText("negative button text")
+                .setTitle(getString(R.string.auth_authenticate))
+                .setSubtitle(getString(R.string.auth_authenticate_by_fingerprint))
+                .setNegativeButtonText(getString(R.string.cancel))
                 .build()
     }
 
