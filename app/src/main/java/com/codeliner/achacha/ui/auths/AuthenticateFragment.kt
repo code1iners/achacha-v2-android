@@ -40,6 +40,8 @@ class AuthenticateFragment: Fragment() {
             pattern?.let {
                 for (dot in it) Timber.v("dot: $dot")
             }
+
+            binding.patternView.clearPattern()
         }
 
         override fun onCleared() {
