@@ -44,13 +44,17 @@
     <string name="create_account">Create Account</string>
     <string name="ok">OK</string>
     <string name="setting">Setting</string>
+    <string name="try_again">다시 시도</string>
+
+    <!--  permissions  -->
+    <string name="auth_forgot_pattern">패턴을 잊으셨나요?</string>
+    <string name="auth_use_pattern">패턴으로 로그인</string>
 
     <!--  permissions  -->
     <string name="permission_required_message_storage">기기의 사진 및 미디어에 대한 권한이 필요합니다.</string>
     <string name="permission_available_message">권한이 없어 앱이 정상적으로 실행하지 않을 수 있습니다.</string>
     <string name="permission_granted">권한이 허용되었습니다.</string>
     <string name="permission_denied">권한이 거부되었습니다.</string>
-    <string name="auth_forgot_pattern">패턴을 잊으셨나요?</string>
 
     <!--  integers  -->
     <integer name="animation_duration_short">300</integer>

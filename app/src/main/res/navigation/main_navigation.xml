@@ -12,12 +12,10 @@
         tools:layout="@layout/fragment_todo_list">
         <action
             android:id="@+id/action_todoListFragment_to_accountListFragment"
-            app:destination="@id/accountListFragment"
-            app:popUpTo="@id/todoListFragment" />
+            app:destination="@id/accountListFragment" />
         <action
             android:id="@+id/action_todoListFragment_to_todoCreateFragment"
             app:destination="@id/todoCreateFragment"
-            app:popUpTo="@id/todoListFragment"
             app:popUpToInclusive="false" />
     </fragment>
     <fragment
@@ -51,6 +49,8 @@
         tools:layout="@layout/fragment_auth_bio">
         <action
             android:id="@+id/action_authBioFragment_to_todoListFragment"
-            app:destination="@id/todoListFragment" />
+            app:destination="@id/todoListFragment"
+            app:popUpTo="@id/authBioFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
