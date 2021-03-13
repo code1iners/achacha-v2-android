@@ -1,12 +1,9 @@
 package com.codeliner.achacha.ui.auths
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
-import androidx.biometric.BiometricManager.Authenticators.DEVICE_CREDENTIAL
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -14,15 +11,14 @@ import androidx.navigation.fragment.findNavController
 import com.andrognito.patternlockview.PatternLockView
 import com.andrognito.patternlockview.listener.PatternLockViewListener
 import com.codeliner.achacha.R
-import com.codeliner.achacha.databinding.FragmentAuthBioBinding
+import com.codeliner.achacha.databinding.FragmentAuthenticateBinding
 import com.codeliner.achacha.mains.MainViewModel
-import com.example.helpers.ui.toastingShort
 import timber.log.Timber
 import java.util.concurrent.Executor
 
-class AuthBioFragment: Fragment() {
+class AuthenticateFragment: Fragment() {
 
-    private lateinit var binding: FragmentAuthBioBinding
+    private lateinit var binding: FragmentAuthenticateBinding
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
@@ -75,7 +71,7 @@ class AuthBioFragment: Fragment() {
     }
 
     private fun initialize(inflater: LayoutInflater) {
-        binding = FragmentAuthBioBinding.inflate(inflater)
+        binding = FragmentAuthenticateBinding.inflate(inflater)
 
         // note. pattern
         initializeListeners()
@@ -180,8 +176,8 @@ class AuthBioFragment: Fragment() {
                         super.onAuthenticationSucceeded(result)
                         Timber.w("Authentication succeeded")
 
-                        this@AuthBioFragment.findNavController()
-                                .navigate(AuthBioFragmentDirections.actionAuthBioFragmentToTodoListFragment())
+                        this@AuthenticateFragment.findNavController()
+                                .navigate(AuthenticateFragmentDirections.actionAuthBioFragmentToTodoListFragment())
                     }
 
                     override fun onAuthenticationFailed() {

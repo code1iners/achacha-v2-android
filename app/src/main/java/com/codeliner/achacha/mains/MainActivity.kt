@@ -21,9 +21,7 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.ActivityMainBinding
-import com.codeliner.achacha.ui.accounts.list.AccountListFragmentDirections
 import com.codeliner.achacha.ui.accounts.list.AccountListViewModel
-import com.codeliner.achacha.ui.auths.AuthBioFragmentDirections
 import com.codeliner.achacha.ui.todos.list.TodoListFragmentDirections
 import com.codeliner.achacha.ui.todos.list.TodoListViewModel
 import com.codeliner.achacha.utils.Const.ACTION_ACCOUNT_CLEAR

@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/authBioFragment"
-        android:name="com.codeliner.achacha.ui.auths.AuthBioFragment"
+        android:name="com.codeliner.achacha.ui.auths.AuthenticateFragment"
         android:label="AuthBioFragment"
-        tools:layout="@layout/fragment_auth_bio">
+        tools:layout="@layout/fragment_authenticate">
         <action
             android:id="@+id/action_authBioFragment_to_todoListFragment"
             app:destination="@id/todoListFragment"
