@@ -13,7 +13,7 @@ interface PatternDatabaseDao {
     fun updatePattern(pattern: Pattern)
 
     @Query("SELECT * FROM pattern_table LIMIT 1")
-    fun readStoredPattern(): LiveData<Pattern>?
+    fun readStoredPattern(): LiveData<Pattern?>
 
     @Query("DELETE FROM pattern_table")
     fun clearPattern()

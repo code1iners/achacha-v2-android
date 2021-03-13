@@ -10,5 +10,19 @@ data class Pattern(
         var id: Long = 0L,
 
         @ColumnInfo(name = "stored_pattern")
-        var storedPattern: String? = null
-)
+        var patternAsString: String? = null
+) {
+        fun patternIsSame(targetPattern: Pattern, storedPattern: Pattern): Boolean {
+                return when (targetPattern.patternAsString) {
+                        storedPattern.patternAsString -> true
+                    else -> false
+                }
+        }
+
+        fun Pattern.isSame(targetPattern: String): Boolean {
+                return when (this.patternAsString) {
+                        targetPattern -> true
+                        else -> false
+                }
+        }
+}

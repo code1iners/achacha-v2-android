@@ -11,8 +11,10 @@ import androidx.navigation.fragment.findNavController
 import com.andrognito.patternlockview.PatternLockView
 import com.andrognito.patternlockview.listener.PatternLockViewListener
 import com.codeliner.achacha.R
+import com.codeliner.achacha.data.patterns.Pattern
 import com.codeliner.achacha.databinding.FragmentAuthenticateBinding
 import com.codeliner.achacha.mains.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import java.util.concurrent.Executor
 
@@ -23,30 +25,29 @@ class AuthenticateFragment: Fragment() {
     private lateinit var biometricPrompt: BiometricPrompt
     private lateinit var promptInfo: BiometricPrompt.PromptInfo
 
+    private val viewModel: AuthenticateViewModel by viewModel()
+
     private val patternListener = object: PatternLockViewListener {
-        override fun onStarted() {
-            Timber.w("onStarted")
-        }
+        override fun onStarted() {}
 
         override fun onProgress(progressPattern: MutableList<PatternLockView.Dot>?) {
-            Timber.w("onProgress")
-            progressPattern?.let {
-                for (dot in it) Timber.v("dot: $dot")
-            }
+//            progressPattern?.let {
+//                for (dot in it) Timber.v("dot: $dot")
+//            }
         }
 
-        override fun onComplete(pattern: MutableList<PatternLockView.Dot>?) {
-            Timber.w("onComplete")
-            pattern?.let {
-                for (dot in it) Timber.v("dot: $dot")
+        override fun onComplete(patternAsList: MutableList<PatternLockView.Dot>?) {
+            patternAsList?.let { it ->
+                val pattern = Pattern().apply {
+                    patternAsString = it.joinToString()
+                }
+                patternCompleteJob(pattern)
             }
 
             binding.patternView.clearPattern()
         }
 
-        override fun onCleared() {
-            Timber.w("onCleared")
-        }
+        override fun onCleared() {}
 
     }
 
@@ -69,6 +70,7 @@ class AuthenticateFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize(inflater)
         biometricStart()
+
         return binding.root
     }
 
@@ -89,8 +91,73 @@ class AuthenticateFragment: Fragment() {
             biometricStart()
         }
         binding.usePattern.setOnClickListener {
-            binding.biometricContainer.visibility = View.GONE
-            binding.patternContainer.visibility = View.VISIBLE
+            patternStart()
+        }
+    }
+
+    private fun patternStart() {
+        binding.biometricContainer.visibility = View.GONE
+        binding.patternContainer.visibility = View.VISIBLE
+
+        observePattern()
+    }
+
+    private fun observePattern() {
+//        viewModel.patternMode.observe(viewLifecycleOwner) { mode ->
+//            Timber.w("mode: $mode")
+//        }
+
+        viewModel.storedPattern.observe(viewLifecycleOwner) { pattern ->
+            when (pattern == null) {
+                true -> {
+                    Timber.d("Need create new pattern")
+                    binding.patternCreate.visibility = View.VISIBLE
+                    binding.patternForgot.visibility = View.GONE
+
+
+                }
+
+                false -> {
+                    Timber.d("Use pattern to authenticate app")
+                    binding.patternCreate.visibility = View.GONE
+                    binding.patternForgot.visibility = View.VISIBLE
+
+
+                }
+            }
+        }
+
+        viewModel.onLogin.observe(viewLifecycleOwner) {
+            it?.let { isValid ->
+                Timber.d("onLogin isValid: $isValid")
+                when (isValid) {
+                    true -> {
+                        binding.patternForgot.setTextColor(ContextCompat.getColor(requireContext(), R.color.sexyGreen))
+                        login()
+                    }
+
+                    false -> {
+                        binding.patternForgot.setTextColor(ContextCompat.getColor(requireContext(), R.color.sexyRed))
+                    }
+                }
+            }
+
+            viewModel.loginJobComplete()
+        }
+
+        viewModel.onClearPattern.observe(viewLifecycleOwner) {
+            it?.let { ask ->
+                Timber.w("ask: $ask")
+                when (ask) {
+                    true -> {
+
+                    }
+
+                    false -> {
+
+                    }
+                }
+            }
         }
     }
 
@@ -178,8 +245,7 @@ class AuthenticateFragment: Fragment() {
                         super.onAuthenticationSucceeded(result)
                         Timber.w("Authentication succeeded")
 
-                        this@AuthenticateFragment.findNavController()
-                                .navigate(AuthenticateFragmentDirections.actionAuthBioFragmentToTodoListFragment())
+                        login()
                     }
 
                     override fun onAuthenticationFailed() {
@@ -187,6 +253,11 @@ class AuthenticateFragment: Fragment() {
                         Timber.w("Authentication failed")
                     }
                 })
+    }
+
+    private fun login() {
+        this@AuthenticateFragment.findNavController()
+                .navigate(AuthenticateFragmentDirections.actionAuthBioFragmentToTodoListFragment())
     }
 
     private fun initializePromptInfo() {
@@ -199,5 +270,17 @@ class AuthenticateFragment: Fragment() {
 
     private fun biometricStart() {
         biometricPrompt.authenticate(promptInfo)
+    }
+
+    private fun patternCompleteJob(pattern: Pattern) {
+        when (viewModel.storedPattern.value == null) {
+            true -> {
+                viewModel.createPatternJob(pattern)
+            }
+
+            false -> {
+                viewModel.loginJob(pattern)
+            }
+        }
     }
 }

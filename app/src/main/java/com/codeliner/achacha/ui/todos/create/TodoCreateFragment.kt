@@ -59,19 +59,19 @@ class TodoCreateFragment: Fragment() {
         // note. header
         binding.fragmentTodoCreateHeaderContainer.startAnimation(
                 AnimationManager.getHeaderHide(requireContext()).apply {
-                    duration = Const.ANIMATION_DURATION_SHORT
+                    duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
                 })
         // note. header
         binding.fragmentTodoCreateHeaderDividerBottom.startAnimation(
                 AnimationManager.getHeaderHide(requireContext()).apply {
-                    duration = Const.ANIMATION_DURATION_SHORT
+                    duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
                 })
         // note. body
         binding.fragmentTodoCreateBodyContainer.startAnimation(
                 AnimationManager.getFadeOut(requireContext()).apply {
-                    duration = Const.ANIMATION_DURATION_SHORT
+                    duration = ANIMATION_DURATION_SHORT
                     fillAfter = true
                 }
         )
@@ -154,7 +154,7 @@ class TodoCreateFragment: Fragment() {
     }
 
     private fun listenerKeyboardDone() {
-        binding.fragmentTodoCreateInput.setOnEditorActionListener { v, actionId, event ->
+        binding.fragmentTodoCreateInput.setOnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     binding.fragmentTodoCreateSubmit.performClick()
@@ -228,33 +228,33 @@ class TodoCreateFragment: Fragment() {
     }
 
     private fun observeInputError() {
-        viewModel.hasError.observe(viewLifecycleOwner, Observer { error ->
+        viewModel.hasError.observe(viewLifecycleOwner) { error ->
             binding.fragmentTodoCreateInputContainer.error = error
-        })
+        }
     }
 
     private fun observeHelps() {
-        viewModel.helps.observe(viewLifecycleOwner, Observer { helps ->
+        viewModel.helps.observe(viewLifecycleOwner) { helps ->
             binding.fragmentTodoCreateInputContainer.helperText = helps
-        })
+        }
     }
 
     private fun observeBackPressed() {
-        viewModel.onBackReady.observe(viewLifecycleOwner, Observer { isReady ->
+        viewModel.onBackReady.observe(viewLifecycleOwner) { isReady ->
             if (isReady) {
                 // note. start animation
                 exitAnim()
             }
-        })
+        }
         // note. when called back (feature)
-        viewModel.onBackStart.observe(viewLifecycleOwner, Observer { isStart ->
+        viewModel.onBackStart.observe(viewLifecycleOwner) { isStart ->
             if (isStart) {
                 // note. real back
                 back()
 
                 viewModel.backStartComplete()
             }
-        })
+        }
     }
 
     private fun initFocus() {

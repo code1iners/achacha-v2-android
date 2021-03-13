@@ -48,7 +48,8 @@
     <string name="cancel">Cancel</string>
 
     <!--  authenticate  -->
-    <string name="auth_forgot_pattern">Did you forgot the pattern?</string>
+    <string name="auth_pattern_create">Create new pattern to log-in</string>
+    <string name="auth_pattern_forgot">Did you forgot the pattern?</string>
     <string name="auth_use_pattern">Log-in by pattern</string>
     <string name="auth_authenticate">Authenticate</string>
     <string name="auth_authenticate_by_fingerprint">Verify with fingerprint.</string>
