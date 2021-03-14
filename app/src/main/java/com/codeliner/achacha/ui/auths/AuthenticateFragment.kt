@@ -151,7 +151,7 @@ class AuthenticateFragment: Fragment() {
         viewModel.onClearPatternAsk.observe(viewLifecycleOwner) {
             it?.let { ask ->
                 if (ask) {
-                    MaterialAlertDialogBuilder(requireContext())
+                    MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_App_MaterialAlertDialog)
                             .setTitle(getString(R.string.auth_pattern_initialize_message_title))
                             .setMessage(getString(R.string.auth_pattern_initialize_message_subtitle))
                             .setNegativeButton(getString(R.string.disagree)) { _, _ -> }
