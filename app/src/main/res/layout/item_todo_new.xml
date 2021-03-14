@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="todo"
+            type="com.codeliner.achacha.data.todos.Todo" />
+
+        <variable
+            name="clickListener"
+            type="com.codeliner.achacha.ui.todos.list.TodoClickListener" />
+
+        <variable
+            name="moveListener"
+            type="com.codeliner.achacha.ui.todos.list.TodoMoveListener" />
+
+        <variable
+            name="position"
+            type="Integer" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemTodo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_m">
+
+        <ImageButton
+            android:id="@+id/isFinished"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_radio_button_unchecked"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:onClick="@{() -> clickListener.onFinished(todo, position)}"
+            app:todoIsFinished="@{todo}"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/centerContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing_s"
+            android:paddingHorizontal="@dimen/spacing_s"
+            android:orientation="vertical"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/isFinished"
+            app:layout_constraintEnd_toStartOf="@id/trailingContainer"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/work"
+                android:textSize="@dimen/text_s"
+                android:singleLine="true"
+                android:ellipsize="end"
+                app:todoWorkString="@{todo}"
+                app:todoSetTextDarkWhenFinished="@{todo}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/helps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help"
+                android:textSize="@dimen/text_xs"
+                android:singleLine="true"
+                android:ellipsize="end"
+                app:setVisible="@{!todo.finished}"
+                app:todoHelpString="@{todo}"
+                app:layout_constraintTop_toBottomOf="@id/work"
+                app:layout_constraintStart_toStartOf="@id/work"/>
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="@dimen/spacing_s"
+            android:background="@color/divider"
+            app:setAnimation="@{todo.finished}"
+            app:layout_constraintStart_toEndOf="@+id/work"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/trailingContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/centerContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <RelativeLayout
+                android:id="@+id/descriptionContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/remove"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/created"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/created"
+                    android:textSize="@dimen/text_xs"
+                    app:setVisible="@{!todo.finished}"
+                    app:todoCreatedFormatted="@{todo}"
+                    android:layout_centerInParent="true"/>
+
+                <TextView
+                    android:id="@+id/isFinishedString"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/is_finished"
+                    android:textSize="@dimen/text_xs"
+                    app:todoIsFinishedString="@{todo}"
+                    app:setVisible="@{todo.finished}"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/remove"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="@dimen/spacing_s"
+                android:src="@drawable/icon_remove_outline"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:onClick="@{() -> clickListener.onRemove(todo)}"
+                app:setVisible="@{todo.finished}"
+                app:layout_constraintStart_toEndOf="@+id/descriptionContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

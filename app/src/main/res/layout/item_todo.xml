@@ -60,12 +60,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/work"
-                android:textSize="@dimen/text_m"
+                android:textSize="@dimen/text_s"
+                android:singleLine="true"
+                android:ellipsize="end"
                 app:todoWorkString="@{todo}"
                 app:todoSetTextDarkWhenFinished="@{todo}"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
