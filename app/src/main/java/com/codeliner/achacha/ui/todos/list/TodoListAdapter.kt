@@ -4,9 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.codeliner.achacha.databinding.ItemTodoNewBinding
-import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.databinding.ItemTodoBinding
+import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.utils.TodoListDiffCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,7 +60,7 @@ class TodoAdapter(val clickListener: TodoClickListener, val moveListener: TodoMo
         }
     }
 
-    class ViewHolder private constructor(val binding: ItemTodoNewBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder private constructor(val binding: ItemTodoBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Todo, position: Int, clickListener: TodoClickListener, moveListener: TodoMoveListener) {
             binding.todo = item
             binding.clickListener = clickListener
@@ -73,7 +72,7 @@ class TodoAdapter(val clickListener: TodoClickListener, val moveListener: TodoMo
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemTodoNewBinding.inflate(layoutInflater, parent, false)
+                val binding = ItemTodoBinding.inflate(layoutInflater, parent, false)
                 return ViewHolder(binding)
             }
         }
