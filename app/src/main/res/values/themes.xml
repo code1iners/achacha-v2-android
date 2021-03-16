@@ -77,6 +77,6 @@
 
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/border_radius_top_m</item>
+        <item name="android:background">@drawable/border_round_top_m</item>
     </style>
 </resources>

@@ -98,62 +98,77 @@
 
                 </LinearLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:id="@+id/memoContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing_m"
                     android:orientation="vertical"
+                    android:layout_marginTop="@dimen/spacing_m"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tagContainer">
 
-                    <TextView
-                        android:id="@+id/memoLabel"
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/memoHeaderContainer"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/memo"
-                        android:textColor="@color/sexyBlack"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        android:layout_marginBottom="@dimen/spacing_s">
 
-                    <TextView
-                        android:id="@+id/memoUpdateButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/modify"
-                        android:textSize="@dimen/text_s"
-                        android:textColor="@color/sexyBlue"
-                        android:background="@drawable/item_touch_effect"
-                        app:setVisible="@{viewModel.todo.memo.empty != true}"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        <TextView
+                            android:id="@+id/memoLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/memo"
+                            android:textColor="@color/sexyBlack"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/memoUpdateButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/modify"
+                            android:textSize="@dimen/text_s"
+                            android:textColor="@color/sexyBlue"
+                            android:background="@drawable/item_touch_effect"
+                            app:setVisible="@{viewModel.todo.memo.empty == true}"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
                         android:id="@+id/memoValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_s"
                         android:text="@string/memo"
                         android:textSize="@dimen/text_s"
                         app:todoMemo="@{viewModel.todo}"
-                        app:setVisible="@{viewModel.todo.memo.empty != true}"
-                        app:layout_constraintTop_toBottomOf="@+id/memoLabel"
-                        app:layout_constraintStart_toStartOf="@id/memoLabel"/>
+                        app:setVisible="@{viewModel.todo.memo.empty == true}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
 
-                    <Button
-                        android:id="@+id/memoAddButton"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/memoBodyContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/item_touch_effect"
-                        android:text="Add memo"
-                        app:setVisible="@{viewModel.todo.memo.empty == true}"
-                        app:layout_constraintTop_toBottomOf="@+id/memoLabel"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        android:background="@drawable/border_round_dash_s">
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <Button
+                            android:id="@+id/memoAddButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/item_touch_effect"
+                            android:text="Add memo"
+                            app:setVisible="@{viewModel.todo.memo.empty == false}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"

@@ -116,7 +116,7 @@
 
                     <ImageView
                         android:id="@+id/thumbnailImage"
-                        android:src="@drawable/border_circle_2dp"
+                        android:src="@drawable/border_circle_two"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:alpha="0.6"
