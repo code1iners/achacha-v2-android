@@ -31,14 +31,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <Button
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:text="@string/save"
+                android:textSize="@dimen/text_m"
                 android:textColor="@color/sexyBlue"
+                android:background="@drawable/item_touch_effect"
                 app:layout_constraintTop_toBottomOf="@+id/dragHandle"
-                app:layout_constraintEnd_toEndOf="parent"
-                style="@style/Widget.MaterialComponents.Button.TextButton"/>
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -66,7 +67,7 @@
                     android:text="@{viewModel.todo.work}"
                     android:textSize="@dimen/text_2xl"
                     android:textStyle="bold"
-                    android:textColor="@color/sexyBlack"
+                    android:textColor="@color/black"
                     tools:text="@string/work"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
@@ -86,14 +87,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_m"
                         android:text="@string/tags"
-                        android:textColor="@color/sexyBlack"/>
+                        android:textColor="@color/black_80"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_s"
-                        android:text="@string/help"
+                        android:text="@string/tags"
                         android:textSize="@dimen/text_s"
+                        android:textColor="@color/black_70"
                         app:todoHelpString="@{viewModel.todo}"/>
 
                 </LinearLayout>
@@ -119,7 +121,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/memo"
-                            android:textColor="@color/sexyBlack"
+                            android:textColor="@color/black_80"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 
@@ -143,6 +145,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/memo"
                         android:textSize="@dimen/text_s"
+                        android:textColor="@color/black_70"
                         app:todoMemo="@{viewModel.todo}"
                         app:setVisible="@{viewModel.todo.memo.empty == true}"
                         app:layout_constraintTop_toTopOf="parent"
@@ -160,6 +163,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/item_touch_effect"
                             android:text="Add memo"
+                            android:textColor="@color/black_70"
                             app:setVisible="@{viewModel.todo.memo.empty == false}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

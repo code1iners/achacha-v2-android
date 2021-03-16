@@ -5,7 +5,7 @@
         android:dashGap="@dimen/spacing_2xs"
         android:dashWidth="@dimen/spacing_2xs"
         android:width="1dp"
-        android:color="@color/sexyBlack" />
+        android:color="@color/black" />
 
     <corners
         android:radius="@dimen/round_s" />
