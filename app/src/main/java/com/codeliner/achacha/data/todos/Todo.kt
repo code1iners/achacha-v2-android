@@ -1,10 +1,13 @@
 package com.codeliner.achacha.data.todos
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.codeliner.achacha.utils.Const
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "todos_table")
 data class Todo (
         @PrimaryKey(autoGenerate = true)
@@ -28,4 +31,4 @@ data class Todo (
 
         @ColumnInfo(name = "is_important")
         var isImportant: Boolean = false
-)
+): Parcelable

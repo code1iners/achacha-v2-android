@@ -71,6 +71,8 @@
     <string name="permission_granted">Permission granted.</string>
     <string name="permission_denied">Permission denied.</string>
     <string name="save">Save</string>
+    <string name="finish">Finish</string>
+    <string name="remove">Remove</string>
 
     <!--  integers  -->
     <integer name="animation_duration_short">300</integer>

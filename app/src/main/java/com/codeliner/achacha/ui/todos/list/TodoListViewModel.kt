@@ -11,7 +11,6 @@ import com.codeliner.achacha.utils.Date
 import kotlinx.coroutines.*
 import timber.log.Timber
 
-@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 class TodoListViewModel(
     app: Application,
     private val todoRepository: TodoRepository
@@ -57,10 +56,6 @@ class TodoListViewModel(
     val tasks = Transformations.map(todos) {
         it.size
     }
-
-    // note. fab
-    private val _isFavCollapsed = MutableLiveData(true)
-    val isFavCollapsed: LiveData<Boolean> get() = _isFavCollapsed
 
     private val _onNavigateToCreateTodoReady = MutableLiveData(false)
     val onNavigateToCreateTodoReady: LiveData<Boolean> get() = _onNavigateToCreateTodoReady

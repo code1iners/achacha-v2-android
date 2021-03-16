@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
             name="viewModel"
             type="com.codeliner.achacha.ui.todos.detail.TodoDetailViewModel" />
 
-        <variable
-            name="todo"
-            type="com.codeliner.achacha.data.todos.Todo" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:minHeight="300dp">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/headerContainer"
@@ -35,9 +32,10 @@
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <Button
-                android:text="@string/save"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:text="@string/save"
+                android:textColor="@color/sexyBlue"
                 app:layout_constraintTop_toBottomOf="@+id/dragHandle"
                 app:layout_constraintEnd_toEndOf="parent"
                 style="@style/Widget.MaterialComponents.Button.TextButton"/>
@@ -45,19 +43,81 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bodyContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/guideStart"
             app:layout_constraintEnd_toEndOf="@id/guideEnd"
-            app:layout_constraintTop_toBottomOf="@id/headerContainer">
+            app:layout_constraintTop_toBottomOf="@id/headerContainer"
+            app:layout_constraintBottom_toTopOf="@id/footerContainer">
 
             <TextView
                 android:id="@+id/work"
-                android:text="@string/work"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@{viewModel.todo.work}"
+                android:textSize="@dimen/text_xl"
+                android:textStyle="bold"
+                tools:text="@string/work"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/footerContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bodyContainer"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/divider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <Button
+                android:id="@+id/removeButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_touch_effect"
+                android:text="@string/remove"
+                android:textColor="@color/sexyRed"
+                android:onClick="@{() -> viewModel.todoRemoveJob()}"
+                app:layout_constraintWidth_percent="0.49"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/finishButton"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <Button
+                android:id="@+id/finishButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_touch_effect"
+                android:text="@string/finish"
+                android:textColor="@color/sexyGreen"
+                android:onClick="@{() -> viewModel.todoFinishJob()}"
+                app:layout_constraintWidth_percent="0.49"
+                app:layout_constraintStart_toEndOf="@+id/removeButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="2dp"
+                android:layout_marginVertical="@dimen/spacing_s"
+                android:background="@color/divider"
+                app:layout_constraintWidth_percent="0.005"
+                app:layout_constraintStart_toEndOf="@id/removeButton"
+                app:layout_constraintEnd_toStartOf="@id/finishButton"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
