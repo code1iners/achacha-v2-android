@@ -11,6 +11,7 @@
     <string name="tasks">%d Tasks</string>
     <string name="accountCount">%d Accounts</string>
     <string name="created">Created</string>
+    <string name="memo">Memo</string>
     <string name="shopping">Shopping</string>
     <string name="call">Call</string>
     <string name="check">Check</string>
@@ -74,6 +75,7 @@
     <string name="save">Save</string>
     <string name="finish">Finish</string>
     <string name="remove">Remove</string>
+    <string name="modify">Modify</string>
 
     <!--  integers  -->
     <integer name="animation_duration_short">300</integer>

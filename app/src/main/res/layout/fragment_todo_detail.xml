@@ -72,14 +72,16 @@
                     app:layout_constraintTop_toTopOf="parent"/>
 
                 <LinearLayout
+                    android:id="@+id/tagContainer"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintStart_toStartOf="@id/work"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/work">
 
                     <TextView
-                        android:id="@+id/helpsLabel"
+                        android:id="@+id/tagsLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_m"
@@ -93,6 +95,89 @@
                         android:text="@string/help"
                         android:textSize="@dimen/text_s"
                         app:todoHelpString="@{viewModel.todo}"/>
+
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/memoContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_m"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tagContainer">
+
+                    <TextView
+                        android:id="@+id/memoLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/memo"
+                        android:textColor="@color/sexyBlack"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/memoUpdateButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/modify"
+                        android:textSize="@dimen/text_s"
+                        android:textColor="@color/sexyBlue"
+                        android:background="@drawable/item_touch_effect"
+                        app:setVisible="@{viewModel.todo.memo.empty != true}"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/memoValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_s"
+                        android:text="@string/memo"
+                        android:textSize="@dimen/text_s"
+                        app:todoMemo="@{viewModel.todo}"
+                        app:setVisible="@{viewModel.todo.memo.empty != true}"
+                        app:layout_constraintTop_toBottomOf="@+id/memoLabel"
+                        app:layout_constraintStart_toStartOf="@id/memoLabel"/>
+
+                    <Button
+                        android:id="@+id/memoAddButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/item_touch_effect"
+                        android:text="Add memo"
+                        app:setVisible="@{viewModel.todo.memo.empty == true}"
+                        app:layout_constraintTop_toBottomOf="@+id/memoLabel"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_m"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/memoContainer">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_m"
+                        android:text="@string/created"
+                        android:textColor="@color/sexyBlack"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_s"
+                        android:text="@string/created"
+                        android:textSize="@dimen/text_s"
+                        app:todoCreatedNormally="@{viewModel.todo}"/>
 
                 </LinearLayout>
 

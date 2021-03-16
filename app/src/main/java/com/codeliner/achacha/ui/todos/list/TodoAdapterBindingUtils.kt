@@ -6,6 +6,7 @@ import androidx.databinding.BindingAdapter
 import com.codeliner.achacha.R
 import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.utils.CustomDate
+import com.codeliner.achacha.utils.DateType
 import com.example.helpers.CreatedParser
 
 
@@ -30,6 +31,23 @@ fun ImageButton.setIsFinished(item: Todo?) {
             true -> setImageResource(R.drawable.icon_radio_button_checked)
             false -> setImageResource(R.drawable.icon_radio_button_unchecked)
         }
+    }
+}
+
+@BindingAdapter("todoMemo")
+fun TextView.setTodoMemo(item: Todo?) {
+    item?.let {
+        text = it.memo
+    }
+}
+
+@BindingAdapter("todoCreatedNormally")
+fun TextView.setTodoCreatedNormally(item: Todo?) {
+    item?.let {
+        val date = CustomDate().apply {
+            currentTimeAsMilli = item.created
+        }
+        text = "${date.getYearWith(DateType.YearFourDigit)}-${date.getMonthWith(DateType.MonthNumTwoDigit)}-${date.getDayWith(DateType.DayTwoDigit)}"
     }
 }
 
