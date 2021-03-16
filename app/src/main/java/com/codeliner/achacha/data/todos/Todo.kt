@@ -22,9 +22,11 @@ data class Todo (
         @ColumnInfo(name = "work")
         var work: String? = null,
 
-        // note. need rename help to tags later
-        @ColumnInfo(name = "help")
-        var help: String? = null,
+        @ColumnInfo(name = "tags")
+        var tags: String? = null,
+
+        @ColumnInfo(name = "memo")
+        var memo: String? = null,
 
         @ColumnInfo(name = "is_finished")
         var isFinished: Boolean = false,

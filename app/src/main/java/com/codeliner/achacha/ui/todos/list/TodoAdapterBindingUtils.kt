@@ -19,7 +19,7 @@ fun TextView.setTodoWork(item: Todo?) {
 @BindingAdapter("todoHelpString")
 fun TextView.setTodoHelp(item: Todo?) {
     item?.let {
-        text = item.help
+        text = item.tags
     }
 }
 

@@ -7,6 +7,7 @@
     <string name="work">Work</string>
     <string name="add">Add</string>
     <string name="help">Help</string>
+    <string name="tags">Tags</string>
     <string name="tasks">%d Tasks</string>
     <string name="accountCount">%d Accounts</string>
     <string name="created">Created</string>

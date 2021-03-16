@@ -47,7 +47,7 @@ class TodoCreateViewModel(
                 // note. validation work
                 val todo = Todo().apply {
                     work = newWork
-                    help = helps.value
+                    tags = helps.value
                 }
                 insert(todo)
             }

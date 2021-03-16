@@ -11,7 +11,7 @@ import com.codeliner.achacha.data.patterns.PatternDatabaseDao
 import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.data.todos.TodoDatabaseDao
 
-@Database(entities = [Todo::class, Account::class, Pattern::class], version = 6, exportSchema = false)
+@Database(entities = [Todo::class, Account::class, Pattern::class], version = 7, exportSchema = false)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract val todoDatabaseDao: TodoDatabaseDao
