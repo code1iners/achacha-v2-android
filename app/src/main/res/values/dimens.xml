@@ -17,4 +17,9 @@
     <dimen name="text_3xl">32sp</dimen>
     <dimen name="text_4xl">36sp</dimen>
     <dimen name="text_5xl">40sp</dimen>
+
+    <dimen name="radius_s">8dp</dimen>
+    <dimen name="radius_m">16dp</dimen>
+    <dimen name="radius_l">32dp</dimen>
+
 </resources>

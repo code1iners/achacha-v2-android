@@ -5,6 +5,7 @@ import com.codeliner.achacha.ui.accounts.create.AccountCreateViewModel
 import com.codeliner.achacha.ui.accounts.list.AccountListViewModel
 import com.codeliner.achacha.ui.auths.AuthenticateViewModel
 import com.codeliner.achacha.ui.todos.create.TodoCreateViewModel
+import com.codeliner.achacha.ui.todos.detail.TodoDetailViewModel
 import com.codeliner.achacha.ui.todos.list.TodoListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -18,9 +19,12 @@ val viewModelModules = module {
 
     viewModel { TodoCreateViewModel(get(), get()) }
 
+    viewModel { TodoDetailViewModel(get()) }
+
     viewModel { AccountListViewModel(get()) }
 
     viewModel { AccountCreateViewModel(get()) }
 
     viewModel { AuthenticateViewModel(get()) }
+
 }

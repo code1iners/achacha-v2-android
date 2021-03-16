@@ -12,14 +12,18 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <!-- Alert Dialog Box. -->
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+
+        <!-- Bottom Sheet Dialog. -->
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
     <style name="TextAppearance.Title" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textSize">@dimen/spacing_l</item>
         <item name="android:textColor">@color/primaryTextColor</item>
     </style>
-
 
     <!--  Dialog  -->
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
@@ -63,5 +67,16 @@
     <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">4dp</item>
+    </style>
+
+    <!--  Bottom Sheet Dialog  -->
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/border_radius_top_m</item>
     </style>
 </resources>

@@ -57,4 +57,11 @@
         android:name="com.codeliner.achacha.ui.accounts.create.AccountCreateFragment"
         android:label="AccountCreateFragment"
         tools:layout="@layout/fragment_account_create"/>
+    <fragment
+        android:id="@+id/todoDetailFragment"
+        android:name="com.codeliner.achacha.ui.todos.detail.TodoDetailFragment"
+        android:label="TodoDetailFragment"
+        tools:layout="@layout/fragment_todo_detail">
+
+    </fragment>
 </navigation>

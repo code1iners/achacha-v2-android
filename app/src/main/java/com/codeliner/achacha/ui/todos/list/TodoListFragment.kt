@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.transition.AutoTransition
+import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.FragmentTodoListBinding
 import com.codeliner.achacha.data.todos.Todo
+import com.codeliner.achacha.ui.todos.detail.TodoDetailFragment
 import com.codeliner.achacha.utils.Const.ANIMATION_DURATION_SHORT
 import com.codeliner.achacha.utils.log
 import com.example.helpers.ui.AnimationManager
@@ -194,6 +197,9 @@ class TodoListFragment: Fragment()
 
     override fun onClick(todo: Todo) {
         todo.log("d")
+        activity?.let {
+            TodoDetailFragment().show(it.supportFragmentManager, "todo_detail_dialog_fragment")
+        }
     }
 
     override fun onRemove(todo: Todo) {
