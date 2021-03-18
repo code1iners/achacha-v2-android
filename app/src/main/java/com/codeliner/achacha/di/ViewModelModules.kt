@@ -1,6 +1,7 @@
 package com.codeliner.achacha.di
 
 import com.codeliner.achacha.mains.MainViewModel
+import com.codeliner.achacha.ui.TextInputViewModel
 import com.codeliner.achacha.ui.accounts.create.AccountCreateViewModel
 import com.codeliner.achacha.ui.accounts.list.AccountListViewModel
 import com.codeliner.achacha.ui.auths.AuthenticateViewModel
@@ -14,6 +15,8 @@ import org.koin.dsl.module
 val viewModelModules = module {
 
     viewModel { MainViewModel(get()) }
+
+    viewModel { TextInputViewModel(get()) }
 
     viewModel { TodoListViewModel(get(), get()) }
 

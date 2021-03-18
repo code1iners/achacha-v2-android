@@ -19,6 +19,15 @@ class TodoDetailViewModel(
                 _todo.value = todo.copy()
         }
 
+        private val _onUpdateMemoJob = MutableLiveData<Boolean>()
+        val onUpdateMemoJob: LiveData<Boolean> get() = _onUpdateMemoJob
+        fun updateMemoJob() {
+                _onUpdateMemoJob.value = true
+        }
+        fun updateMemoJobComplete() {
+                _onUpdateMemoJob.value = false
+        }
+
         private val _onBack = MutableLiveData<Boolean>()
         val onBack: LiveData<Boolean> get() = _onBack
         fun backComplete() {

@@ -164,6 +164,7 @@
                             android:background="@drawable/item_touch_effect"
                             android:text="Add memo"
                             android:textColor="@color/black_70"
+                            android:onClick="@{() -> viewModel.updateMemoJob()}"
                             app:setVisible="@{viewModel.todo.memo.empty == false}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"

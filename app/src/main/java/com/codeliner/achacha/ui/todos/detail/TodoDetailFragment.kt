@@ -1,5 +1,6 @@
 package com.codeliner.achacha.ui.todos.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.databinding.FragmentTodoDetailBinding
+import com.codeliner.achacha.ui.TextInputActivity
 import com.codeliner.achacha.utils.log
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,18 +41,39 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
     }
 
     private fun observers() {
+        observeTodo()
+        observeOnBack()
+        observeMemo()
+    }
+
+    private fun observeTodo() {
         viewModel.todo.observe(viewLifecycleOwner) {
             it?.let { todo ->
 
             }
         }
+    }
 
+    private fun observeOnBack() {
         viewModel.onBack.observe(viewLifecycleOwner) {
             it?.let { onBack ->
                 if (onBack) {
                     back()
 
                     viewModel.backComplete()
+                }
+            }
+        }
+    }
+
+    private fun observeMemo() {
+        viewModel.onUpdateMemoJob.observe(viewLifecycleOwner) {
+            it?.let { job ->
+                if (job) {
+//                    val intent = Intent(activity, TextInputActivity::class.java)
+//                    startActivityForResult(intent, 0)
+
+                    viewModel.updateMemoJobComplete()
                 }
             }
         }
