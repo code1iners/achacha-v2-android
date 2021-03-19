@@ -79,4 +79,21 @@
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/border_round_top_m</item>
     </style>
+    
+    <!--  Bottom Sheet Dialog  -->
+    <style name="Theme.ActivityDialog" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryVariant">@color/primaryVariantColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryVariantColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <!-- Title. -->
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowMinWidthMajor">97%</item>
+        <item name="android:windowMinWidthMinor">97%</item>
+        <item name="android:windowBackground">@drawable/border_round_m</item>
+    </style>
 </resources>

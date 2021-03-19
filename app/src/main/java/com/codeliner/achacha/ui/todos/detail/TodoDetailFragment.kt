@@ -70,8 +70,8 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
         viewModel.onUpdateMemoJob.observe(viewLifecycleOwner) {
             it?.let { job ->
                 if (job) {
-//                    val intent = Intent(activity, TextInputActivity::class.java)
-//                    startActivityForResult(intent, 0)
+                    val intent = Intent(activity, TextInputActivity::class.java)
+                    startActivityForResult(intent, 0)
 
                     viewModel.updateMemoJobComplete()
                 }

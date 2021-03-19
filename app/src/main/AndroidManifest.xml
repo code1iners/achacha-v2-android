@@ -14,7 +14,8 @@
         android:theme="@style/Theme.Achacha">
         <activity
             android:name=".ui.TextInputActivity"
-            android:theme="@android:style/Theme.Holo.Dialog" />
+            android:theme="@style/Theme.ActivityDialog"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".mains.MainActivity"
             android:windowSoftInputMode="adjustResize">
