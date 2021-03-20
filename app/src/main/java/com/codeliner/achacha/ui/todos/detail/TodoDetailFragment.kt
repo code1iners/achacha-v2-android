@@ -31,7 +31,6 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
             }
         }
     }
-    private val TEXT_INPUT_REQUEST_CODE = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         initialize(inflater)
@@ -84,9 +83,7 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
         viewModel.onUpdateMemoJob.observe(viewLifecycleOwner) {
             it?.let { job ->
                 if (job) {
-//                    val intent = Intent(activity, TextInputActivity::class.java)
-//                    startActivityForResult(intent, TEXT_INPUT_REQUEST_CODE)
-
+                    // note. Open dialog for getting text.
                     startForResult.launch(Intent(activity, TextInputActivity::class.java))
 
                     viewModel.updateMemoJobComplete()
@@ -97,23 +94,5 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
 
     private fun back() {
         findNavController().popBackStack()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Timber.w("requestCode: $requestCode, resultCode: $resultCode")
-        when (requestCode) {
-            TEXT_INPUT_REQUEST_CODE -> {
-                when (resultCode) {
-                    RESULT_OK -> {
-                        Timber.d("Hello man")
-                    }
-
-                    else -> {
-                        // note. nothing
-                    }
-                }
-            }
-        }
     }
 }
