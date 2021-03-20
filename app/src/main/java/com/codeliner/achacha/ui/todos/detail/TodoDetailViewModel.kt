@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.data.todos.TodoRepository
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 class TodoDetailViewModel(
         private val repository: TodoRepository
@@ -15,17 +16,49 @@ class TodoDetailViewModel(
 
         private val _todo = MutableLiveData<Todo>()
         val todo: LiveData<Todo> get() = _todo
-        fun setTodo(todo: Todo) {
-                _todo.value = todo.copy()
+
+        fun setTodo(inputTodo: Todo) {
+                _todo.value = inputTodo
         }
 
-        private val _onUpdateMemoJob = MutableLiveData<Boolean>()
-        val onUpdateMemoJob: LiveData<Boolean> get() = _onUpdateMemoJob
-        fun updateMemoJob() {
-                _onUpdateMemoJob.value = true
+        private val _onOpenTextInputJob = MutableLiveData<Boolean>()
+        val onOpenTextInputJob: LiveData<Boolean> get() = _onOpenTextInputJob
+        fun openTextInputJob() {
+                _onOpenTextInputJob.value = true
         }
-        fun updateMemoJobComplete() {
-                _onUpdateMemoJob.value = false
+        fun openTextInputJobComplete() {
+                _onOpenTextInputJob.value = false
+        }
+
+        fun todoMemoIsEmpty(): Boolean {
+                todo.value?.let {
+                        Timber.w("status: ${it.memo.isNullOrEmpty()}")
+                        if (it.memo.isNullOrEmpty()) {
+                                return true
+                        }
+                }
+                return false
+        }
+
+        fun todoMemoIsNotEmpty(): Boolean {
+                todo.value?.let {
+                        Timber.w("status: ${it.memo.isNullOrEmpty()}")
+                        if (it.memo.isNullOrEmpty()) {
+                                return false
+                        }
+                }
+                return true
+        }
+
+        fun todoMemoUpdate(memo: String) {
+                _todo.value?.let { oldTodo ->
+                        uiScope.launch {
+                                val newTodo = oldTodo.copy()
+                                _todo.value = newTodo
+                                newTodo.memo = memo
+                                todoUpdate(newTodo)
+                        }
+                }
         }
 
         private val _onBack = MutableLiveData<Boolean>()
@@ -50,17 +83,17 @@ class TodoDetailViewModel(
         }
 
         fun todoFinishJob() {
-                todo.value?.let { oldTodo ->
+                _todo.value?.let { oldTodo ->
                         uiScope.launch {
                                 val isFinished = oldTodo.isFinished
                                 oldTodo.isFinished = !isFinished
-                                todoFinish(oldTodo)
+                                todoUpdate(oldTodo)
                                 _onBack.value = true
                         }
                 }
         }
 
-        private suspend fun todoFinish(todo: Todo) {
+        private suspend fun todoUpdate(todo: Todo) {
                 withContext(Dispatchers.IO) {
                         repository.updateTodo(todo)
                 }

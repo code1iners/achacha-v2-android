@@ -15,7 +15,7 @@ interface TodoDatabaseDao {
     fun readAllOrderedById(): LiveData<List<Todo>>
 
     @Query("SELECT * FROM todos_table WHERE id = :todoId")
-    fun readTodoById(todoId: Long): Todo
+    fun readTodoById(todoId: Long): LiveData<Todo>
 
     @Query("SELECT * FROM todos_table ORDER BY id DESC LIMIT 1")
     fun readTodoLatest(): LiveData<Todo>?

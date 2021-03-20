@@ -27,12 +27,15 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             result.data?.let { data ->
-                val input = data.getStringExtra(INPUT)
+                // note. Get input result text(memo).
+                data.getStringExtra(INPUT)?.let { memo ->
+                    viewModel.todoMemoUpdate(memo)
+                }
             }
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initialize(inflater)
         observers()
 
@@ -63,6 +66,25 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
         viewModel.todo.observe(viewLifecycleOwner) {
             it?.let { todo ->
 
+                // note. Memo visibility setting when memo exist or not.
+                setTodoMemoVisibility(todo)
+            }
+        }
+    }
+
+    private fun setTodoMemoVisibility(todo: Todo) {
+        when (todo.memo.isNullOrEmpty()) {
+            true -> {
+                binding.memoValue.visibility = View.GONE
+                binding.memoUpdateButton.visibility = View.GONE
+                binding.memoAddButton.visibility = View.VISIBLE
+            }
+
+            false -> {
+                binding.memoValue.visibility = View.VISIBLE
+                binding.memoUpdateButton.visibility = View.VISIBLE
+                binding.memoAddButton.visibility = View.GONE
+
             }
         }
     }
@@ -71,6 +93,7 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
         viewModel.onBack.observe(viewLifecycleOwner) {
             it?.let { onBack ->
                 if (onBack) {
+                    // note. Destroy detail fragment view
                     back()
 
                     viewModel.backComplete()
@@ -80,13 +103,13 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
     }
 
     private fun observeMemo() {
-        viewModel.onUpdateMemoJob.observe(viewLifecycleOwner) {
+        viewModel.onOpenTextInputJob.observe(viewLifecycleOwner) {
             it?.let { job ->
                 if (job) {
                     // note. Open dialog for getting text.
                     startForResult.launch(Intent(activity, TextInputActivity::class.java))
 
-                    viewModel.updateMemoJobComplete()
+                    viewModel.openTextInputJobComplete()
                 }
             }
         }

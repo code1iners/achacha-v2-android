@@ -133,7 +133,7 @@
                             android:textSize="@dimen/text_s"
                             android:textColor="@color/sexyBlue"
                             android:background="@drawable/item_touch_effect"
-                            app:setVisible="@{viewModel.todo.memo.empty == true}"
+                            android:onClick="@{() -> viewModel.openTextInputJob()}"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -147,7 +147,6 @@
                         android:textSize="@dimen/text_s"
                         android:textColor="@color/black_70"
                         app:todoMemo="@{viewModel.todo}"
-                        app:setVisible="@{viewModel.todo.memo.empty == true}"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -164,8 +163,7 @@
                             android:background="@drawable/item_touch_effect"
                             android:text="Add memo"
                             android:textColor="@color/black_70"
-                            android:onClick="@{() -> viewModel.updateMemoJob()}"
-                            app:setVisible="@{viewModel.todo.memo.empty == false}"
+                            android:onClick="@{() -> viewModel.openTextInputJob()}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
