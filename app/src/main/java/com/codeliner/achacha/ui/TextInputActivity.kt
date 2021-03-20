@@ -8,8 +8,11 @@ import androidx.databinding.DataBindingUtil
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.ActivityTextInputBinding
 import com.codeliner.achacha.utils.Const.INPUT
+import com.codeliner.achacha.utils.Const.TITLE
 import com.codeliner.achacha.utils.KeyboardManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
+import java.util.*
 
 class TextInputActivity : AppCompatActivity() {
 
@@ -25,10 +28,25 @@ class TextInputActivity : AppCompatActivity() {
     private fun initialize() {
         // note. initialize binding.
         initializeBinding()
+        // note. initialize passed data.
+        initializePassedData()
         // note. Initialize listeners.
         initializeListeners()
         // note. initialize views.
         initializeViews()
+    }
+
+    private fun initializePassedData() {
+        intent.extras?.let {
+            // note. Set header title text.
+            viewModel.setTitle(it.getString(TITLE))
+
+            // note. Set body input text when if exist data
+            it.getString(INPUT)?.let { passedInput ->
+                viewModel.text = passedInput
+                binding.bodyInput.setText(passedInput)
+            }
+        }
     }
 
     private fun initializeBinding() {
@@ -45,7 +63,7 @@ class TextInputActivity : AppCompatActivity() {
     private fun listenerBodyInput() {
         // note. When body input text changed.
         binding.bodyInput.doOnTextChanged { text, _, _, _ ->
-            viewModel.input = text.toString()
+            viewModel.text = text.toString()
         }
         // note. When body input focus changed.
         binding.bodyInput.setOnFocusChangeListener { v, hasFocus ->
@@ -61,10 +79,12 @@ class TextInputActivity : AppCompatActivity() {
     }
 
     private fun observers() {
-        // note. When user pressed close button
+        // note. When user pressed close button.
         observeClose()
-        // note. When user pressed save button
+        // note. When user pressed save button.
         observeSave()
+        // note. Set title When title already exist
+        observeTitle()
     }
 
     private fun observeClose() {
@@ -85,11 +105,27 @@ class TextInputActivity : AppCompatActivity() {
                 if (saveAction) {
                     // note. export result text input data
                     setResult(RESULT_OK, Intent().apply {
-                        putExtra(INPUT, viewModel.input)
+                        putExtra(INPUT, viewModel.text)
                     })
                     finish()
 
                     viewModel.inputSaveComplete()
+                }
+            }
+        }
+    }
+
+    private fun observeTitle() {
+        viewModel.title.observe(this) { title ->
+            when (title.isNullOrEmpty()) {
+                true -> {
+                    binding.headerTitle.text = getString(R.string.input_window)
+                    binding.bodyInput.hint = "${getString(R.string.enter_text)}.."
+                }
+
+                false -> {
+                    binding.headerTitle.text = title
+                    binding.bodyInput.hint = "Enter ${title.toLowerCase(Locale.ROOT)}.."
                 }
             }
         }

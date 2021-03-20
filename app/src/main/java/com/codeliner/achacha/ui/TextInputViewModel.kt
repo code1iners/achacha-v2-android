@@ -3,11 +3,19 @@ package com.codeliner.achacha.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import timber.log.Timber
 
 class TextInputViewModel: ViewModel() {
 
+
+    private val _title = MutableLiveData<String>()
+    val title: LiveData<String> get() = _title
+    fun setTitle(title: String?) {
+        _title.value = title
+    }
+
     // note. User input text variable.
-    var input: String? = null
+    var text: String? = null
 
     // note. When user pressed window close button.
     private val _onCloseWindow = MutableLiveData<Boolean>()

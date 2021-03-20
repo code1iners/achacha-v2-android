@@ -14,7 +14,7 @@ import timber.log.Timber
 
 @BindingAdapter("setVisible")
 fun View.setVisible(status: Boolean) {
-    Timber.w("status: $status")
+//    Timber.w("status: $status")
     when (status) {
         true -> this.visibility = View.VISIBLE
         false -> this.visibility = View.GONE

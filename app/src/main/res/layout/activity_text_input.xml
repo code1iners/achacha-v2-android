@@ -62,7 +62,7 @@
             android:maxHeight="200dp"
             android:gravity="top"
             android:background="@null"
-            android:hint="Enter memo.."/>
+            android:hint="Enter text.."/>
 
         <View
             android:layout_width="match_parent"

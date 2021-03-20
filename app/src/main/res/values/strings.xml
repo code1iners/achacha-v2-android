@@ -51,6 +51,8 @@
     <string name="agree">Agree</string>
     <string name="disagree">Disagree</string>
     <string name="initialize">Initialize</string>
+    <string name="input_window">Input window</string>
+    <string name="enter_text">Enter text</string>
 
     <!--  todo list  -->
     <string name="item_list_is_empty_message">How about create new a %s?</string>

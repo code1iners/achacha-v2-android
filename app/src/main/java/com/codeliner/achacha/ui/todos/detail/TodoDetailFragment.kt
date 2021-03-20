@@ -6,14 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.databinding.FragmentTodoDetailBinding
 import com.codeliner.achacha.ui.TextInputActivity
 import com.codeliner.achacha.utils.Const.INPUT
-import com.codeliner.achacha.utils.log
+import com.codeliner.achacha.utils.Const.TITLE
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -23,14 +22,16 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
     private lateinit var binding: FragmentTodoDetailBinding
     private val viewModel: TodoDetailViewModel by viewModel()
 
+    // note. For set text input activity title.
+    private val memoInputDialogTitle = "Memo"
+
     // note. Text input activity.
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             result.data?.let { data ->
-                // note. Get input result text(memo).
-                data.getStringExtra(INPUT)?.let { memo ->
-                    viewModel.todoMemoUpdate(memo)
-                }
+                Timber.w("data: $data")
+                // note. Get input result text(memo) and update live data.
+                viewModel.todoMemoUpdate(data.getStringExtra(INPUT))
             }
         }
     }
@@ -65,7 +66,6 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
     private fun observeTodo() {
         viewModel.todo.observe(viewLifecycleOwner) {
             it?.let { todo ->
-
                 // note. Memo visibility setting when memo exist or not.
                 setTodoMemoVisibility(todo)
             }
@@ -107,7 +107,15 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
             it?.let { job ->
                 if (job) {
                     // note. Open dialog for getting text.
-                    startForResult.launch(Intent(activity, TextInputActivity::class.java))
+                    startForResult.launch(Intent(activity, TextInputActivity::class.java).apply {
+                        // note. Set dialog title
+                        putExtra(TITLE, memoInputDialogTitle)
+
+                        // note. Pass memo data when exist memo data.
+                        viewModel.todo.value?.let {
+                            putExtra(INPUT, it.memo)
+                        }
+                    })
 
                     viewModel.openTextInputJobComplete()
                 }

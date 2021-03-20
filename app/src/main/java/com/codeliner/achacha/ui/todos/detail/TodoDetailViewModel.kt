@@ -30,32 +30,12 @@ class TodoDetailViewModel(
                 _onOpenTextInputJob.value = false
         }
 
-        fun todoMemoIsEmpty(): Boolean {
-                todo.value?.let {
-                        Timber.w("status: ${it.memo.isNullOrEmpty()}")
-                        if (it.memo.isNullOrEmpty()) {
-                                return true
-                        }
-                }
-                return false
-        }
-
-        fun todoMemoIsNotEmpty(): Boolean {
-                todo.value?.let {
-                        Timber.w("status: ${it.memo.isNullOrEmpty()}")
-                        if (it.memo.isNullOrEmpty()) {
-                                return false
-                        }
-                }
-                return true
-        }
-
-        fun todoMemoUpdate(memo: String) {
+        fun todoMemoUpdate(memo: String?) {
                 _todo.value?.let { oldTodo ->
                         uiScope.launch {
                                 val newTodo = oldTodo.copy()
-                                _todo.value = newTodo
                                 newTodo.memo = memo
+                                _todo.value = newTodo
                                 todoUpdate(newTodo)
                         }
                 }
