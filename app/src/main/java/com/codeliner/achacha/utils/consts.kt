@@ -17,6 +17,7 @@ object Const {
     const val PASSWORD = "PASSWORD"
     const val HINT = "HINT"
     const val THUMBNAIL = "THUMBNAIL"
+    const val INPUT = "INPUT"
 
     // note. permission requests
     const val PERMISSION_REQUEST_READ_EXTERNAL_STORAGE = 0

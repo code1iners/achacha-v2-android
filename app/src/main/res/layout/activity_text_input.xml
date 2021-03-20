@@ -29,6 +29,7 @@
                 android:src="@drawable/icon_close"
                 android:background="@null"
                 android:scaleType="centerCrop"
+                android:onClick="@{() -> viewModel.closeWindowJob()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -75,7 +76,8 @@
             android:background="@drawable/item_touch_effect"
             android:text="@string/save"
             android:textSize="@dimen/text_m"
-            android:textColor="@color/sexyBlue"/>
+            android:textColor="@color/sexyBlue"
+            android:onClick="@{() -> viewModel.inputSaveJob()}"/>
 
     </LinearLayout>
 </layout>

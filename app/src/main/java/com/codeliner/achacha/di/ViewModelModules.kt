@@ -16,7 +16,7 @@ val viewModelModules = module {
 
     viewModel { MainViewModel(get()) }
 
-    viewModel { TextInputViewModel(get()) }
+    viewModel { TextInputViewModel() }
 
     viewModel { TodoListViewModel(get(), get()) }
 
