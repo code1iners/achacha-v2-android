@@ -164,7 +164,7 @@ class AccountListFragment: Fragment()
         AccountListViewModel.onAccountTest.observe(viewLifecycleOwner, { started ->
             if (started) {
 
-                context?.toastingShort("This is a Star")
+                context?.toastingShort("This is a Star.")
 
                 AccountListViewModel.accountTestJobComplete()
             }

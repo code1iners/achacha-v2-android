@@ -65,9 +65,9 @@ class TodoDetailViewModel(
         fun todoFinishJob() {
                 _todo.value?.let { oldTodo ->
                         uiScope.launch {
-                                val isFinished = oldTodo.isFinished
-                                oldTodo.isFinished = !isFinished
-                                todoUpdate(oldTodo)
+                                val newTodo = oldTodo.copy()
+                                newTodo.isFinished = !newTodo.isFinished
+                                todoUpdate(newTodo)
                                 _onBack.value = true
                         }
                 }
@@ -79,4 +79,8 @@ class TodoDetailViewModel(
                 }
         }
 
+        override fun onCleared() {
+                super.onCleared()
+                viewModelJob.cancel()
+        }
 }

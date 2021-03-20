@@ -13,4 +13,63 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorSecondaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="MaterialAlertDialog.App" parent="MaterialAlertDialog.MaterialComponents">
+        <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/secondaryTextColor</item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Body.Text" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">@color/secondaryTextColor</item>
+    </style>
+
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.TextButton</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Button.TextButton" parent="">
+        <item name="colorPrimary">@color/secondaryTextColor</item>
+    </style>
+
+    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <!--  Bottom Sheet Dialog  -->
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/border_round_top_m</item>
+    </style>
+
+    <!--  Activity Dialog  -->
+    <style name="Theme.ActivityDialog" parent="Theme.AppCompat.DayNight.Dialog">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/secondaryColor</item>
+        <item name="colorPrimaryVariant">@color/secondaryVariantColor</item>
+        <item name="colorOnPrimary">@color/secondaryTextColor</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/primaryColor</item>
+        <item name="colorSecondaryVariant">@color/primaryVariantColor</item>
+        <item name="colorOnSecondary">@color/primaryTextColor</item>
+        <!-- Title. -->
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowMinWidthMajor">97%</item>
+        <item name="android:windowMinWidthMinor">97%</item>
+        <item name="android:windowBackground">@drawable/border_round_m</item>
+    </style>
 </resources>
