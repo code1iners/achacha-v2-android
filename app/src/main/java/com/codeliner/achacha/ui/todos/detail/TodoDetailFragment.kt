@@ -10,7 +10,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.codeliner.achacha.data.todos.Todo
 import com.codeliner.achacha.databinding.FragmentTodoDetailBinding
-import com.codeliner.achacha.ui.TextInputActivity
+import com.codeliner.achacha.ui.inputs.chip.ChipInputActivity
+import com.codeliner.achacha.ui.inputs.text.TextInputActivity
 import com.codeliner.achacha.utils.Const.INPUT
 import com.codeliner.achacha.utils.Const.TITLE
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -24,14 +25,24 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
 
     // note. For set text input activity title.
     private val memoInputDialogTitle = "Memo"
+    private val tagInputDialogTitle = "Tags"
 
     // note. Text input activity.
-    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private val startForResultTextInput = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             result.data?.let { data ->
                 Timber.w("data: $data")
                 // note. Get input result text(memo) and update live data.
                 viewModel.todoMemoUpdate(data.getStringExtra(INPUT))
+            }
+        }
+    }
+    // note. Chip input activity.
+    private val startForResultChipInput = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            result.data?.let { data ->
+                Timber.w("data: $data")
+
             }
         }
     }
@@ -61,6 +72,7 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
         observeTodo()
         observeOnBack()
         observeMemo()
+        observeTags()
     }
 
     private fun observeTodo() {
@@ -104,20 +116,37 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
 
     private fun observeMemo() {
         viewModel.onOpenTextInputJob.observe(viewLifecycleOwner) {
-            it?.let { job ->
-                if (job) {
+            it?.let { action ->
+                if (action) {
                     // note. Open dialog for getting text.
-                    startForResult.launch(Intent(activity, TextInputActivity::class.java).apply {
-                        // note. Set dialog title
+                    startForResultTextInput.launch(Intent(activity, TextInputActivity::class.java).apply {
+                        // note. Set dialog title.
                         putExtra(TITLE, memoInputDialogTitle)
 
-                        // note. Pass memo data when exist memo data.
+                        // note. Pass memo data when exist the memo data.
                         viewModel.todo.value?.let {
                             putExtra(INPUT, it.memo)
                         }
                     })
 
                     viewModel.openTextInputJobComplete()
+                }
+            }
+        }
+    }
+
+    private fun observeTags() {
+        viewModel.onOpenChipInputJob.observe(viewLifecycleOwner) {
+            it?.let { action ->
+                if (action) {
+                    // note. Open dialog for getting tags.
+                    startForResultChipInput.launch(Intent(activity, ChipInputActivity::class.java).apply {
+                        // note. Set dialog title.
+                        putExtra(TITLE, tagInputDialogTitle)
+                        // note. Pass the tags data basically.
+                    })
+
+                    viewModel.openChipInputComplete()
                 }
             }
         }

@@ -12,10 +12,12 @@
         android:roundIcon="@mipmap/app_icon_simple_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Achacha">
+        <activity android:name=".ui.inputs.chip.ChipInputActivity"
+            android:theme="@style/Theme.ActivityDialog"/>
         <activity
-            android:name=".ui.TextInputActivity"
+            android:name=".ui.inputs.text.TextInputActivity"
             android:theme="@style/Theme.ActivityDialog"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".mains.MainActivity"
             android:windowSoftInputMode="adjustResize">

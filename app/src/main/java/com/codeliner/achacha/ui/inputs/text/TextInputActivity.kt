@@ -1,4 +1,4 @@
-package com.codeliner.achacha.ui
+package com.codeliner.achacha.ui.inputs.text
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +11,6 @@ import com.codeliner.achacha.utils.Const.INPUT
 import com.codeliner.achacha.utils.Const.TITLE
 import com.codeliner.achacha.utils.KeyboardManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 import java.util.*
 
 class TextInputActivity : AppCompatActivity() {

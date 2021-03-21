@@ -1,4 +1,4 @@
-package com.codeliner.achacha.ui
+package com.codeliner.achacha.ui.inputs.text
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

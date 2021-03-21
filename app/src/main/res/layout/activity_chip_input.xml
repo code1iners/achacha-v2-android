@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.codeliner.achacha.ui.inputs.text.TextInputViewModel" />
+            type="com.codeliner.achacha.ui.inputs.chip.ChipInputViewModel" />
     </data>
 
     <LinearLayout
@@ -29,7 +29,6 @@
                 android:src="@drawable/icon_close"
                 android:background="@null"
                 android:scaleType="centerCrop"
-                android:onClick="@{() -> viewModel.closeWindowJob()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -54,17 +53,13 @@
             android:layout_height="10dp"
             android:background="@drawable/shadow_two_bottom"/>
 
-        <EditText
-            android:id="@+id/bodyInput"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/bodyChipGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing_m"
-            android:minHeight="200dp"
-            android:maxHeight="200dp"
-            android:gravity="top"
-            android:background="@null"
-            android:hint="Enter text.."
-            android:textColor="@color/black_90"/>
+            android:paddingVertical="@dimen/spacing_l">
+
+        </com.google.android.material.chip.ChipGroup>
 
         <View
             android:layout_width="match_parent"
@@ -78,8 +73,7 @@
             android:background="@drawable/item_touch_effect"
             android:text="@string/save"
             android:textSize="@dimen/text_m"
-            android:textColor="@color/sexyBlue"
-            android:onClick="@{() -> viewModel.inputSaveJob()}"/>
+            android:textColor="@color/sexyBlue"/>
 
     </LinearLayout>
 </layout>

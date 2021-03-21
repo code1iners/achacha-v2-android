@@ -41,6 +41,15 @@ class TodoDetailViewModel(
                 }
         }
 
+        private val _onOpenChipInputJob = MutableLiveData<Boolean>()
+        val onOpenChipInputJob: LiveData<Boolean> get() = _onOpenChipInputJob
+        fun openChipInputJob() {
+                _onOpenChipInputJob.value = true
+        }
+        fun openChipInputComplete() {
+                _onOpenChipInputJob.value = false
+        }
+
         private val _onBack = MutableLiveData<Boolean>()
         val onBack: LiveData<Boolean> get() = _onBack
         fun backComplete() {

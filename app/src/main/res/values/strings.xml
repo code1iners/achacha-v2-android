@@ -78,6 +78,7 @@
     <string name="finish">Finish</string>
     <string name="remove">Remove</string>
     <string name="modify">Modify</string>
+    <string name="input">Input</string>
 
     <!--  integers  -->
     <integer name="animation_duration_short">300</integer>
