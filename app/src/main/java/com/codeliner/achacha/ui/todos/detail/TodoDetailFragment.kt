@@ -144,6 +144,7 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
                         // note. Set dialog title.
                         putExtra(TITLE, tagInputDialogTitle)
                         // note. Pass the tags data basically.
+
                     })
 
                     viewModel.openChipInputComplete()

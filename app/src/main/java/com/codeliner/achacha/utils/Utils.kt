@@ -1,10 +1,12 @@
 package com.codeliner.achacha.utils
 
+import android.app.Application
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.codeliner.achacha.R
 import com.codeliner.achacha.data.todos.Todo
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -52,4 +54,23 @@ fun List<TextInputLayout>.clearErrorsWithHelperOff() {
 
 fun TextView.setTextColorById(colorId: Int) {
     this.setTextColor(ContextCompat.getColor(context, colorId))
+}
+
+fun Application.getTags(): ArrayList<String> {
+    return arrayListOf(
+        this.getString(R.string.call),
+        this.getString(R.string.check),
+        this.getString(R.string.take),
+        this.getString(R.string.email),
+        this.getString(R.string.buy),
+        this.getString(R.string.meet),
+        this.getString(R.string.clean),
+        this.getString(R.string.send),
+        this.getString(R.string.payment),
+        this.getString(R.string.create),
+        this.getString(R.string.select),
+        this.getString(R.string.doing),
+        this.getString(R.string.read),
+        this.getString(R.string.study),
+    )
 }

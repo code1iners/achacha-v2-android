@@ -91,4 +91,6 @@ dependencies {
 
     // note. For newer communication between activity or fragment
     implementation 'androidx.appcompat:appcompat:1.3.0-beta01'
+
+    implementation 'com.google.android:flexbox:2.0.1'
 }

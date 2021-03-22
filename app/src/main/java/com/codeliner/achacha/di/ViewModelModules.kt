@@ -19,7 +19,7 @@ val viewModelModules = module {
 
     viewModel { TextInputViewModel() }
 
-    viewModel { ChipInputViewModel() }
+    viewModel { ChipInputViewModel(get()) }
 
     viewModel { TodoListViewModel(get(), get()) }
 
