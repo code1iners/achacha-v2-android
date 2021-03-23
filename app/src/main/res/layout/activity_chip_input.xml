@@ -57,8 +57,10 @@
             android:id="@+id/bodyFlexBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/spacing_m"
+            android:paddingVertical="@dimen/spacing_s"
             app:flexWrap="wrap"
-            app:justifyContent="space_around"
+            app:justifyContent="flex_start"
             app:alignItems="center"
             app:alignContent="center">
 
