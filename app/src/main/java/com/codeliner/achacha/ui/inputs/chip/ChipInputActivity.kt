@@ -2,15 +2,13 @@ package com.codeliner.achacha.ui.inputs.chip
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.marginRight
 import androidx.databinding.DataBindingUtil
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.ActivityChipInputBinding
 import com.example.helpers.MeasureManager.toDp
-import com.example.helpers.WidgetManager.LayoutParamsManager.Companion.setMarginBottom
 import com.example.helpers.WidgetManager.LayoutParamsManager.Companion.setMarginHorizontal
-import com.example.helpers.WidgetManager.LayoutParamsManager.Companion.setMarginVertical
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ChipInputActivity : AppCompatActivity() {
@@ -35,7 +33,7 @@ class ChipInputActivity : AppCompatActivity() {
             itemView.text = item
             itemView.setMarginHorizontal(4.toDp(this))
             itemView.isClickable = true
-            itemView.setBackgroundResource(R.drawable.item_touch_effect)
+            itemView.setBackgroundResource(R.drawable.item_touch_effect_rounded_m)
 
             binding.bodyFlexBox.addView(itemView)
         }
@@ -45,4 +43,5 @@ class ChipInputActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chip_input)
         binding.lifecycleOwner = this
     }
+
 }
