@@ -77,11 +77,13 @@ class ChipInputActivity : AppCompatActivity() {
         binding.bodyFlexBox.forEachIndexed { index, flexView ->
             // note. Convert view type.
             val flexItem = flexView as TextView
+
             // note. Check item is tag or spacer.
             if (!flexItem.text.isNullOrEmpty()) {
                 // note. Clear all tags text style by default.
                 flexItem.setTypeface(null, Typeface.NORMAL)
                 flexItem.setTextColor(ContextCompat.getColor(this, R.color.primaryTextColor))
+
                 // note. Add selected item position.
                 if (tags.contains(flexItem)) viewModel.selectItem(index)
             }
