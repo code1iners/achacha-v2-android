@@ -5,18 +5,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.forEach
 import androidx.core.view.forEachIndexed
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.ActivityChipInputBinding
-import com.codeliner.achacha.utils.getTags
 import com.example.helpers.MeasureManager.toDp
 import com.example.helpers.WidgetManager.LayoutParamsManager.Companion.setMarginHorizontal
 import com.example.helpers.WidgetManager.LayoutParamsManager.Companion.setMarginVertical
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
 class ChipInputActivity : AppCompatActivity() {
 
@@ -43,7 +40,7 @@ class ChipInputActivity : AppCompatActivity() {
             itemView.setPadding(8.toDp(this), 2.toDp(this), 8.toDp(this), 2.toDp(this))
             itemView.isClickable = true
             itemView.setTextColor(ContextCompat.getColor(this, R.color.primaryTextColor))
-            itemView.setBackgroundResource(R.drawable.unselected_item_touch_effect_rounded_m)
+            itemView.setBackgroundResource(R.drawable.item_touch_effect_rounded_m)
             itemView.setOnClickListener {
                 // note. Add or Remove in list When clicked chip item.
                 viewModel.tagAddOrRemove(it as TextView)
@@ -95,7 +92,7 @@ class ChipInputActivity : AppCompatActivity() {
         for (selectedItem in viewModel.selectedItems) {
             val flexItem = binding.bodyFlexBox[selectedItem] as TextView
             flexItem.setTypeface(null, Typeface.BOLD)
-            flexItem.setTextColor(ContextCompat.getColor(this, R.color.sexyBlue))
+            flexItem.setTextColor(ContextCompat.getColor(this, R.color.sexyBlue2))
         }
     }
 }
