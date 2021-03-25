@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_touch_effect"
+        android:background="@drawable/unselected_item_touch_effect"
         android:focusable="true"
         android:clickable="true"
         android:padding="@dimen/spacing_m">
