@@ -32,7 +32,6 @@ class ChipInputActivity : AppCompatActivity() {
     private fun initialize() {
         initializeBinding()
         initializePassedData()
-        initializeFlexItems()
     }
 
     private fun initializeBinding() {
@@ -54,37 +53,42 @@ class ChipInputActivity : AppCompatActivity() {
         }
     }
 
-    private fun initializeFlexItems() {
-        for (item in viewModel.tags) {
-            // note. Add tag items with attributes..
-            val itemView = TextView(this)
-            itemView.text = item
-            itemView.setMarginVertical(2.toDp(this))
-            itemView.setPadding(8.toDp(this), 2.toDp(this), 8.toDp(this), 2.toDp(this))
-            itemView.isClickable = true
-            itemView.setTextColor(ContextCompat.getColor(this, R.color.primaryTextColor))
-            itemView.setBackgroundResource(R.drawable.item_touch_effect_rounded_m)
-            itemView.setOnClickListener {
-                // note. Add or Remove in list When clicked chip item.
-                viewModel.tagAddOrRemove(it as TextView)
-            }
-            // note. Added child chip item in flex box.
-            binding.bodyFlexBox.addView(itemView)
+    private fun observers() {
+        observeTitle()
+        observeTags()
+        viewModel.tags.observe(this) {
+            it?.let { tags ->
+                for (item in tags) {
+                    // note. Add tag items with attributes..
+                    val itemView = TextView(this)
+                    itemView.text = item
+                    itemView.setMarginVertical(2.toDp(this))
+                    itemView.setPadding(8.toDp(this), 2.toDp(this), 8.toDp(this), 2.toDp(this))
+                    itemView.isClickable = true
+                    itemView.setTextColor(ContextCompat.getColor(this, R.color.primaryTextColor))
+                    itemView.setBackgroundResource(R.drawable.item_touch_effect_rounded_m)
+                    itemView.setOnClickListener {
+                        // note. Add or Remove in list When clicked chip item.
+                        viewModel.tagAddOrRemove(it as TextView)
+                    }
+                    // note. Added child chip item in flex box.
+                    binding.bodyFlexBox.addView(itemView)
 
-            // note. Add spacing between tag items.
-            val space = TextView(this)
-            space.setMarginHorizontal(1.toDp(this))
-            binding.bodyFlexBox.addView(space)
+                    // note. Add spacing between tag items.
+                    val space = TextView(this)
+                    space.setMarginHorizontal(1.toDp(this))
+                    binding.bodyFlexBox.addView(space)
+                }
+            }
         }
     }
 
-    private fun observers() {
+    private fun observeTitle() {
         viewModel.onTitle.observe(this) {
             it?.let { title ->
                 binding.headerTitle.text = title
             }
         }
-        observeTags()
     }
 
     private fun observeTags() {

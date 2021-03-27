@@ -13,7 +13,9 @@ import com.codeliner.achacha.databinding.FragmentTodoDetailBinding
 import com.codeliner.achacha.ui.inputs.chip.ChipInputActivity
 import com.codeliner.achacha.ui.inputs.text.TextInputActivity
 import com.codeliner.achacha.utils.Const.INPUT
+import com.codeliner.achacha.utils.Const.TAGS
 import com.codeliner.achacha.utils.Const.TITLE
+import com.codeliner.achacha.utils.getTags
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -144,7 +146,7 @@ class TodoDetailFragment: BottomSheetDialogFragment() {
                         // note. Set dialog title.
                         putExtra(TITLE, tagInputDialogTitle)
                         // note. Pass the tags data basically.
-
+                        putExtra(TAGS, requireNotNull(activity).application.getTags())
                     })
 
                     viewModel.openChipInputComplete()

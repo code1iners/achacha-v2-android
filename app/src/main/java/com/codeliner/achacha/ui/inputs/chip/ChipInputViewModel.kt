@@ -13,7 +13,7 @@ class ChipInputViewModel(
 ): ViewModel() {
     
     private val _tags = MutableLiveData<ArrayList<String>>()
-    val tags = application.getTags()
+    val tags: LiveData<ArrayList<String>> get() = _tags
     fun setTags(tags: ArrayList<String>) {
         if (_tags.value == null) _tags.value = ArrayList()
 
@@ -52,7 +52,7 @@ class ChipInputViewModel(
     }
 
     fun showTags() {
-        tags.forEach { item ->
+        tags.value?.forEach { item ->
             Timber.v("item: $item")
         }
     }
