@@ -11,7 +11,15 @@ import timber.log.Timber
 class ChipInputViewModel(
     application: Application
 ): ViewModel() {
+    
+    private val _tags = MutableLiveData<ArrayList<String>>()
     val tags = application.getTags()
+    fun setTags(tags: ArrayList<String>) {
+        if (_tags.value == null) _tags.value = ArrayList()
+
+        _tags.value?.clear()
+        _tags.value?.addAll(tags)
+    }
 
     private val _onSelectedTags = MutableLiveData(ArrayList<TextView>())
     val onSelectedTags: LiveData<ArrayList<TextView>> get() = _onSelectedTags
@@ -35,6 +43,12 @@ class ChipInputViewModel(
         if (!selectedItems.contains(itemPosition)) {
             selectedItems.add(itemPosition)
         }
+    }
+    
+    private val _onTitle = MutableLiveData<String>()
+    val onTitle: LiveData<String> get() = _onTitle
+    fun setTitle(title: String) {
+        _onTitle.value = title
     }
 
     fun showTags() {

@@ -10,6 +10,9 @@ import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import com.codeliner.achacha.R
 import com.codeliner.achacha.databinding.ActivityChipInputBinding
+import com.codeliner.achacha.utils.Const.INPUT
+import com.codeliner.achacha.utils.Const.TAGS
+import com.codeliner.achacha.utils.Const.TITLE
 import com.example.helpers.MeasureManager.toDp
 import com.example.helpers.WidgetManager.LayoutParamsManager.Companion.setMarginHorizontal
 import com.example.helpers.WidgetManager.LayoutParamsManager.Companion.setMarginVertical
@@ -28,7 +31,27 @@ class ChipInputActivity : AppCompatActivity() {
 
     private fun initialize() {
         initializeBinding()
+        initializePassedData()
         initializeFlexItems()
+    }
+
+    private fun initializeBinding() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_chip_input)
+        binding.lifecycleOwner = this
+    }
+
+    private fun initializePassedData() {
+        intent.extras?.let {
+            // note. Set passed title.
+            it.getString(TITLE)?.let { title ->
+                viewModel.setTitle(title)
+            }
+
+            // note. Set passed tags.
+            it.getStringArrayList(TAGS)?.let { tags ->
+                viewModel.setTags(tags)
+            }
+        }
     }
 
     private fun initializeFlexItems() {
@@ -55,12 +78,12 @@ class ChipInputActivity : AppCompatActivity() {
         }
     }
 
-    private fun initializeBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_chip_input)
-        binding.lifecycleOwner = this
-    }
-
     private fun observers() {
+        viewModel.onTitle.observe(this) {
+            it?.let { title ->
+                binding.headerTitle.text = title
+            }
+        }
         observeTags()
     }
 

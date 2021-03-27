@@ -12,6 +12,7 @@ object Const {
     const val ACTION_ACCOUNT_CLEAR = "ACCOUNT_CLEAR"
     const val ACTION_ACCOUNT_TEST = "ACCOUNT_TEST"
     const val TITLE = "TITLE"
+    const val TAGS = "TAGS"
     const val SUBTITLE = "SUBTITLE"
     const val IDENTITY = "IDENTITY"
     const val PASSWORD = "PASSWORD"
