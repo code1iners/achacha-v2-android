@@ -1,5 +1,6 @@
 package com.codeliner.achacha.ui.inputs.chip
 
+import android.content.Intent
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.example.helpers.MeasureManager.toDp
 import com.example.helpers.WidgetManager.LayoutParamsManager.Companion.setMarginHorizontal
 import com.example.helpers.WidgetManager.LayoutParamsManager.Companion.setMarginVertical
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class ChipInputActivity : AppCompatActivity() {
 
@@ -37,6 +39,7 @@ class ChipInputActivity : AppCompatActivity() {
     private fun initializeBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chip_input)
         binding.lifecycleOwner = this
+        binding.viewModel = viewModel
     }
 
     private fun initializePassedData() {
@@ -56,6 +59,25 @@ class ChipInputActivity : AppCompatActivity() {
     private fun observers() {
         observeTitle()
         observeTags()
+        observeSave()
+    }
+
+    private fun observeTitle() {
+        viewModel.onTitle.observe(this) {
+            it?.let { title ->
+                binding.headerTitle.text = title
+            }
+        }
+    }
+
+    private fun observeTags() {
+        // note. Observe tags object 1
+        whenPassedTagsDataExist()
+        // note. Observe tags object 2
+        whenUserSelectedTagItem()
+    }
+
+    private fun whenPassedTagsDataExist() {
         viewModel.tags.observe(this) {
             it?.let { tags ->
                 for (item in tags) {
@@ -83,15 +105,7 @@ class ChipInputActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeTitle() {
-        viewModel.onTitle.observe(this) {
-            it?.let { title ->
-                binding.headerTitle.text = title
-            }
-        }
-    }
-
-    private fun observeTags() {
+    private fun whenUserSelectedTagItem() {
         viewModel.onSelectedTags.observe(this) {
             it?.let { tags ->
                 retrieveSelectedItems(tags)
@@ -122,6 +136,29 @@ class ChipInputActivity : AppCompatActivity() {
             val flexItem = binding.bodyFlexBox[selectedItem] as TextView
             flexItem.setTypeface(null, Typeface.BOLD)
             flexItem.setTextColor(ContextCompat.getColor(this, R.color.sexyBlue2))
+        }
+    }
+
+    // note. In progress.
+    private fun observeSave() {
+        viewModel.save.observe(this) {
+            it?.let { started ->
+                Timber.w("started: $started")
+                if (started) {
+                    // note. In progress.
+                    viewModel.resultsTags.value?.let { results ->
+                        for (result in results) {
+                            Timber.d("result: $result")
+                        }
+
+//                    setResult(RESULT_OK, Intent().apply {
+//                        putExtra(TAGS, viewModel.sel)
+//                    })
+                    }
+
+                    viewModel.saveComplete()
+                }
+            }
         }
     }
 }

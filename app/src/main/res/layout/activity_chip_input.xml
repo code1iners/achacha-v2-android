@@ -78,7 +78,8 @@
             android:background="@drawable/item_touch_effect"
             android:text="@string/save"
             android:textSize="@dimen/text_m"
-            android:textColor="@color/sexyBlue"/>
+            android:textColor="@color/sexyBlue"
+            android:onClick="@{() -> viewModel.saveStart()}"/>
 
     </LinearLayout>
 </layout>

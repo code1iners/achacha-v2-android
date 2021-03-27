@@ -4,6 +4,7 @@ import android.app.Application
 import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.codeliner.achacha.utils.getTags
 import timber.log.Timber
@@ -11,6 +12,12 @@ import timber.log.Timber
 class ChipInputViewModel(
     application: Application
 ): ViewModel() {
+
+    private val _onTitle = MutableLiveData<String>()
+    val onTitle: LiveData<String> get() = _onTitle
+    fun setTitle(title: String) {
+        _onTitle.value = title
+    }
     
     private val _tags = MutableLiveData<ArrayList<String>>()
     val tags: LiveData<ArrayList<String>> get() = _tags
@@ -38,17 +45,33 @@ class ChipInputViewModel(
         }
     }
 
+    // note. In progress.
+    val resultsTags = Transformations.map(_onSelectedTags) {
+        Timber.w("resultsTags changed: $it")
+        it?.let { tags ->
+            val results: ArrayList<String> = ArrayList()
+            for (tag in tags) {
+                results.add(tag.text.toString())
+            }
+            results
+        }
+    }
+
     val selectedItems = ArrayList<Int>()
     fun selectItem(itemPosition: Int) {
         if (!selectedItems.contains(itemPosition)) {
             selectedItems.add(itemPosition)
         }
     }
-    
-    private val _onTitle = MutableLiveData<String>()
-    val onTitle: LiveData<String> get() = _onTitle
-    fun setTitle(title: String) {
-        _onTitle.value = title
+
+    private val _save = MutableLiveData<Boolean>()
+    val save: LiveData<Boolean> get() = _save
+    fun saveStart() {
+        _save.value = true
+    }
+
+    fun saveComplete() {
+        _save.value = false
     }
 
     fun showTags() {
